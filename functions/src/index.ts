@@ -3,10 +3,7 @@ import * as express from "express";
 
 /* Express */
 const app = express();
-
-app.get("/ping", (req, res) => {
-  res.send("pong");
-});
+app.use("", require("./routes"));
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
