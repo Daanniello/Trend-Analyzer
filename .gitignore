@@ -1,0 +1,26 @@
+
+# Created by https://www.gitignore.io/api/firebase,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=firebase,visualstudiocode
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/lib/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/firebase,visualstudiocode
