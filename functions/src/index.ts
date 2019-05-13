@@ -3,6 +3,11 @@ import * as express from "express";
 
 /* Express */
 const app = express();
+
+/* Add (global) middleware */
+app.use(require("./middleware/key-guard"));
+
+/* Add routes */
 app.use("", require("./routes"));
 
 // Start writing Firebase Functions
