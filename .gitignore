@@ -2,6 +2,8 @@
 # Created by https://www.gitignore.io/api/firebase,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=firebase,visualstudiocode
 
+creds.json
+
 ### Firebase ###
 .idea
 **/node_modules/*
