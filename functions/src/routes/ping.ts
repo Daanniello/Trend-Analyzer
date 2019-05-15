@@ -1,6 +1,6 @@
 import * as express from "express";
 import AsyncRequest from "../helpers/async-request";
-import * as cheerio from "cheerio";
+const cheerio = require("cheerio");
 
 /* Ping Router */
 const router = express.Router();
