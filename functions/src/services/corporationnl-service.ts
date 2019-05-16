@@ -5,6 +5,7 @@ import Article from "../models/article";
 import ProviderService from "../services/ProviderService";
 import * as moment from "moment";
 import "moment/locale/nl";
+import { formatDate } from "tough-cookie";
 
 class CorporationNLService extends ProviderService {
   async scrapeArticle(url: any): Promise<any> {
@@ -18,29 +19,14 @@ class CorporationNLService extends ProviderService {
       .text()
       .replace("/", "");
 
-    var words = articleDate.split(" ");
-    console.log("nul2" + words[1]);
-
-    console.log(words[3]);
-
-    moment.locale("nl");
-
-    //console.log(date);
-
+    // Set up an article with the link, provider, title, date and intro
     const article = new Article(
       url,
       Provider.CorporatieNL,
       $(".c-panorama__heading").text(),
-      new Date(
-        words[3] +
-          "-" +
-          moment()
-            .month("mei")
-            .format("M") +
-          "-" +
-          words[1]
-      )
+      super.formDate(articleDate)
     );
+    console.log("Date" + article.articleDate);
   }
 }
 
