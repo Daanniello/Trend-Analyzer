@@ -3,9 +3,8 @@ import Article from "../models/article";
 import ProviderService from "../services/ProviderService";
 import * as moment from "moment";
 import "moment/locale/nl";
-import { formatDate } from "tough-cookie";
 
-class CorporationNLService extends ProviderService {
+class AedesService extends ProviderService {
   getText(url: string) {
     //console.log(date);
     const articleDate = this.$(".o-panorama__content span")
@@ -22,14 +21,13 @@ class CorporationNLService extends ProviderService {
     const article = new Article(
       url,
       Provider.CorporatieNL,
-      this.$(".c-panorama__heading").text(),
-      this.$(".copy__intro p").text(),
-      this.$(".content").text(),
+      this.$("header h1").text(),
+      this.$(".intro").text(),
+      this.$(".article__text").text(),
       super.formDate(articleDate)
     );
-
     console.log(article.coretext);
   }
 }
 
-export default CorporationNLService;
+export default AedesService;
