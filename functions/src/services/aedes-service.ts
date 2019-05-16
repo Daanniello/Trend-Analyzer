@@ -18,7 +18,7 @@ class AedesService extends ProviderService {
 
     const article = new Article(
       url,
-      Provider.CorporatieNL,
+      Provider.Aedes,
       this.$("header h1").text(),
       this.$(".intro").text(),
       this.$(".article__text").text(),
