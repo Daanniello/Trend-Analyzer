@@ -7,9 +7,7 @@ import "moment/locale/nl";
 class AedesService extends ProviderService {
   getText(url: string) {
     //console.log(date);
-    const articleDate = this.$(".o-panorama__content span")
-      .text()
-      .replace("/", "");
+    const articleDate = this.$(".article__author").text();
 
     var words = articleDate.split(" ");
     console.log("nul2" + words[1]);
