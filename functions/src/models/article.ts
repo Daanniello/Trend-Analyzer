@@ -4,6 +4,8 @@ class Article {
   private _link: string;
   private _provider: Provider;
   private _title: string;
+  private _intro: string;
+  private _coretext: string;
   private _topics: Array<String>;
   private _categories: Array<String>;
   private _aticleDate: Date;
@@ -12,11 +14,15 @@ class Article {
     link: string,
     provider: Provider,
     title: string,
+    intro: string,
+    coretext: string,
     articleDate: Date
   ) {
     this._link = link;
     this._provider = provider;
     this._title = title;
+    this._intro = intro;
+    this._coretext = coretext;
     this._aticleDate = articleDate;
     this._topics = new Array<String>();
     this._categories = new Array<String>();
@@ -46,6 +52,22 @@ class Article {
   }
   set title(newTitle: string) {
     this._title = newTitle;
+  }
+
+  // intro getter and setter
+  get intro(): string {
+    return this._intro;
+  }
+  set intro(newIntro: string) {
+    this._intro = newIntro;
+  }
+
+  // coretext getter and setter
+  get coretext(): string {
+    return this._coretext;
+  }
+  set coretext(newCoretext: string) {
+    this._coretext = newCoretext;
   }
 
   // topics getter and setter
