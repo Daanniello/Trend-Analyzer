@@ -3,7 +3,6 @@ import Article from "../models/article";
 import ProviderService from "../services/ProviderService";
 import * as moment from "moment";
 import "moment/locale/nl";
-import { formatDate } from "tough-cookie";
 
 class CorporationNLService extends ProviderService {
   getText(url: string) {

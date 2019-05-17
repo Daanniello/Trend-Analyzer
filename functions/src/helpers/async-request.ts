@@ -19,16 +19,3 @@ class AsyncRequest {
 }
 
 export default AsyncRequest;
-
-// EXAMPLE
-// (async () => {
-//   const request = new AsyncRequest();
-//   try {
-//     const body = await request.get(
-//       "https://www.corporatienl.nl/artikelen/samen-kan-je-sneller-goedkoper-en-meer-digitaliseren/"
-//     );
-//     console.log(body);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// })();
