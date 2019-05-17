@@ -9,7 +9,7 @@ class Article implements IArticle {
   _coretext: string;
   _topics: Array<String>;
   _categories: Array<String>;
-  _aticleDate: Date;
+  _articleDate: Date;
 
   constructor(
     link: string,
@@ -24,7 +24,7 @@ class Article implements IArticle {
     this._title = title;
     this._intro = intro;
     this._coretext = coretext;
-    this._aticleDate = articleDate;
+    this._articleDate = articleDate;
     this._topics = new Array<String>();
     this._categories = new Array<String>();
   }
@@ -89,10 +89,10 @@ class Article implements IArticle {
 
   // topics getter and setter
   get articleDate(): Date {
-    return this._aticleDate;
+    return this._articleDate;
   }
   set articleDate(newArticleDate: Date) {
-    this._aticleDate = newArticleDate;
+    this._articleDate = newArticleDate;
   }
 }
 

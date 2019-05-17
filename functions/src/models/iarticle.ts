@@ -6,7 +6,7 @@ interface IArticle {
   _title: string;
   _topics: Array<String>;
   _categories: Array<String>;
-  _aticleDate: Date;
+  _articleDate: Date;
 }
 
 export default IArticle;
