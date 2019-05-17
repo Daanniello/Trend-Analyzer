@@ -1,14 +1,15 @@
 import { Provider } from "../common/provider-enum";
+import IArticle from "./iarticle";
 
-class Article {
-  private _link: string;
-  private _provider: Provider;
-  private _title: string;
-  private _intro: string;
-  private _coretext: string;
-  private _topics: Array<String>;
-  private _categories: Array<String>;
-  private _aticleDate: Date;
+class Article implements IArticle {
+  _link: string;
+  _provider: Provider;
+  _title: string;
+  _intro: string;
+  _coretext: string;
+  _topics: Array<String>;
+  _categories: Array<String>;
+  _aticleDate: Date;
 
   constructor(
     link: string,
