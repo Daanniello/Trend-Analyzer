@@ -1,0 +1,39 @@
+.navigation-item {
+  width: calc(100% - 16px);
+  height: 40px;
+  margin: 8px 8px 0 8px;
+
+  color: rgba(0, 0, 0, 0.54);
+
+  border-radius: 4px;
+}
+
+.navigation-item-logo {
+  width: 24px;
+  height: 24px;
+  margin: 8px 32px 8px 4px;
+
+  float: left;
+}
+
+.navigation-item-text {
+  width: calc(100% - 60px);
+  height: 20;
+  margin: 10px 0;
+
+  user-select: none;
+
+  line-height: 24px;
+
+  color: rgba(0, 0, 0, 0.54);
+
+  float: left;
+}
+
+.active {
+  background-color: rgba(98, 2, 232, 0.12);
+}
+
+.inactive:hover {
+  background-color: rgba(98, 2, 232, 0.12);
+}
