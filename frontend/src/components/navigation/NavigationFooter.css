@@ -1,0 +1,40 @@
+#navigation-footer {
+  height: 96px;
+  width: calc(100% - 32px);
+  margin: 16px;
+
+  position: absolute;
+  bottom: 0;
+
+  float: right;
+}
+
+#navigation-footer-button {
+  width: 96px;
+  height: 32px;
+
+  margin: 0 64px;
+
+  color: white;
+  background-color: rgba(98, 2, 232, 1);
+
+  border-radius: 4px;
+}
+
+#navigation-footer-button-text {
+  color: white;
+}
+
+#navigation-footer-timestamp {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.navigation-footer-timestamp-text {
+  height: 24px;
+  width: 100%;
+  text-align: center;
+
+  user-select: none;
+}
