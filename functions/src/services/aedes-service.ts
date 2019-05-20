@@ -16,15 +16,29 @@ class AedesService extends ProviderService {
 
     moment.locale("nl");
 
+    const text =
+      this.$("header h1").text() +
+      "\n" +
+      this.$(".intro").text() +
+      "\n" +
+      this.$(".article__text").text();
+
+    // Call to Textrazor API for topics and categories
+    //Recieve list of topics and list of categories
+    const response = this.getTopicsAndCategories(text);
+    const topics = response[0];
+    const categories = response[1];
+
     const article = new Article(
       url,
       Provider.Aedes,
       this.$("header h1").text(),
-      this.$(".intro").text(),
-      this.$(".article__text").text(),
+      topics,
+      categories,
       super.formDate(articleDate)
     );
-    console.log(article.coretext);
+
+    console.log(text);
   }
 }
 

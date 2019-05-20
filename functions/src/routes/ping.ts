@@ -20,9 +20,13 @@ router.get("", async (req, res) => {
   // console.log("DE CONTENT" + $(".copy-contain-padding").text());
   const url =
     "https://www.corporatienl.nl/artikelen/de-maatschappelijke-impact-van-digitalisering-is-groter-dan-we-denken/";
-  let service: ProviderService = checkDomain(url);
-  service.scrapeArticle(url);
-  res.send("Pong!");
+  let service: ProviderService | null = checkDomain(url);
+  if (service != null) {
+    service.scrapeArticle(url);
+    res.send("Scraped!");
+  } else {
+    res.send("Pong!");
+  }
 });
 
 function checkDomain(url: string) {
@@ -39,10 +43,11 @@ function checkDomain(url: string) {
   site = site.split("?")[0];
 
   if (site == "www.corporatienl.nl") {
-    return new CorporationNLService(url);
-  } //if (site == "www.aedes.nl")
-  else {
-    return new AedesService(url);
+    return new CorporationNLService();
+  } else if (site == "www.aedes.nl") {
+    return new AedesService();
+  } else {
+    return null;
   }
 }
 

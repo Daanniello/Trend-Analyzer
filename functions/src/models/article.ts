@@ -5,28 +5,24 @@ class Article implements IArticle {
   _link: string;
   _provider: Provider;
   _title: string;
-  _intro: string;
-  _coretext: string;
-  _topics: Array<String>;
-  _categories: Array<String>;
+  _topics: Array<string>;
+  _categories: Array<string>;
   _articleDate: Date;
 
   constructor(
     link: string,
     provider: Provider,
     title: string,
-    intro: string,
-    coretext: string,
+    topics: Array<string>,
+    categories: Array<string>,
     articleDate: Date
   ) {
     this._link = link;
     this._provider = provider;
     this._title = title;
-    this._intro = intro;
-    this._coretext = coretext;
     this._articleDate = articleDate;
-    this._topics = new Array<String>();
-    this._categories = new Array<String>();
+    this._topics = new Array<string>();
+    this._categories = new Array<string>();
   }
 
   // link getter and setter
@@ -55,35 +51,19 @@ class Article implements IArticle {
     this._title = newTitle;
   }
 
-  // intro getter and setter
-  get intro(): string {
-    return this._intro;
-  }
-  set intro(newIntro: string) {
-    this._intro = newIntro;
-  }
-
-  // coretext getter and setter
-  get coretext(): string {
-    return this._coretext;
-  }
-  set coretext(newCoretext: string) {
-    this._coretext = newCoretext;
-  }
-
   // topics getter and setter
-  get topics(): Array<String> {
+  get topics(): Array<string> {
     return this._topics;
   }
-  set topics(newTopics: Array<String>) {
+  set topics(newTopics: Array<string>) {
     this.topics = newTopics;
   }
 
   // categories getter and setter
-  get categories(): Array<String> {
+  get categories(): Array<string> {
     return this._categories;
   }
-  set categories(newCategories: Array<String>) {
+  set categories(newCategories: Array<string>) {
     this._categories = newCategories;
   }
 

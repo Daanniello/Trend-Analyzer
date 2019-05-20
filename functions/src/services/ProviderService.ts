@@ -6,7 +6,7 @@ abstract class ProviderService {
   protected request: any;
   protected body: any;
   protected $: any;
-  constructor(url: string) {}
+  constructor() {}
 
   async scrapeArticle(url: any): Promise<any> {
     // Get html from a page
@@ -36,6 +36,11 @@ abstract class ProviderService {
   }
 
   getText(url: string) {}
+
+  getTopicsAndCategories(articleText: string) {
+    // TODO: API CALLS AND STUFF
+    return new Array(new Array());
+  }
 }
 
 export default ProviderService;
