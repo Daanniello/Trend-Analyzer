@@ -1,0 +1,56 @@
+#login-modal {
+  width: 100%;
+  height: 100%;
+}
+
+#login-form {
+  width: 384px;
+  height: 544px;
+
+  background-color: white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+#login-form-header {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 96px;
+
+  height: 96px;
+
+  margin: 16px;
+
+  text-align: center;
+}
+
+#pin-balls {
+  width: 144px;
+  height: 36px;
+
+  margin: 24px calc(50% - 72px) 0 calc(50% - 72px);
+}
+
+.pin-ball {
+  border-radius: 16px;
+
+  margin: 6px;
+
+  float: left;
+}
+
+.pin-ball-active {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(20, 167, 234, 1);
+}
+
+.pin-ball-inactive {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.54);
+  background-color: rgba(0, 0, 0, 0.12);
+}
