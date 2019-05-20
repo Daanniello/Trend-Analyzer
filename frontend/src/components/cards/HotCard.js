@@ -19,7 +19,7 @@ const HotCard = props => {
         </div>
       </div>
       <div className="hot-card-content">
-        <Typography align="center" variant="h5">
+        <Typography className="hot-card-content-text" variant="h5">
           {props.text}
         </Typography>
       </div>
@@ -29,14 +29,7 @@ const HotCard = props => {
           align="center"
           variant="overline"
         >
-          {props.results}
-        </Typography>
-        <Typography
-          className="hot-card-footer-text"
-          align="center"
-          variant="overline"
-        >
-          results this week
+          {props.results} results this week
         </Typography>
       </div>
     </div>
