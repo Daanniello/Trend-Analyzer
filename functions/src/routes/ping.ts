@@ -7,27 +7,25 @@ import ProviderService from "../services/ProviderService";
 /* Ping Router */
 const router = express.Router();
 
+const aedesService = new AedesService();
+const corporatienlService = new CorporationNLService();
+
 /* Implement endpoints */
 router.get("", async (req, res) => {
-  // const request = new AsyncRequest();
-  // const body = await request.get(
-  //   "https://www.corporatienl.nl/artikelen/de-maatschappelijke-impact-van-digitalisering-is-groter-dan-we-denken/"
-  // );
-
-  // // CHEERIO EXAMPLE -> load the body into cheerio and access the document properties
-  // const $ = cheerio.load(body);
-  // console.log("DE TITEL:" + $(".o-panorama__content").text());
-  // console.log("DE CONTENT" + $(".copy-contain-padding").text());
   const url =
     "https://www.corporatienl.nl/artikelen/de-maatschappelijke-impact-van-digitalisering-is-groter-dan-we-denken/";
-  let service: ProviderService = checkDomain(url);
-  service.scrapeArticle(url);
-  
-  res.send("Pong!");
+  let service: ProviderService | null = checkDomain(url);
+  if (service != null) {
+    service.scrapeArticle(url);
+    res.send("Scraped!");
+  } else {
+    res.send("Pong!");
+  }
 });
 
 function checkDomain(url: string) {
   let site;
+
   if (url.indexOf("//") > -1) {
     site = url.split("/")[2];
   } else {
@@ -40,10 +38,11 @@ function checkDomain(url: string) {
   site = site.split("?")[0];
 
   if (site == "www.corporatienl.nl") {
-    return new CorporationNLService(url);
-  } //if (site == "www.aedes.nl")
-  else {
-    return new AedesService(url);
+    return corporatienlService;
+  } else if (site == "www.aedes.nl") {
+    return aedesService;
+  } else {
+    return null;
   }
 }
 

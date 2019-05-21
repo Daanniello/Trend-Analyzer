@@ -18,18 +18,29 @@ class CorporationNLService extends ProviderService {
 
     moment.locale("nl");
 
+    const text =
+      this.$(".c-panorama__heading").text() +
+      "\n" +
+      this.$(".copy__intro p").text() +
+      "\n" +
+      this.$(".content").text();
+
+    // Call to Textrazor API for topics and categories
+    //Recieve list of topics and list of categories
+    const response = this.getTopicsAndCategories(text);
+    const topics = response[0];
+    const categories = response[1];
+
     const article = new Article(
       url,
       Provider.CorporatieNL,
       this.$(".c-panorama__heading").text(),
-      this.$(".copy__intro p").text(),
-      this.$(".content").text(),
+      topics,
+      categories,
       super.formDate(articleDate)
     );
 
-    console.log("Title" + article.title);
-    console.log("Intro" + article.intro);
-    console.log("Coretext" + article.coretext);
+    console.log(text);
   }
 }
 
