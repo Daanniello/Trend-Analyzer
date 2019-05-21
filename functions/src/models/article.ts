@@ -1,6 +1,9 @@
 import { Provider } from "../common/provider-enum";
 import IArticle from "./iarticle";
 
+/**
+ * Generetic article model for storing article data.
+ */
 class Article implements IArticle {
   _link: string;
   _provider: Provider;

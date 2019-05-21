@@ -4,6 +4,9 @@ import ProviderService from "../services/ProviderService";
 import * as moment from "moment";
 import "moment/locale/nl";
 
+/**
+ * The service to scrape articles from Aedes
+ */
 class AedesService extends ProviderService {
   getText(url: string) {
     //console.log(date);

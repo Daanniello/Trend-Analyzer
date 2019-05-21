@@ -1,5 +1,7 @@
 import { Provider } from "../common/provider-enum";
-
+/**
+ * interface for the article model class
+ */
 interface IArticle {
   _link: string;
   _provider: Provider;

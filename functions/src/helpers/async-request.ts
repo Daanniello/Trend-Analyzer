@@ -1,5 +1,8 @@
 import * as Request from "request";
 
+/**
+ * Helper class for making async web requests
+ */
 class AsyncRequest {
   async get(url: string, options?: any): Promise<any> {
     return new Promise((resolve, reject) => {
