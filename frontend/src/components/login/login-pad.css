@@ -1,0 +1,31 @@
+#login-pad {
+  width: 224px;
+  height: 288px;
+
+  margin: 0 auto;
+}
+
+.login-pad-key {
+  width: calc(100% / 3);
+  height: calc(100% / 4);
+
+  text-align: center;
+
+  float: left;
+}
+
+.login-pad-key-text {
+  user-select: none;
+
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+
+  height: 100%;
+
+  line-height: 72px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.login-pad-backspace {
+  line-height: 78px;
+}
