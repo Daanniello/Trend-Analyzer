@@ -12,18 +12,18 @@
 
 #general-page-pie {
   width: calc(100% - 752px);
-  height: calc(50% - 16px);
+  height: calc(50% - 46.5px);
 }
 
 .general-page-hot {
   width: 352px;
   /* width: calc(25% - 16px); */
-  height: calc(25% - 16px);
+  height: calc(25% - 31.25px);
 }
 
 #general-page-graph {
   width: calc(100% - 16px);
-  height: calc(50% - 16px);
+  height: calc(50% - 46.5px);
 }
 
 #general-page-header {
