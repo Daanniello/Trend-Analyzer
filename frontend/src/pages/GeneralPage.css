@@ -1,0 +1,46 @@
+#general-page-grid {
+  width: 100%;
+  height: 100%;
+
+  float: left;
+}
+
+.general-page-item {
+  margin: 8px;
+  float: left;
+}
+
+#general-page-pie {
+  width: calc(100% - 752px);
+  height: calc(50% - 46.5px);
+}
+
+.general-page-hot {
+  width: 352px;
+  /* width: calc(25% - 16px); */
+  height: calc(25% - 31.25px);
+}
+
+#general-page-graph {
+  width: calc(100% - 16px);
+  height: calc(50% - 46.5px);
+}
+
+#general-page-header {
+  width: 100%;
+  height: 45px;
+}
+
+@media only screen and (max-width: 1500px) {
+  #general-page-grid {
+    overflow-y: scroll;
+  }
+
+  #general-page-pie {
+    width: calc(100% - 16px);
+  }
+
+  .general-page-hot {
+    width: calc(50% - 16px);
+  }
+}
