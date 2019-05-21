@@ -2,12 +2,16 @@ import React from "react";
 
 import "./GeneralPage.css";
 
+import Typography from "@material-ui/core/Typography";
 import HotCard from "../components/cards/HotCard";
 import AnalyzedCard from "../components/cards/AnalyzedCard";
 
 const GeneralPage = props => {
   return (
     <div id="general-page-grid">
+      <div className="general-page-item" id="general-page-header">
+        <Typography variant="h4">General</Typography>
+      </div>
       <div className="general-page-item" id="general-page-pie">
         <AnalyzedCard />
       </div>

@@ -5,6 +5,7 @@ import "./App.css";
 import Navigation from "./components/navigation/Navigation";
 
 import GeneralPage from "./pages/GeneralPage";
+import TopicPage from "./pages/TopicPage";
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class App extends Component {
 
     this.state = {
       currentPage: 0,
-      pages: [<GeneralPage />, <div />, <div />],
+      pages: [<GeneralPage />, <TopicPage />, <div />],
       lastUpdated: "16-05-2019 15:00"
     };
 
