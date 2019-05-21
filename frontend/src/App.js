@@ -21,7 +21,7 @@ class App extends Component {
     this.state = {
       currentPage: 0,
       pages: [<GeneralPage />, <TopicPage />, <div />],
-      lastUpdated: "16-05-2019 15:00"
+      lastUpdated: "16-05-2019 15:00",
       pinCode: "",
       loggedIn: window.localStorage.loggedIn
     };
