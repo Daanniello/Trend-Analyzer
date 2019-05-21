@@ -35,7 +35,7 @@ class AedesService extends ProviderService {
       this.$("header h1").text(),
       topics,
       categories,
-      super.formDate(articleDate)
+      super.formMoment(articleDate).toDate()
     );
 
     console.log(text);

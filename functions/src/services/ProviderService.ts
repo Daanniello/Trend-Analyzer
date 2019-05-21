@@ -19,20 +19,14 @@ abstract class ProviderService {
     this.getText(url);
   }
 
-  formDate(date: any): Date {
-    var words = date.split(" ");
+  formMoment(date: any): moment.Moment {
+    // var words = date.split(" ");
 
     moment.locale("nl");
 
-    return new Date(
-      words[3] +
-        "-" +
-        moment()
-          .month(words[2])
-          .format("MM") +
-        "-" +
-        words[1]
-    );
+    const newMoment = moment(date, "D MMMM YYYY");
+
+    return newMoment;
   }
 
   getText(url: string) {}

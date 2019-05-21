@@ -6,7 +6,6 @@ import "moment/locale/nl";
 
 class CorporationNLService extends ProviderService {
   getText(url: string) {
-    //console.log(date);
     const articleDate = this.$(".o-panorama__content span")
       .text()
       .replace("/", "");
@@ -37,9 +36,10 @@ class CorporationNLService extends ProviderService {
       this.$(".c-panorama__heading").text(),
       topics,
       categories,
-      super.formDate(articleDate)
+      super.formMoment(articleDate).toDate()
     );
 
+    console.log(article.link);
     console.log(text);
   }
 }
