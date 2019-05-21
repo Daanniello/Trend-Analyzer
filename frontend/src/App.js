@@ -5,6 +5,7 @@ import "./App.css";
 import Navigation from "./components/navigation/Navigation";
 import LoginForm from "./components/login/login-form";
 import GeneralPage from "./pages/GeneralPage";
+import TopicPage from "./pages/TopicPage";
 
 import Modal from "@material-ui/core/Modal";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -19,9 +20,9 @@ class App extends Component {
 
     this.state = {
       currentPage: 0,
+      pages: [<GeneralPage />, <TopicPage />, <div />],
+      lastUpdated: "16-05-2019 15:00"
       pinCode: "",
-      pages: [<GeneralPage />, <div />, <div />],
-      lastUpdated: "16-05-2019 15:00",
       loggedIn: window.localStorage.loggedIn
     };
 
