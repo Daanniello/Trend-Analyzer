@@ -2,11 +2,15 @@ import * as moment from "moment";
 import * as cheerio from "cheerio";
 import AsyncRequest from "../helpers/async-request";
 
+/**
+ * abstract provider service to use with specific website services.
+ * Provides default methods
+ */
 abstract class ProviderService {
   protected request: any;
   protected body: any;
   protected $: any;
-  constructor(url: string) {}
+  constructor() {}
 
   async scrapeArticle(url: any): Promise<any> {
     // Get html from a page
@@ -19,23 +23,22 @@ abstract class ProviderService {
     this.getText(url);
   }
 
-  formDate(date: any): Date {
-    var words = date.split(" ");
+  formMoment(date: any): moment.Moment {
+    // var words = date.split(" ");
 
     moment.locale("nl");
 
-    return new Date(
-      words[3] +
-        "-" +
-        moment()
-          .month(words[2])
-          .format("MM") +
-        "-" +
-        words[1]
-    );
+    const newMoment = moment(date, "D MMMM YYYY");
+
+    return newMoment;
   }
 
   getText(url: string) {}
+
+  getTopicsAndCategories(articleText: string) {
+    // TODO: API CALLS AND STUFF
+    return new Array(new Array());
+  }
 }
 
 export default ProviderService;

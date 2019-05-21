@@ -1,31 +1,31 @@
 import { Provider } from "../common/provider-enum";
+import IArticle from "./iarticle";
 
-class Article {
-  private _link: string;
-  private _provider: Provider;
-  private _title: string;
-  private _intro: string;
-  private _coretext: string;
-  private _topics: Array<String>;
-  private _categories: Array<String>;
-  private _aticleDate: Date;
+/**
+ * Generetic article model for storing article data.
+ */
+class Article implements IArticle {
+  _link: string;
+  _provider: Provider;
+  _title: string;
+  _topics: Array<string>;
+  _categories: Array<string>;
+  _articleDate: Date;
 
   constructor(
     link: string,
     provider: Provider,
     title: string,
-    intro: string,
-    coretext: string,
+    topics: Array<string>,
+    categories: Array<string>,
     articleDate: Date
   ) {
     this._link = link;
     this._provider = provider;
     this._title = title;
-    this._intro = intro;
-    this._coretext = coretext;
-    this._aticleDate = articleDate;
-    this._topics = new Array<String>();
-    this._categories = new Array<String>();
+    this._articleDate = articleDate;
+    this._topics = new Array<string>();
+    this._categories = new Array<string>();
   }
 
   // link getter and setter
@@ -54,44 +54,28 @@ class Article {
     this._title = newTitle;
   }
 
-  // intro getter and setter
-  get intro(): string {
-    return this._intro;
-  }
-  set intro(newIntro: string) {
-    this._intro = newIntro;
-  }
-
-  // coretext getter and setter
-  get coretext(): string {
-    return this._coretext;
-  }
-  set coretext(newCoretext: string) {
-    this._coretext = newCoretext;
-  }
-
   // topics getter and setter
-  get topics(): Array<String> {
+  get topics(): Array<string> {
     return this._topics;
   }
-  set topics(newTopics: Array<String>) {
+  set topics(newTopics: Array<string>) {
     this.topics = newTopics;
   }
 
   // categories getter and setter
-  get categories(): Array<String> {
+  get categories(): Array<string> {
     return this._categories;
   }
-  set categories(newCategories: Array<String>) {
+  set categories(newCategories: Array<string>) {
     this._categories = newCategories;
   }
 
   // topics getter and setter
   get articleDate(): Date {
-    return this._aticleDate;
+    return this._articleDate;
   }
   set articleDate(newArticleDate: Date) {
-    this._aticleDate = newArticleDate;
+    this._articleDate = newArticleDate;
   }
 }
 
