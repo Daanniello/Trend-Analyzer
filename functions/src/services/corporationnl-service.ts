@@ -27,7 +27,9 @@ class CorporationNLService extends ProviderService {
       super.formDate(articleDate)
     );
 
-    console.log(article.coretext);
+    console.log("Title" + article.title);
+    console.log("Intro" + article.intro);
+    console.log("Coretext" + article.coretext);
   }
 }
 

@@ -22,6 +22,7 @@ router.get("", async (req, res) => {
     "https://www.corporatienl.nl/artikelen/de-maatschappelijke-impact-van-digitalisering-is-groter-dan-we-denken/";
   let service: ProviderService = checkDomain(url);
   service.scrapeArticle(url);
+  
   res.send("Pong!");
 });
 
