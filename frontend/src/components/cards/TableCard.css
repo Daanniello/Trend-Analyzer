@@ -1,0 +1,78 @@
+.table-card {
+  min-width: 540px;
+  width: 100%;
+  height: 300px;
+
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2), 0px 3px 4px rgba(0, 0, 0, 0.12),
+    0px 2px 4px rgba(0, 0, 0, 0.14);
+}
+
+.table-header {
+  height: 32px;
+  width: 100%;
+  border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+}
+
+.table-row {
+  float: left;
+  margin: 5px;
+  opacity: 0.6;
+  width: 100%;
+}
+
+.table-row-content {
+  float: left;
+  width: 100%;
+  padding: 5px 0 5px 0;
+  border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+}
+
+.table-row-title {
+  float: left;
+  margin-left: 34px !important;
+  margin-right: auto !important;
+}
+
+.table-row-seperate {
+  margin-right: 0;
+  overflow: auto;
+  width: 330px;
+  float: right;
+}
+
+.table-row-all {
+  float: left;
+  width: 50px;
+  text-align: center;
+}
+
+.table-row-yearly {
+  float: left;
+  width: 60px;
+  text-align: center;
+}
+
+.table-row-monthly {
+  float: left;
+  width: 80px;
+  text-align: center;
+}
+
+.table-row-weekly {
+  float: left;
+  width: 80px;
+  text-align: center;
+}
+
+.table-row-details {
+  float: left;
+  width: 50px;
+  text-align: center;
+}
+
+.checkbox {
+  float: left;
+  width: 10px !important;
+  height: 10px !important;
+  padding: 6px 0 0 12px !important;
+}
