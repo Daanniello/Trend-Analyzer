@@ -1,10 +1,7 @@
 import * as express from "express";
+import CredentialService from "../services/database/credential-service";
 
-// TODO: Get key from the database
-const goodKey: string = "0DF81EE57DB07CEEC47778E3AB041B4EC4297EAF";
-// kjenning.analyse hashed
-
-module.exports = (
+module.exports = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -17,11 +14,12 @@ module.exports = (
   }
 
   // Alternative ways to get token(key): var token = req.body.token;
-  var receivedKey = req.headers["token"];
+  const receivedKey = req.headers["x-api-key"];
+  const service = new CredentialService();
+  const creds = await service.get("km.corporatienl@gmail.com");
 
-  if (receivedKey != goodKey) {
-    res.status(401);
-    res.send("<center><h1>401</h1><p>No valid API key detected!</p></center>");
+  if (receivedKey != creds.apiKey) {
+    res.send(401);
     return;
   }
   next();
