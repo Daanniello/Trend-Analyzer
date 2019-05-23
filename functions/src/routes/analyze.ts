@@ -4,7 +4,7 @@ import * as express from "express";
 const router = express.Router();
 
 /* Implement endpoints */
-router.get("", (req, res) => {
+router.post("", (req, res) => {
   res.send("Analyze");
 });
 

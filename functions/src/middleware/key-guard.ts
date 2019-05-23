@@ -1,7 +1,8 @@
 import * as express from "express";
 
 // TODO: Get key from the database
-const goodKey: string = "123";
+const goodKey: string = "0DF81EE57DB07CEEC47778E3AB041B4EC4297EAF";
+// kjenning.analyse hashed
 
 module.exports = (
   req: express.Request,
@@ -20,7 +21,7 @@ module.exports = (
 
   if (receivedKey != goodKey) {
     res.status(401);
-    res.send("<center><h1>401</h1><p>Invalid API key!</p></center>");
+    res.send("<center><h1>401</h1><p>No valid API key detected!</p></center>");
     return;
   }
   next();
