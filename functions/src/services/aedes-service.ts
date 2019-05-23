@@ -41,6 +41,7 @@ class AedesService extends ProviderService {
       super.formMoment(articleDate).toDate()
     );
 
+    console.log(article.link);
     console.log(text);
   }
 }

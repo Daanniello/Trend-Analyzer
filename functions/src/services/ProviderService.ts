@@ -1,7 +1,6 @@
 import * as moment from "moment";
 import * as cheerio from "cheerio";
 import AsyncRequest from "../helpers/async-request";
-
 /**
  * abstract provider service to use with specific website services.
  * Provides default methods
@@ -24,8 +23,6 @@ abstract class ProviderService {
   }
 
   formMoment(date: any): moment.Moment {
-    // var words = date.split(" ");
-
     moment.locale("nl");
 
     const newMoment = moment(date, "D MMMM YYYY");
