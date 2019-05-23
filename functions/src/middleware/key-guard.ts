@@ -16,7 +16,7 @@ module.exports = (
 
   if (receivedKey != goodKey) {
     res.status(401);
-    res.send("Invalid key");
+    res.send("<center><h1>401</h1><p>Invalid API key!</p></center>");
     return;
   }
   next();
