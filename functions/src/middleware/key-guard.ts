@@ -1,11 +1,23 @@
 import * as express from "express";
 
-/* Implement middleware */
+// TODO: Get key from the database
+const goodKey: string = "123";
+
 module.exports = (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
-  // TODO: Check if api-key is correct
+  // Checks if the key send in the request is the same as the one in the database.
+  // If no valid API key has been sent, send an error message and return.
+
+  // Alternative ways to get token(key): var token = req.body.token;
+  var receivedKey = req.headers["token"];
+
+  if (receivedKey != goodKey) {
+    res.status(401);
+    res.send("Invalid key");
+    return;
+  }
   next();
 };
