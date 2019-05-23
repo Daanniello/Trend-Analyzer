@@ -1,9 +1,9 @@
 import * as express from "express";
 // import AsyncRequest from "../helpers/async-request";
-import CorporationNLService from "../services/corporationnl-service";
-import AedesService from "../services/aedes-service";
-import ProviderService from "../services/ProviderService";
-import TextRazorService from "../services/textrazor-service";
+import CorporationNLService from "../services/provider/corporatiennl-service";
+import AedesService from "../services/provider/aedes-service";
+import ProviderService from "../services/provider/provider-service";
+import TextRazorService from "../services/api/textrazor-service";
 
 /* Ping Router */
 const router = express.Router();
@@ -17,11 +17,10 @@ router.get("", async (req, res) => {
     "https://www.corporatienl.nl/artikelen/de-maatschappelijke-impact-van-digitalisering-is-groter-dan-we-denken/";
   let service: ProviderService | null = checkDomain(url);
   const razor = new TextRazorService();
-  razor.postTest();
+  razor.postTextRazor();
 
   if (service != null) {
-    service.scrapeArticle(url);
-
+    await service.getRawArticle(url);
     res.send("Scraped!");
   } else {
     res.send("Pong!");

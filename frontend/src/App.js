@@ -76,7 +76,7 @@ class App extends Component {
           currentPage={this.state.currentPage}
           lastUpdated={this.state.lastUpdated}
         />
-        {this.state.loggedIn === true ? (
+        {/* {this.state.loggedIn === true ? (
           <div id="page-content">
             {this.state.pages[this.state.currentPage]}
           </div>
@@ -90,7 +90,7 @@ class App extends Component {
               />
             </DialogContent>
           </Modal>
-        )}
+        )} */}
       </div>
     );
   }
