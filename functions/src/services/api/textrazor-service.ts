@@ -1,93 +1,147 @@
 import fetch from "node-fetch";
+import IRawArticle from "../../models/raw-article-model";
+import IArticle from "../../models/article-model";
+import AsyncRequest from "../../helpers/async-request";
+import index from "node-fetch";
 
 class TextRazorService {
   //Use to send POST request to text razor API
-  postTextRazor() {
+  async postTextRazor(rawArticle: IRawArticle): Promise<IArticle> {
     try {
       // TODO: will with real parameter data instead of dummy data
-      var params: any = {
-        text:
-          "Spain's stricken Bankia expects to sell off its vast portfolio of industrial holdings that includes a stake in the parent company of British Airways and Iberia.",
+      const body: any = {
+        text: rawArticle.title + rawArticle.text,
         extractors: "topics",
         language: "dut",
         classifiers: "textrazor_mediatopics"
       };
 
-      // Create a formbody so the request body can be filled and
-      // will work with the content-type: application/x-www-form-urlencoded
-
-      var formBody: any = [];
-      for (var property in params) {
-        var encodedKey = encodeURIComponent(property);
-        var encodedValue = encodeURIComponent(params[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
-      }
-
-      formBody = formBody.join("&");
-
-      // Fetch from URL endpoint
-      fetch("http://api.textrazor.com/", {
-        method: "POST",
+      const options: any = {
         headers: {
-          "x-textrazor-key":
-            "52160e4b73992b0447931c3457c8f6ee8aa0d3c8465d5c1f1d597138",
-          "Content-Type": "application/x-www-form-urlencoded",
-          "User-Agent": "PostmanRuntime/7.13.0",
-          Accept: "*/*",
-          "Cache-Control": "no-cache",
-          "Postman-Token":
-            "b1841ee5-5e22-4de6-8db4-ddbad4cedf5c,2d45f710-e40c-46fe-b823-3a2a10d17248",
-          Host: "api.textrazor.com",
-          "accept-encoding": "gzip, deflate",
-          "content-length": "255",
-          Connection: "keep-alive",
-          "cache-control": "no-cache"
+          "X-TextRazor-Key":
+            "52160e4b73992b0447931c3457c8f6ee8aa0d3c8465d5c1f1d597138"
         },
-        body: formBody
-      })
-        .then(response => response.json())
-        .then(json => this.filterJSON(json))
-        .catch(error => console.error(error));
+        body: body
+      };
+
+      const request = new AsyncRequest();
+      const response = await request.post(
+        "https://api.textrazor.com/",
+        options
+      );
+
+      const obj = JSON.parse(response);
+
+      const article = this.filterJSON(obj, rawArticle);
+
+      return article;
     } catch (e) {
-      console.log("Errormessage: " + e);
+      throw e;
     }
   }
 
   // filter the categories and topics from the JSON object
-  filterJSON(json: JSON) {
+  filterJSON(json: JSON, rawArticle: IRawArticle): IArticle {
+    const article: IArticle = {
+      url: rawArticle.url,
+      title: rawArticle.title,
+      provider: rawArticle.provider,
+      categories: [],
+      topics: [],
+      misc: [],
+      timestamp: rawArticle.timestamp
+    };
+
     /*Category section */
     const jsonCategories = JSON.parse(JSON.stringify(json))["response"][
       "categories"
     ];
 
-    const categories = [];
+    const categories: { name: string; score: number }[] = this.formatCategories(
+      jsonCategories
+    );
 
-    for (var i = 0; i < jsonCategories.length; i++) {
-      var cat = jsonCategories[i];
-      if (cat.score > 0.4) {
-        const splitCat = cat.label.split(">")[0];
-        categories.push(splitCat);
-      }
-    }
-    let uniqueCategories = new Set(categories);
-
-    console.log(uniqueCategories);
+    //Filter the duplicate categories
+    article.categories = this.getUniqueCategories(categories);
 
     /*Topic section */
     const jsonTopics = JSON.parse(JSON.stringify(json))["response"]["topics"];
 
-    const topics = [];
+    const topics: { name: string; score: number }[] = this.formatTopics(
+      jsonTopics
+    );
+
+    article.topics = topics;
+    return article;
+  }
+
+  formatCategories(jsonCategories: any): { name: string; score: number }[] {
+    const categories: { name: string; score: number }[] = [];
+    for (var i = 0; i < jsonCategories.length; i++) {
+      var cat = jsonCategories[i];
+      if (cat.score > 0.4) {
+        const splitCat = cat.label.split(">")[0];
+        categories.push({
+          name: splitCat,
+          score: cat.score
+        });
+      }
+    }
+    return categories;
+  }
+
+  formatTopics(jsonTopics: any): { name: string; score: number }[] {
+    const topics: { name: string; score: number }[] = [];
 
     for (var i = 0; i < jsonTopics.length; i++) {
       var top = jsonTopics[i];
       if (top.score > 0.5) {
-        topics.push(top.label);
+        topics.push({
+          name: top.label,
+          score: top.score
+        });
       }
     }
-    let uniqueTopics = new Set(topics);
 
-    console.log("-- topics --");
-    console.log(uniqueTopics);
+    return topics;
+  }
+
+  // Filter duplicate categories and get the highest scores
+  getUniqueCategories(
+    categories: { name: string; score: number }[]
+  ): { name: string; score: number }[] {
+    var uniqueCategories: { name: string; score: number }[] = [];
+
+    categories.forEach(function(category) {
+      var exists = false;
+      var higher = false;
+      var highestCatPos: any;
+
+      if (uniqueCategories.length > 0) {
+        uniqueCategories.forEach(function(uniqueCategory) {
+          if (category.name == uniqueCategory.name) {
+            exists = true;
+            if (category.score > uniqueCategory.score) {
+              higher = true;
+              highestCatPos = uniqueCategories.indexOf(uniqueCategory);
+            }
+          }
+        });
+      }
+
+      console.log("exists: " + exists);
+      if (!exists) {
+        console.log("not exist - so insert");
+        uniqueCategories.push(category);
+      } else if (exists && higher) {
+        console.log("exist - replace");
+        if (highestCatPos != -1) {
+          uniqueCategories[highestCatPos] = category;
+        }
+      }
+    });
+
+    return uniqueCategories;
   }
 
   // get request setup

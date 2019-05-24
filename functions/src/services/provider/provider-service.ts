@@ -22,16 +22,6 @@ abstract class ProviderService {
     this.$ = cheerio.load("");
   }
 
-  // async scrapeArticle(url: any): Promise<any> {
-  //   // Get html from a page
-  //   this.body = await this.request.get(url);
-
-  //   // store the html into cheerio to make traversion possible
-  //   this.$ = cheerio.load(this.body);
-
-  //   this.getRawArticle(url);
-  // }
-
   async getRawArticle(url: string): Promise<IRawArticle> {
     // Get html from a page
     this.body = await this.request.get(url);

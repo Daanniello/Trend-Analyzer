@@ -13,16 +13,23 @@ const corporatienlService = new CorporationNLService();
 
 /* Implement endpoints */
 router.get("", async (req, res) => {
-  const url =
-    "https://www.corporatienl.nl/artikelen/de-maatschappelijke-impact-van-digitalisering-is-groter-dan-we-denken/";
+  const url = "https://www.corporatienl.nl/artikelen/predictive-modelling/";
   let service: ProviderService | null = checkDomain(url);
+  console.log(service);
   const razor = new TextRazorService();
-  razor.postTextRazor();
+  try {
+    console.log("1");
+    const corporatienlService = new CorporationNLService();
+    console.log("2");
 
-  if (service != null) {
-    await service.getRawArticle(url);
-    res.send("Scraped!");
-  } else {
+    const rawArticle = await corporatienlService.getRawArticle(url);
+    console.log("3");
+
+    const article = await razor.postTextRazor(rawArticle);
+    console.log("4");
+    res.json(article);
+  } catch (e) {
+    console.log("Error" + e);
     res.send("Pong!");
   }
 });
