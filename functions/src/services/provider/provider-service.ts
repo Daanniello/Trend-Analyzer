@@ -10,10 +10,10 @@ import Provider from "../../utils/enums/provider-enum";
  * Provides default methods
  */
 abstract class ProviderService {
-  provider: Provider;
-  request: AsyncRequest;
-  body: string;
-  $: CheerioStatic;
+  protected provider: Provider;
+  protected request: AsyncRequest;
+  protected body: string;
+  protected $: CheerioStatic;
 
   constructor() {
     this.provider = Provider.CorporatieNL;
@@ -21,16 +21,6 @@ abstract class ProviderService {
     this.body = "";
     this.$ = cheerio.load("");
   }
-
-  // async scrapeArticle(url: any): Promise<any> {
-  //   // Get html from a page
-  //   this.body = await this.request.get(url);
-
-  //   // store the html into cheerio to make traversion possible
-  //   this.$ = cheerio.load(this.body);
-
-  //   this.getRawArticle(url);
-  // }
 
   async getRawArticle(url: string): Promise<IRawArticle> {
     // Get html from a page
@@ -50,15 +40,15 @@ abstract class ProviderService {
     return rawArticle;
   }
 
-  getArticleDate(): moment.Moment {
+  protected getArticleDate(): moment.Moment {
     throw Error();
   }
 
-  getArticleTitle(): string {
+  protected getArticleTitle(): string {
     throw Error();
   }
 
-  getArticleText(): string {
+  protected getArticleText(): string {
     throw Error();
   }
 }

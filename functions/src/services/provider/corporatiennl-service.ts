@@ -7,9 +7,9 @@ import ProviderService from "./provider-service";
  * The service to scrape articles from CorporationNL
  */
 class CorporatieNLService extends ProviderService {
-  provider: Provider = Provider.CorporatieNL;
+  protected provider: Provider = Provider.CorporatieNL;
 
-  getArticleDate(): moment.Moment {
+  protected getArticleDate(): moment.Moment {
     const articleDate = this.$(".o-panorama__content span")
       .text()
       .replace("/", "");
@@ -18,12 +18,12 @@ class CorporatieNLService extends ProviderService {
     return articleMoment;
   }
 
-  getArticleTitle(): string {
+  protected getArticleTitle(): string {
     const title = this.$(".c-panorama__heading").text();
     return title;
   }
 
-  getArticleText(): string {
+  protected getArticleText(): string {
     const text =
       this.$(".c-panorama__heading").text() +
       "\n" +
