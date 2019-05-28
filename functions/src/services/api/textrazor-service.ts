@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import IRawArticle from "../../models/raw-article-model";
 import IArticle from "../../models/article-model";
 import AsyncRequest from "../../helpers/async-request";
@@ -39,7 +38,6 @@ class TextRazorService {
 
         return article;
       } else {
-        console.log("in else because article to large/no text was given!");
         const article: IArticle = {
           url: rawArticle.url,
           title: rawArticle.title,
@@ -93,7 +91,6 @@ class TextRazorService {
 
   formatCategories(jsonCategories: any): { name: string; score: number }[] {
     const categories: { name: string; score: number }[] = [];
-    console.log("cat len");
     if (undefined !== jsonCategories && jsonCategories.length) {
       if (jsonCategories.length > 0) {
         for (var i = 0; i < jsonCategories.length; i++) {
@@ -114,7 +111,6 @@ class TextRazorService {
 
   formatTopics(jsonTopics: any): { name: string; score: number }[] {
     const topics: { name: string; score: number }[] = [];
-    console.log("top len");
     if (undefined !== jsonTopics && jsonTopics.length) {
       if (jsonTopics.length > 0) {
         for (var i = 0; i < jsonTopics.length; i++) {
@@ -143,7 +139,6 @@ class TextRazorService {
       var higher = false;
       var highestCatPos: any;
 
-      console.log("un len");
       if (undefined !== uniqueCategories && uniqueCategories.length) {
         if (uniqueCategories.length > 0) {
           uniqueCategories.forEach(function(uniqueCategory) {
@@ -158,12 +153,9 @@ class TextRazorService {
         }
       }
 
-      console.log("exists: " + exists);
       if (!exists) {
-        console.log("not exist - so insert");
         uniqueCategories.push(category);
       } else if (exists && higher) {
-        console.log("exist - replace");
         if (highestCatPos != -1) {
           uniqueCategories[highestCatPos] = category;
         }
@@ -171,20 +163,6 @@ class TextRazorService {
     });
 
     return uniqueCategories;
-  }
-
-  // get request setup
-  getTest(url: any) {
-    try {
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data); // Prints result from `response.json()` in getRequest
-        })
-        .catch(error => console.error(error));
-    } catch (e) {
-      console.log("Errormessage: " + e);
-    }
   }
 }
 

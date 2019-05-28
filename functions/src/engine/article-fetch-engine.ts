@@ -1,4 +1,5 @@
 import * as cheerio from "cheerio";
+import * as moment from "moment";
 
 import ProviderService from "../services/provider/provider-service";
 import CorporatieNLService from "../services/provider/corporatiennl-service";
@@ -7,7 +8,12 @@ import IRawArticle from "../models/raw-article-model";
 import IArticle from "../models/article-model";
 
 import AsyncRequest from "../helpers/async-request";
+import TextRazorService from "../services/api/textrazor-service";
+import ArticleService from "../services/database/article-service";
+
 const request = new AsyncRequest();
+const TRS = new TextRazorService();
+const ADS = new ArticleService();
 
 abstract class ArticleFetchEngine {
   protected readonly baseURL: string = "";
@@ -20,8 +26,11 @@ abstract class ArticleFetchEngine {
     let currentPageHTML: string = await this.getPageHTML(currentPageURL);
     this.setCheerioHTML(currentPageHTML);
 
+    const moment2017 = moment("2017", "YYYY").format();
+
     let count = 0;
-    while ((await this.isValidPage()) && count < 10) {
+    let stopLoop = false;
+    while ((await this.isValidPage()) && count < 2) {
       count++;
 
       // GET ARTICLES FROM PAGE
@@ -30,8 +39,24 @@ abstract class ArticleFetchEngine {
       // LOOP OVER ARTICLES AND ANALYZE THEM
       for (const articleURL of articleURLs) {
         const rawArticle = await this.getRawArticle(articleURL);
-        console.log(rawArticle);
+
+        // Check if we already have this article
+        const result = await ADS.getQuery({ url: rawArticle.url });
+        if (result.length > 0) stopLoop = true;
+
+        // Check if the article is from before 2017
+        if (moment.unix(rawArticle.timestamp).isBefore(moment2017)) {
+          stopLoop = true;
+        }
+
+        // Stop if one of the ifs before this is true
+        if (stopLoop) break;
+        const article = await this.analyzeArticle(rawArticle);
+        ADS.add(article);
       }
+
+      // if the loop should be stopped STOP
+      if (stopLoop) break;
 
       // Go to the next page and retrieve the HTML
       this.currentPageNumber++;
@@ -39,6 +64,7 @@ abstract class ArticleFetchEngine {
       currentPageHTML = await this.getPageHTML(currentPageURL);
       this.setCheerioHTML(currentPageHTML);
     }
+    console.log("DONE");
   }
 
   private setCheerioHTML(pageHTML: string): void {
@@ -50,7 +76,7 @@ abstract class ArticleFetchEngine {
   }
 
   private async analyzeArticle(rawArticle: IRawArticle): Promise<IArticle> {
-    return {} as IArticle;
+    return await TRS.postTextRazor(rawArticle);
   }
 
   protected nextPageURL(pageNumber: number): string {

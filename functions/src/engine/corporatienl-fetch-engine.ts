@@ -2,7 +2,6 @@ import ArticleFetchEngine from "./article-fetch-engine";
 
 import ProviderService from "../services/provider/provider-service";
 import CorporatieNLService from "../services/provider/corporatiennl-service";
-import { database } from "firebase-admin";
 import IRawArticle from "../models/raw-article-model";
 
 class CorporatieNLFetchEngine extends ArticleFetchEngine {
