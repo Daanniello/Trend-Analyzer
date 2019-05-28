@@ -4,6 +4,7 @@ import CorporationNLService from "../services/provider/corporatiennl-service";
 import AedesService from "../services/provider/aedes-service";
 import ProviderService from "../services/provider/provider-service";
 import TextRazorService from "../services/api/textrazor-service";
+import ArticleService from "../services/database/article-service";
 
 /* Ping Router */
 const router = express.Router();
@@ -13,24 +14,27 @@ const corporatienlService = new CorporationNLService();
 
 /* Implement endpoints */
 router.get("", async (req, res) => {
-  const url = "https://www.corporatienl.nl/artikelen/predictive-modelling/";
+  const url =
+    "https://www.aedes.nl/artikelen/aedes/vereniging/blog-marnix-norder.html";
+
   let service: ProviderService | null = checkDomain(url);
   console.log(service);
   const razor = new TextRazorService();
   try {
-    console.log("1");
-    const corporatienlService = new CorporationNLService();
-    console.log("2");
+    const aedes = new AedesService();
 
-    const rawArticle = await corporatienlService.getRawArticle(url);
-    console.log("3");
+    const rawArticle = await aedes.getRawArticle(url);
 
     const article = await razor.postTextRazor(rawArticle);
-    console.log("4");
-    res.json(article);
+
+    const service = new ArticleService();
+
+    const result = await service.add(article);
+    res.json(result);
   } catch (e) {
     console.log("Error" + e);
-    res.send("Pong!");
+    res.statusCode = 500;
+    res.send(e);
   }
 });
 

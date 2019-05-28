@@ -9,6 +9,10 @@ import Provider from "../../utils/enums/provider-enum";
  * abstract provider service to use with specific website services.
  * Provides default methods
  */
+
+// Max article size in bytes
+const MAX_ARTICLE_SIZE = 200000;
+
 abstract class ProviderService {
   provider: Provider;
   request: AsyncRequest;
@@ -37,7 +41,40 @@ abstract class ProviderService {
       timestamp: this.getArticleDate().unix()
     };
 
+    console.log("get length");
+    console.log(this.getByteLen(rawArticle.text));
+    if (this.getByteLen(rawArticle.text) > MAX_ARTICLE_SIZE) {
+      console.log("resetting!");
+      rawArticle.text = "";
+    }
+
     return rawArticle;
+  }
+
+  // Get the size of the string
+  getByteLen(textContent: any) {
+    // Force string type
+    textContent = String(textContent);
+
+    var byteLen = 0;
+    for (var i = 0; i < textContent.length; i++) {
+      var c = textContent.charCodeAt(i);
+      byteLen +=
+        c < 1 << 7
+          ? 1
+          : c < 1 << 11
+          ? 2
+          : c < 1 << 16
+          ? 3
+          : c < 1 << 21
+          ? 4
+          : c < 1 << 26
+          ? 5
+          : c < 1 << 31
+          ? 6
+          : Number.NaN;
+    }
+    return byteLen;
   }
 
   getArticleDate(): moment.Moment {
