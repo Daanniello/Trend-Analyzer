@@ -3,6 +3,8 @@ import * as express from "express";
 import CorporationNLService from "../services/provider/corporatiennl-service";
 import AedesService from "../services/provider/aedes-service";
 import ProviderService from "../services/provider/provider-service";
+import TextRazorService from "../services/api/textrazor-service";
+import ArticleService from "../services/database/article-service";
 
 /* Ping Router */
 const router = express.Router();
@@ -13,13 +15,26 @@ const corporatienlService = new CorporationNLService();
 /* Implement endpoints */
 router.get("", async (req, res) => {
   const url =
-    "https://www.corporatienl.nl/artikelen/de-maatschappelijke-impact-van-digitalisering-is-groter-dan-we-denken/";
+    "https://www.aedes.nl/artikelen/aedes/vereniging/blog-marnix-norder.html";
+
   let service: ProviderService | null = checkDomain(url);
-  if (service != null) {
-    await service.getRawArticle(url);
-    res.send("Scraped!");
-  } else {
-    res.send("Pong!");
+  console.log(service);
+  const razor = new TextRazorService();
+  try {
+    const aedes = new AedesService();
+
+    const rawArticle = await aedes.getRawArticle(url);
+
+    const article = await razor.postTextRazor(rawArticle);
+
+    const service = new ArticleService();
+
+    const result = await service.add(article);
+    res.json(result);
+  } catch (e) {
+    console.log("Error" + e);
+    res.statusCode = 500;
+    res.send(e);
   }
 });
 
