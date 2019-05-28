@@ -9,6 +9,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 
 const request = new RequestService();
 
+// Sends an API-key header as a request to analyze the trends
 const NavigationFooter = props => {
   const performAnalyzeRequest = async () => {
     axios.defaults.headers = { "x-api-key": "SOME_API_KEY" };
