@@ -11,7 +11,6 @@ class TextRazorService {
   async postTextRazor(rawArticle: IRawArticle): Promise<IArticle> {
     try {
       if (rawArticle.text) {
-        // TODO: will with real parameter data instead of dummy data
         const body: any = {
           text: rawArticle.title + rawArticle.text,
           extractors: "topics",
