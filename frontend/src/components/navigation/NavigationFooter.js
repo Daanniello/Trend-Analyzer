@@ -12,9 +12,12 @@ const request = new RequestService();
 // Sends an API-key header as a request to analyze the trends
 const NavigationFooter = props => {
   const performAnalyzeRequest = async () => {
-    axios.defaults.headers = { "x-api-key": "SOME_API_KEY" };
-    const response = await request.post("/ping", {});
-    alert(response);
+    try {
+      axios.defaults.headers = { "x-api-key": props.getApiKey() };
+      const response = await request.post("/analyze", {});
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -42,7 +42,10 @@ const Navigation = props => {
     <div id="navigation">
       <NavigationHeader />
       {navItems}
-      <NavigationFooter lastUpdated={props.lastUpdated} />
+      <NavigationFooter
+        getApiKey={props.getApiKey}
+        lastUpdated={props.lastUpdated}
+      />
     </div>
   );
 };
