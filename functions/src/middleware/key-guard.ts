@@ -19,7 +19,7 @@ module.exports = async (
   const creds = await service.get("km.corporatienl@gmail.com");
 
   if (receivedKey != creds.apiKey) {
-    res.send(401);
+    res.sendStatus(401);
     return;
   }
   next();
