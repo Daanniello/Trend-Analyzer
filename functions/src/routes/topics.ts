@@ -62,28 +62,19 @@ router.get("", async (req, res) => {
     }
   }
 
-  res.send(topics);
-});
+  const sortedTopics = topics.sort((a: any, b: any) => {
+    return b.totals.allTime - a.totals.allTime;
+  });
 
-[
-  {
-    name: "Solar Energy",
-    totals: {
-      allTime: 2000,
-      last360: 1000,
-      last30: 100,
-      last7: 10
-    },
-    articles: [
-      {
-        timestamp: "UNIX",
-        score: 1,
-        title: "Some article",
-        link: "https://somelink.com/somearticle",
-        mailOccurences: 0
-      }
-    ]
-  }
-];
+  sortedTopics.forEach((topic, index) => {
+    const articles = sortedTopics[index].articles;
+
+    sortedTopics[index].articles = articles.sort((a: any, b: any) => {
+      return b.timestamp - a.timestamp;
+    });
+  });
+
+  res.send(sortedTopics);
+});
 
 module.exports = router;
