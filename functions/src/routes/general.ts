@@ -57,12 +57,12 @@ router.get("", async (req, res) => {
 
   const hot: any = {
     topic: {
-      week: getMostOccuringTwo(hotTopics.week),
-      month: getMostOccuringTwo(hotTopics.month)
+      week: getSortedArray(hotTopics.week),
+      month: getSortedArray(hotTopics.month)
     },
     category: {
-      week: getMostOccuringTwo(hotCategories.week),
-      month: getMostOccuringTwo(hotCategories.month)
+      week: getSortedArray(hotCategories.week),
+      month: getSortedArray(hotCategories.month)
     }
   };
 
@@ -72,14 +72,16 @@ router.get("", async (req, res) => {
   });
 });
 
-function getMostOccuringTwo(obj: any): {} {
+function getSortedArray(obj: any): { name: string; amount: string }[] {
   const sorted = Object.keys(obj).sort((a: string, b: string) => {
     return obj[b] - obj[a];
   });
-  return {
-    [sorted[0]]: obj[sorted[0]],
-    [sorted[1]]: obj[sorted[1]]
-  };
+
+  const sortedArray: { name: string; amount: string }[] = [];
+  for (let i = 0; i < sorted.length; i++) {
+    sortedArray.push({ name: sorted[i], amount: obj[sorted[i]] });
+  }
+  return sortedArray;
 }
 
 module.exports = router;
