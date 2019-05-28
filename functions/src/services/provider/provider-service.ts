@@ -77,7 +77,7 @@ abstract class ProviderService {
     return byteLen;
   }
 
-  getArticleDate(): moment.Moment {
+  protected getArticleDate(): moment.Moment {
     throw Error();
   }
 
