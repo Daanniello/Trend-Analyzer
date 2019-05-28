@@ -7,21 +7,21 @@ import "moment/locale/nl";
  * The service to scrape articles from Aedes
  */
 class AedesService extends ProviderService {
-  provider: Provider = Provider.Aedes;
+  protected provider: Provider = Provider.Aedes;
 
-  getArticleDate(): moment.Moment {
+  protected getArticleDate(): moment.Moment {
     const articleDate = this.$(".article__author").text();
     moment.locale("nl");
     const articleMoment = moment(articleDate, "D MMMM YYYY");
     return articleMoment;
   }
 
-  getArticleTitle(): string {
+  protected getArticleTitle(): string {
     const title = this.$("header h1").text();
     return title;
   }
 
-  getArticleText(): string {
+  protected getArticleText(): string {
     const text =
       this.$("header h1").text() +
       "\n" +
