@@ -16,6 +16,30 @@ abstract class DatabaseService<T> {
     return doc.data() as T;
   }
 
+  async getQuery(options: any): Promise<T[]> {
+    // Create a reference to the database collection
+    const collectionRef = this.db.collection(this.collection);
+
+    // Create the query reference
+    let queryRef:
+      | FirebaseFirestore.CollectionReference
+      | FirebaseFirestore.Query = collectionRef;
+    // Apply options
+    for (const prop in options) {
+      queryRef = queryRef.where(prop, "==", options[prop]);
+    }
+
+    // Get the snapshot of all documents in the collection
+    const snapshot = await queryRef.get();
+
+    // Map the data of the documents to the correct Type
+    const docs = snapshot.docs.map(doc => {
+      return doc.data() as T;
+    });
+
+    return docs;
+  }
+
   async getAll(): Promise<T[]> {
     // Create a reference to the database collection
     const collectionRef = this.db.collection(this.collection);
