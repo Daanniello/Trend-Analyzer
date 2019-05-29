@@ -23,7 +23,7 @@ class App extends Component {
       pages: [<GeneralPage />, <TopicPage />, <div />],
       lastUpdated: "16-05-2019 15:00",
       pinCode: "",
-      loggedIn: window.localStorage.loggedIn
+      loggedIn: true
     };
 
     this.setPage = newPage => {

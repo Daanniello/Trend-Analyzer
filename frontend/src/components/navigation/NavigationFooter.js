@@ -10,7 +10,12 @@ const NavigationFooter = props => {
       {/* <div id="navigation-footer-button">
       
     </div> */}
-      <ButtonBase id="navigation-footer-button">Update</ButtonBase>
+      <ButtonBase
+        Style="background-color: #FF8000"
+        id="navigation-footer-button"
+      >
+        Update
+      </ButtonBase>
 
       <div id="navigation-footer-timestamp">
         <Typography

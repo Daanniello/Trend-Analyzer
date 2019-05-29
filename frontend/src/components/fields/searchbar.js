@@ -5,23 +5,25 @@ import { withStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import Typography from "@material-ui/core/Typography";
+import { white } from "material-ui/styles/colors";
 
 const styles = {
   textField: {
     "& fieldset": {
-      borderRadius: 0
+      borderRadius: 0,
+      backgroundColor: white
     }
   }
 };
 
-function SearchBar(props) {
-  const classes = props.classes;
+const SearchBar = props => {
   return (
     <Typography className="searchbar">
       <TextField
+        Style="color:White"
+        onChange={props.onChange}
         label="Search for a specific topic"
         type="search"
-        className={classes.textField}
         margin="normal"
         variant="outlined"
         placeholder="Search"
@@ -35,6 +37,6 @@ function SearchBar(props) {
       />
     </Typography>
   );
-}
+};
 
 export default withStyles(styles)(SearchBar);

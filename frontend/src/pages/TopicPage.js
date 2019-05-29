@@ -3,8 +3,8 @@ import React from "react";
 import "./TopicPage.css";
 
 import Typography from "@material-ui/core/Typography";
-import Searchbar from "../components/fields/SearchBar";
 import TableCard from "../components/cards/TableCard";
+import GraphCard from "../components/cards/GraphCard";
 
 const TopicPage = props => {
   return (
@@ -12,11 +12,8 @@ const TopicPage = props => {
       <div className="header">
         <Typography variant="h4">Topic</Typography>
       </div>
-      <div className="search">
-        <div className="search-bar" />
-        <Searchbar />
-      </div>
       <TableCard />
+      <GraphCard />
     </div>
   );
 };

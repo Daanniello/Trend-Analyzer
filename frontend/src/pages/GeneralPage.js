@@ -21,7 +21,7 @@ const GeneralPage = props => {
           iconColor="#FF5722"
           type="Category"
           results={35}
-          text="Science and Technology>Social"
+          text="Science and Technology"
         />
       </div>
       <div className="general-page-item general-page-hot">

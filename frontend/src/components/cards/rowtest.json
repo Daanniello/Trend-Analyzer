@@ -1,0 +1,236 @@
+[
+  {
+    "name": "Solar Energy",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://google.com",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  },
+  {
+    "name": "Public Housing",
+    "totals": {
+      "allTime": 2000,
+      "last360": 1000,
+      "last30": 100,
+      "last7": 10
+    },
+    "articles": [
+      {
+        "timestamp": "UNIX",
+        "score": 1,
+        "title": "Some article",
+        "link": "https://somelink.com/somearticle",
+        "mailOccurences": 0
+      }
+    ]
+  }
+]

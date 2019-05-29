@@ -12,18 +12,18 @@
 
 #general-page-pie {
   width: calc(100% - 752px);
-  height: calc(50% - 16px);
+  height: calc(50% - 16px - 22.5px - 8px);
 }
 
 .general-page-hot {
   width: 352px;
   /* width: calc(25% - 16px); */
-  height: calc(25% - 16px);
+  height: calc(25% - 16px - 11.25px - 4px);
 }
 
 #general-page-graph {
   width: calc(100% - 16px);
-  height: calc(50% - 16px);
+  height: calc(50% - 16px - 22.5px - 8px);
 }
 
 #general-page-header {
@@ -32,8 +32,9 @@
 }
 
 @media only screen and (max-width: 1500px) {
-  #general-page-grid {
+  #page-content {
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   #general-page-pie {
