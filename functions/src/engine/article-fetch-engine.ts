@@ -13,7 +13,7 @@ import ArticleService from "../services/database/article-service";
 
 const request = new AsyncRequest();
 const TRS = new TextRazorService();
-const ADS = new ArticleService();
+const articleService = new ArticleService();
 
 abstract class ArticleFetchEngine {
   protected readonly baseURL: string = "";
@@ -30,7 +30,7 @@ abstract class ArticleFetchEngine {
 
     let count = 0;
     let stopLoop = false;
-    while ((await this.isValidPage()) && count < 2) {
+    while ((await this.isValidPage()) && count < 15) {
       count++;
 
       // GET ARTICLES FROM PAGE
@@ -41,7 +41,7 @@ abstract class ArticleFetchEngine {
         const rawArticle = await this.getRawArticle(articleURL);
 
         // Check if we already have this article
-        const result = await ADS.getQuery({ url: rawArticle.url });
+        const result = await articleService.getQuery({ url: rawArticle.url });
         if (result.length > 0) stopLoop = true;
 
         // Check if the article is from before 2017
@@ -51,8 +51,9 @@ abstract class ArticleFetchEngine {
 
         // Stop if one of the ifs before this is true
         if (stopLoop) break;
+
         const article = await this.analyzeArticle(rawArticle);
-        ADS.add(article);
+        articleService.add(article);
       }
 
       // if the loop should be stopped STOP
@@ -64,7 +65,6 @@ abstract class ArticleFetchEngine {
       currentPageHTML = await this.getPageHTML(currentPageURL);
       this.setCheerioHTML(currentPageHTML);
     }
-    console.log("DONE");
   }
 
   private setCheerioHTML(pageHTML: string): void {
