@@ -19,8 +19,8 @@
 }
 
 .table-collection {
-  overflow-y: scroll;
-  height: 86%;
+  overflow-y: hidden;
+  height: calc(100% - 33px);
 }
 
 .table-header {

@@ -1,96 +1,121 @@
 import React from "react";
 import "./TableCard.css";
 import TableCardRow from "./TableCardRow";
+import Infinite from "react-infinite";
 
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SearchBar from "../fields/SearchBar";
 
-console.time("REQUIRE JSON");
-let topics = require("./topics");
-// topics = topics.filter(topic => {
-//   if (topic.totals.allTime > 10) {
-//     return topic;
-//   }
-// });
-console.timeEnd("REQUIRE JSON");
-
 const styles = {};
 
-const BASE_COLORS = [
-  "#9D000F",
-  "#1EABD7",
-  "#FF8000",
-  "#C19000",
-  "#cad212",
-  "#D24DFF",
-  "#12D4FF",
-  "#D80000",
-  "#003478",
-  "#8A8B8E"
-];
+const COLORS = {
+  default: "#551f5c",
+  checked: [
+    "#9D000F",
+    "#1EABD7",
+    "#FF8000",
+    "#C19000",
+    "#cad212",
+    "#D24DFF",
+    "#12D4FF",
+    "#D80000",
+    "#003478",
+    "#8A8B8E"
+  ]
+};
+
+let topics = require("./topics");
+topics = topics.filter(topic => {
+  let t = topic;
+  t.checked = false;
+  t.color = COLORS.default;
+  return t;
+});
 
 class TableCard extends React.Component {
   state = {
     searchbarContent: "",
-    inUseColors: []
+    inUseColors: [],
+    rows: []
   };
 
   constructor(props) {
     super(props);
+
     this.handleInputChange = e => {
       const currentState = this.state;
       this.state.searchbarContent = e.target.value;
       this.setState(currentState);
+      this.updateTopics();
     };
 
-    this.maintoggle = (checked, _color) => {
-      let color;
-      let state = this.state;
-      if (state.inUseColors.length >= 10 && checked) return null;
-      if (checked) {
-        color = BASE_COLORS.filter(color => {
-          return state.inUseColors.indexOf(color) < 0;
-        })[0];
-        state.inUseColors.push(color);
-        state.checkedAmount++;
-      } else {
-        color = "#551f5c";
-        state.inUseColors.splice(state.inUseColors.indexOf(_color), 1);
+    this.handleOnCheck = id => {
+      if (this.state.inUseColors.length >= COLORS.checked.length) {
+        return;
       }
-      this.setState(state);
-      return color;
+      let t = topics[id];
+      t.checked = !t.checked;
+      if (t.checked) {
+        const availableColor = COLORS.checked.filter(color => {
+          if (this.state.inUseColors.indexOf(color) < 0) {
+            return color;
+          }
+        })[0];
+        this.state.inUseColors.push(availableColor);
+        t.color = availableColor;
+      } else {
+        this.state.inUseColors.splice(
+          this.state.inUseColors.indexOf(t.color),
+          1
+        );
+        t.color = COLORS.default;
+      }
+      topics[id] = t;
+      this.updateTopics();
     };
+
+    this.updateTopics = () => {
+      const rows = [];
+      topics.forEach((topic, index) => {
+        const { name, totals, articles, checked, color } = topic;
+        const displayConditional = name
+          .toLowerCase()
+          .includes(this.state.searchbarContent.toLowerCase());
+
+        if (displayConditional) {
+          rows.push(
+            <TableCardRow
+              id={index}
+              handleCheck={this.handleOnCheck}
+              checked={checked}
+              color={color}
+              key={`topic-${index}`}
+              title={name}
+              all={totals.allTime}
+              yearly={totals.last365}
+              monthly={totals.last30}
+              weekly={totals.last7}
+              details={articles}
+            />
+          );
+        }
+      });
+      const state = this.state;
+      state.rows = rows;
+      this.setState(state);
+    };
+
+    this.updateTopics();
+  }
+
+  componentDidMount() {
+    // const table = document.getElementsByClassName("table-collection")[0];
+    // console.log(tableHeight);
+    // table.setAttribute("containerHeight", tableHeight);
   }
 
   render() {
-    console.time("CREATE ROWS");
-    const rows = [];
-    topics.forEach((topic, index) => {
-      const { name, totals, articles } = topic;
-      const displayConditional = name
-        .toLowerCase()
-        .includes(this.state.searchbarContent.toLowerCase());
-      const style = { display: displayConditional ? "block" : "none" };
-      rows.push(
-        <TableCardRow
-          key={`topic-${index}`}
-          id={`topic-${index}`}
-          index={index}
-          title={name}
-          all={totals.allTime}
-          yearly={totals.last360}
-          monthly={totals.last30}
-          weekly={totals.last7}
-          details={articles}
-          maintoggle={this.maintoggle}
-          style={style}
-        />
-      );
-    });
-
-    console.timeEnd("CREATE ROWS");
-
     return (
       <div className="table-cart-container">
         <SearchBar onChange={this.handleInputChange} />
@@ -119,11 +144,11 @@ class TableCard extends React.Component {
               </div>
             </div>
           </div>
-          {console.time("GENERATE ROWS")}
-
-          <div className="table-collection">{rows}</div>
-
-          {console.timeEnd("GENERATE ROWS")}
+          <div className="table-collection">
+            <Infinite containerHeight={270} elementHeight={30}>
+              {this.state.rows}
+            </Infinite>
+          </div>
         </Typography>
       </div>
     );

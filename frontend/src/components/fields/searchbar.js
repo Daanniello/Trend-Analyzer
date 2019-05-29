@@ -5,13 +5,12 @@ import { withStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import Typography from "@material-ui/core/Typography";
-import { white } from "material-ui/styles/colors";
 
 const styles = {
   textField: {
     "& fieldset": {
       borderRadius: 0,
-      backgroundColor: white
+      backgroundColor: "#fff"
     }
   }
 };

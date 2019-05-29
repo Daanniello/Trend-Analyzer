@@ -12,6 +12,7 @@
     "material-ui-pickers": "^2.2.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-infinite": "^0.13.0",
     "react-keyboard-time-input": "^2.1.1",
     "react-scripts": "3.0.1",
     "roboto-fontface": "^0.10.0"
