@@ -64,12 +64,14 @@ class TableCard extends React.Component {
         })[0];
         this.state.inUseColors.push(availableColor);
         t.color = availableColor;
+        this.props.addTopic(t);
       } else {
         this.state.inUseColors.splice(
           this.state.inUseColors.indexOf(t.color),
           1
         );
         t.color = COLORS.default;
+        this.props.removeTopic(t);
       }
       topics[id] = t;
       this.updateTopics();
