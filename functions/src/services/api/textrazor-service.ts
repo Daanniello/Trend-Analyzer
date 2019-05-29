@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import IRawArticle from "../../models/raw-article-model";
 import IArticle from "../../models/article-model";
 import AsyncRequest from "../../helpers/async-request";
@@ -93,7 +92,6 @@ class TextRazorService {
 
   formatCategories(jsonCategories: any): { name: string; score: number }[] {
     const categories: { name: string; score: number }[] = [];
-    console.log("cat len");
     if (undefined !== jsonCategories && jsonCategories.length) {
       if (jsonCategories.length > 0) {
         for (var i = 0; i < jsonCategories.length; i++) {
@@ -114,12 +112,17 @@ class TextRazorService {
 
   formatTopics(jsonTopics: any): { name: string; score: number }[] {
     const topics: { name: string; score: number }[] = [];
-    console.log("top len");
+    console.log("hier0");
     if (undefined !== jsonTopics && jsonTopics.length) {
+      console.log("hier1");
       if (jsonTopics.length > 0) {
+        console.log("hier2");
         for (var i = 0; i < jsonTopics.length; i++) {
           var top = jsonTopics[i];
+          console.log("hier3 + topscore " + top.score);
+
           if (top.score > MIN_TOPIC_SCORE) {
+            console.log("hier4");
             topics.push({
               name: top.label,
               score: top.score
@@ -143,7 +146,6 @@ class TextRazorService {
       var higher = false;
       var highestCatPos: any;
 
-      console.log("un len");
       if (undefined !== uniqueCategories && uniqueCategories.length) {
         if (uniqueCategories.length > 0) {
           uniqueCategories.forEach(function(uniqueCategory) {
@@ -158,12 +160,9 @@ class TextRazorService {
         }
       }
 
-      console.log("exists: " + exists);
       if (!exists) {
-        console.log("not exist - so insert");
         uniqueCategories.push(category);
       } else if (exists && higher) {
-        console.log("exist - replace");
         if (highestCatPos != -1) {
           uniqueCategories[highestCatPos] = category;
         }
@@ -171,20 +170,6 @@ class TextRazorService {
     });
 
     return uniqueCategories;
-  }
-
-  // get request setup
-  getTest(url: any) {
-    try {
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data); // Prints result from `response.json()` in getRequest
-        })
-        .catch(error => console.error(error));
-    } catch (e) {
-      console.log("Errormessage: " + e);
-    }
   }
 }
 
