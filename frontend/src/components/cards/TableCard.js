@@ -6,6 +6,15 @@ import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SearchBar from "../fields/SearchBar";
 
+console.time("REQUIRE JSON");
+let topics = require("./topics");
+// topics = topics.filter(topic => {
+//   if (topic.totals.allTime > 10) {
+//     return topic;
+//   }
+// });
+console.timeEnd("REQUIRE JSON");
+
 const styles = {};
 
 const BASE_COLORS = [
@@ -36,7 +45,6 @@ class TableCard extends React.Component {
     };
 
     this.maintoggle = (checked, _color) => {
-      // console.log("yeet " + checked.key);
       let color;
       let state = this.state;
       if (state.inUseColors.length >= 10 && checked) return null;
@@ -50,41 +58,39 @@ class TableCard extends React.Component {
         color = "#551f5c";
         state.inUseColors.splice(state.inUseColors.indexOf(_color), 1);
       }
-      console.log(state.inUseColors);
       this.setState(state);
       return color;
     };
   }
 
   render() {
-    const topics = require("./rowtest");
-
+    console.time("CREATE ROWS");
     const rows = [];
     topics.forEach((topic, index) => {
       const { name, totals, articles } = topic;
-      if (
-        name.toLowerCase().includes(this.state.searchbarContent.toLowerCase())
-      ) {
-        rows.push(
-          <TableCardRow
-            key={`topic-${index}`}
-            index={index}
-            title={name}
-            all={totals.allTime}
-            yearly={totals.last360}
-            monthly={totals.last30}
-            weekly={totals.last7}
-            details={articles}
-            maintoggle={this.maintoggle}
-          />
-        );
-      }
+      const displayConditional = name
+        .toLowerCase()
+        .includes(this.state.searchbarContent.toLowerCase());
+      const style = { display: displayConditional ? "block" : "none" };
+      rows.push(
+        <TableCardRow
+          key={`topic-${index}`}
+          id={`topic-${index}`}
+          index={index}
+          title={name}
+          all={totals.allTime}
+          yearly={totals.last360}
+          monthly={totals.last30}
+          weekly={totals.last7}
+          details={articles}
+          maintoggle={this.maintoggle}
+          style={style}
+        />
+      );
     });
 
-    // all="230"
-    // yearly="130"
-    // monthly="50"
-    // weekly="20"
+    console.timeEnd("CREATE ROWS");
+
     return (
       <div className="table-cart-container">
         <SearchBar onChange={this.handleInputChange} />
@@ -113,7 +119,11 @@ class TableCard extends React.Component {
               </div>
             </div>
           </div>
+          {console.time("GENERATE ROWS")}
+
           <div className="table-collection">{rows}</div>
+
+          {console.timeEnd("GENERATE ROWS")}
         </Typography>
       </div>
     );

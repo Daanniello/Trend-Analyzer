@@ -41,34 +41,30 @@ class TableCardRow extends React.Component {
 
   render() {
     return (
-      <div className="table-row-content">
-        <Checkbox
-          Style={"color:" + this.state.color}
-          className="checkbox"
-          checked={this.state.check}
-          onChange={this.handleChange("checkedA")}
-          value="checkedA"
-          onClick={this.toggle}
-        />
-        <Typography className="table-row-title">{this.props.title}</Typography>
-        <div className="table-row-seperate">
-          <Typography className="table-row-all">{this.props.all}</Typography>
-          <Typography className="table-row-yearly">
-            {this.props.yearly}
-          </Typography>
-          <Typography className="table-row-monthly">
-            {this.props.monthly}
-          </Typography>
-          <Typography className="table-row-weekly">
-            {this.props.weekly}
-          </Typography>
-          <Typography className="table-row-details">
-            <TableCardDetails
-              details={this.props.details}
-              color={this.state.color}
-            />
-          </Typography>
-        </div>
+      <div className="table-row-content" style={this.props.style}>
+        <Typography>
+          <Checkbox
+            Style={"color:" + this.state.color}
+            className="checkbox"
+            checked={this.state.check}
+            onChange={this.handleChange("checkedA")}
+            value="checkedA"
+            onClick={this.toggle}
+          />
+          <div className="table-row-title">{this.props.title}</div>
+          <div className="table-row-seperate">
+            <div className="table-row-all">{this.props.all}</div>
+            <div className="table-row-yearly">{this.props.yearly}</div>
+            <div className="table-row-monthly">{this.props.monthly}</div>
+            <div className="table-row-weekly">{this.props.weekly}</div>
+            <div className="table-row-details">
+              <TableCardDetails
+                details={this.props.details}
+                color={this.state.color}
+              />
+            </div>
+          </div>
+        </Typography>
       </div>
     );
   }
