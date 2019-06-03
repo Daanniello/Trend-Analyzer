@@ -19,10 +19,11 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // const loggedIn = window.localStorage.loggedIn;
-    // console.log(loggedIn);
+    // Stores wheter logged in
     window.localStorage.loggedIn = undefined;
 
+    // The state of the app.
+    // Includes codes needed to access certain pages.
     this.state = {
       currentPage: 0,
       pages: [<GeneralPage />, <TopicPage />, <div />],
@@ -32,6 +33,7 @@ class App extends Component {
       loggedIn: window.localStorage.loggedIn
     };
 
+    // Sets the current page
     this.setPage = newPage => {
       if (this.state.currentPage === newPage) return;
       const state = this.state;
@@ -39,6 +41,7 @@ class App extends Component {
       this.setState(state);
     };
 
+    // Adds a number to the pincode input
     this.addPin = async value => {
       const state = this.state;
       state.pinCode += value;
@@ -54,6 +57,7 @@ class App extends Component {
       this.setState(state);
     };
 
+    // Remove last pincode number input
     this.removePin = () => {
       const state = this.state;
       this.state.pinCode = this.state.pinCode.substring(
@@ -63,13 +67,13 @@ class App extends Component {
       this.setState(state);
     };
 
+    // Checks wheter login should succeed or not
     this.checkLogin = async pinCode => {
       try {
         axios.defaults.headers = {
           "x-pincode": pinCode
         };
-        const key = (await request.post("/login", {})).data.apiKey;
-        this.setApiKey(key);
+        await request.post("/login", {});
         return true;
       } catch (error) {
         const form = document.getElementById("login-form");
