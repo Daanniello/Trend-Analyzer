@@ -1,16 +1,33 @@
 import React from "react";
 import "./NavigationFooter.css";
+import * as axios from "axios";
+
+import RequestService from "../../services/request-service";
 
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 
+const request = new RequestService();
+
+// Sends an API-key header as a request to analyze the trends
 const NavigationFooter = props => {
+  const performAnalyzeRequest = async () => {
+    try {
+      axios.defaults.headers = { "x-api-key": props.getApiKey() };
+      const response = await request.post("/analyze", {});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div id="navigation-footer">
       {/* <div id="navigation-footer-button">
       
     </div> */}
-      <ButtonBase id="navigation-footer-button">Update</ButtonBase>
+      <ButtonBase id="navigation-footer-button" onClick={performAnalyzeRequest}>
+        Update
+      </ButtonBase>
 
       <div id="navigation-footer-timestamp">
         <Typography
@@ -29,5 +46,6 @@ const NavigationFooter = props => {
     </div>
   );
 };
+
 //  + props.timeStamp
 export default NavigationFooter;
