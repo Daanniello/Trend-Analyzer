@@ -21,7 +21,7 @@ function TableCardDetails(props) {
   const detailsObjects = [];
   props.details.forEach((article, index) => {
     detailsObjects.push(
-      <ListItem button component="a" href={article.link} target="_blank">
+      <ListItem button component="a" href={article.url} target="_blank">
         <ListItemText primary={article.title} />
       </ListItem>
     );
