@@ -41,19 +41,26 @@ abstract class ArticleFetchEngine {
         const rawArticle = await this.getRawArticle(articleURL);
 
         // Check if we already have this article
-        const result = await articleService.getQuery({ url: rawArticle.url });
+        const result = await articleService.getQuery({
+          url: rawArticle.url,
+          timestamp: rawArticle.timestamp
+        });
         if (result.length > 0) stopLoop = true;
 
         // Check if the article is from before 2017
         if (moment.unix(rawArticle.timestamp).isBefore(moment2017)) {
           stopLoop = true;
         }
-
         // Stop if one of the ifs before this is true
         if (stopLoop) break;
 
         const article = await this.analyzeArticle(rawArticle);
-        articleService.add(article);
+        articleService.setByQuery(
+          {
+            url: rawArticle.url
+          },
+          article
+        );
       }
 
       // if the loop should be stopped STOP
