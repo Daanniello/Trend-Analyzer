@@ -14,11 +14,13 @@ router.get("", async (req, res) => {
 
   const categories: any[] = [];
 
+  // Get moment for different timestamps
   const now = moment();
   const lastWeek = now.clone().add(-7, "d");
   const lastMonth = now.clone().add(-30, "d");
   const lastYear = now.clone().add(-365, "d");
 
+  // Check if the category is already in the array and return the index
   const findOrCreate = (name: string) => {
     const index = categories.findIndex(category => {
       return category.name === name;
@@ -38,6 +40,7 @@ router.get("", async (req, res) => {
     return categories.length - 1;
   };
 
+  // Loop through all the categories of all articles
   for (const article of articles) {
     const articleMoment = moment.unix(article.timestamp);
     for (const category of article.categories) {
@@ -53,7 +56,7 @@ router.get("", async (req, res) => {
         mailOccurences: 0
       });
 
-      // Add counters
+      // Increase counters
       categoryObj.totals.allTime++;
       if (articleMoment.isBetween(lastWeek, now)) categoryObj.totals.last7++;
       if (articleMoment.isBetween(lastMonth, now)) categoryObj.totals.last30++;
@@ -63,6 +66,7 @@ router.get("", async (req, res) => {
     }
   }
 
+  // Sort categories on all time occurrences
   const sortedCategories = categories.sort((a: any, b: any) => {
     return b.totals.allTime - a.totals.allTime;
   });
