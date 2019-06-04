@@ -8,6 +8,7 @@ const router = express.Router();
 
 /* Implement endpoints */
 router.get("", async (req, res) => {
+  console.time("RETRIEVING GENERAL");
   const service = new ArticleService();
   const articles = await service.getAll();
 
@@ -67,6 +68,8 @@ router.get("", async (req, res) => {
       month: getSortedArray(hotCategories.month)
     }
   };
+
+  console.timeEnd("RETRIEVING GENERAL");
 
   res.send({
     providers: providers,

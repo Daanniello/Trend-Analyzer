@@ -8,6 +8,7 @@ const router = express.Router();
 
 /* Implement endpoints */
 router.get("", async (req, res) => {
+  console.time("RETRIEVING TOPICS");
   const service = new ArticleService();
   const articles = await service.getAll();
 
@@ -77,6 +78,8 @@ router.get("", async (req, res) => {
       return b.timestamp - a.timestamp;
     });
   });
+
+  console.timeEnd("RETRIEVING TOPICS");
 
   res.send(sortedTopics);
 });

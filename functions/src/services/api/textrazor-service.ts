@@ -38,7 +38,6 @@ class TextRazorService {
 
         return article;
       } else {
-        console.log("in else because article to large/no text was given!");
         const article: IArticle = {
           url: rawArticle.url,
           title: rawArticle.title,
@@ -112,17 +111,11 @@ class TextRazorService {
 
   formatTopics(jsonTopics: any): { name: string; score: number }[] {
     const topics: { name: string; score: number }[] = [];
-    console.log("hier0");
     if (undefined !== jsonTopics && jsonTopics.length) {
-      console.log("hier1");
       if (jsonTopics.length > 0) {
-        console.log("hier2");
         for (var i = 0; i < jsonTopics.length; i++) {
           var top = jsonTopics[i];
-          console.log("hier3 + topscore " + top.score);
-
           if (top.score > MIN_TOPIC_SCORE) {
-            console.log("hier4");
             topics.push({
               name: top.label,
               score: top.score
