@@ -13,6 +13,7 @@ document.addEventListener("keydown", event => {
   addPin(number);
 });
 
+// Interface for users to input pincode numbers or get rid of them
 const LoginPad = props => {
   addPin = props.addPin;
   removePin = props.removePin;

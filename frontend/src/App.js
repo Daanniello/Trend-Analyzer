@@ -22,14 +22,12 @@ class App extends Component {
     // Stores wheter logged in
     window.localStorage.loggedIn = undefined;
 
-    // The state of the app.
-    // Includes codes needed to access certain pages.
+    // The state of the app. Changes what the user sees and includes code needed to access certain pages.
     this.state = {
       currentPage: 0,
       pages: [<GeneralPage />, <TopicPage />, <div />],
       lastUpdated: "16-05-2019 15:00",
       pinCode: "",
-      pinLock: false,
       apiKey: "",
       loggedIn: false
     };
@@ -42,35 +40,36 @@ class App extends Component {
       this.setState(state);
     };
 
-    // Adds a number to the pincode input
+    // Adds a number to the pincode if below 4 and if 4 it sends to check if it's the correct code
     this.addPin = async value => {
-      if (this.state.pinLock || this.state.loggedIn) return;
       const state = this.state;
-      state.pinCode += value;
+      console.log(state.pinCode);
+      if (state.pinCode.length < 4) {
+        state.pinCode += value;
+        if (state.pinCode.length === 4) {
+          this.checkLogin(state);
+        }
+      }
+      console.log(state.pinCode);
       this.setState(state);
-      this.checkLogin(state);
     };
 
     // Checks wheter login should succeed or not
     this.checkLogin = async value => {
       const state = value;
-      if (state.pinCode.length >= 4) {
-        this.state.pinLock = true;
-        try {
-          axios.defaults.headers = {
-            "x-pincode": state.pinCode
-          };
-          const response = await request.post("/login", {});
-          state.apiKey = response.data.apiKey;
-          state.loggedIn = true;
-        } catch (error) {
-          const form = document.getElementById("login-form");
-          form.classList.add("login-shake");
-          await new Promise(resolve => setTimeout(resolve, 700));
-          form.classList.remove("login-shake");
-          state.pinCode = "";
-        }
-        this.state.pinLock = false;
+      try {
+        axios.defaults.headers = {
+          "x-pincode": state.pinCode
+        };
+        const response = await request.post("/login", {});
+        state.apiKey = response.data.apiKey;
+        state.loggedIn = true;
+      } catch (error) {
+        const form = document.getElementById("login-form");
+        form.classList.add("login-shake");
+        await new Promise(resolve => setTimeout(resolve, 700));
+        form.classList.remove("login-shake");
+        state.pinCode = "";
       }
       this.setState(state);
     };
