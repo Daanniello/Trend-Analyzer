@@ -8,6 +8,7 @@ const router = express.Router();
 
 /* Implement endpoints */
 router.get("", async (req, res) => {
+  console.time("RETRIEVING GENERAL");
   const service = new ArticleService();
   const articles = await service.getAll();
 
@@ -37,6 +38,7 @@ router.get("", async (req, res) => {
 
     if (!wasLastMonth) continue; // If it wasn't last month it wasn't hot
 
+    // Count the amount of occurences of each topic and category
     for (const topic of article.topics) {
       const count = hotTopics.month[topic.name];
       hotTopics.month[topic.name] = count ? count + 1 : 1;
@@ -55,6 +57,7 @@ router.get("", async (req, res) => {
     }
   }
 
+  // Create object containing topics/categories sorted on amount of occurences
   const hot: any = {
     topic: {
       week: getSortedArray(hotTopics.week),
@@ -66,12 +69,15 @@ router.get("", async (req, res) => {
     }
   };
 
+  console.timeEnd("RETRIEVING GENERAL");
+
   res.send({
     providers: providers,
     hot: hot
   });
 });
 
+// Method to sort an object
 function getSortedArray(obj: any): { name: string; amount: string }[] {
   const sorted = Object.keys(obj).sort((a: string, b: string) => {
     return obj[b] - obj[a];
