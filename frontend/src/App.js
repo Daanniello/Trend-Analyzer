@@ -29,8 +29,9 @@ class App extends Component {
       pages: [<GeneralPage />, <TopicPage />, <div />],
       lastUpdated: "16-05-2019 15:00",
       pinCode: "",
+      pinLock: false,
       apiKey: "",
-      loggedIn: window.localStorage.loggedIn
+      loggedIn: false
     };
 
     // Sets the current page
@@ -43,16 +44,33 @@ class App extends Component {
 
     // Adds a number to the pincode input
     this.addPin = async value => {
+      if (this.state.pinLock || this.state.loggedIn) return;
       const state = this.state;
       state.pinCode += value;
       this.setState(state);
-      if (state.pinCode.length > 3) {
-        if (await this.checkLogin(state.pinCode)) {
+      this.checkLogin(state);
+    };
+
+    // Checks wheter login should succeed or not
+    this.checkLogin = async value => {
+      const state = value;
+      if (state.pinCode.length >= 4) {
+        this.state.pinLock = true;
+        try {
+          axios.defaults.headers = {
+            "x-pincode": state.pinCode
+          };
+          const response = await request.post("/login", {});
+          state.apiKey = response.data.apiKey;
           state.loggedIn = true;
-          state.apiKey = (await request.post("/login", {})).data.apiKey;
-        } else {
+        } catch (error) {
+          const form = document.getElementById("login-form");
+          form.classList.add("login-shake");
+          await new Promise(resolve => setTimeout(resolve, 700));
+          form.classList.remove("login-shake");
           state.pinCode = "";
         }
+        this.state.pinLock = false;
       }
       this.setState(state);
     };
@@ -65,23 +83,6 @@ class App extends Component {
         this.state.pinCode.length - 1
       );
       this.setState(state);
-    };
-
-    // Checks wheter login should succeed or not
-    this.checkLogin = async pinCode => {
-      try {
-        axios.defaults.headers = {
-          "x-pincode": pinCode
-        };
-        await request.post("/login", {});
-        return true;
-      } catch (error) {
-        const form = document.getElementById("login-form");
-        form.classList.add("login-shake");
-        await new Promise(resolve => setTimeout(resolve, 700));
-        form.classList.remove("login-shake");
-        return false;
-      }
     };
 
     this.getApiKey = () => {
