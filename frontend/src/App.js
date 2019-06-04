@@ -43,14 +43,12 @@ class App extends Component {
     // Adds a number to the pincode if below 4 and if 4 it sends to check if it's the correct code
     this.addPin = async value => {
       const state = this.state;
-      console.log(state.pinCode);
       if (state.pinCode.length < 4) {
         state.pinCode += value;
         if (state.pinCode.length === 4) {
           this.checkLogin(state);
         }
       }
-      console.log(state.pinCode);
       this.setState(state);
     };
 
