@@ -42,7 +42,6 @@ class TableCard extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.handleInputChange = e => {
       const currentState = this.state;
       this.state.searchbarContent = e.target.value;

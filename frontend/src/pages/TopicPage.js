@@ -38,7 +38,7 @@ class TopicPage extends React.Component {
           <Typography variant="h4">Topic</Typography>
         </div>
         <TableCard addTopic={this.addTopic} removeTopic={this.removeTopic} />
-        <GraphCard />
+        <GraphCard topics={this.state.topics} />
       </div>
     );
   }
