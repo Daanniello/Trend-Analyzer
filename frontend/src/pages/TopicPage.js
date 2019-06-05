@@ -26,6 +26,7 @@ class TopicPage extends React.Component {
         if (t.name !== topic.name) {
           return t;
         }
+        return false;
       });
       this.setState(state);
     };

@@ -12,8 +12,8 @@
 
 .chart-button {
   width: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
   height: 20px;
   background-color: rgba(0, 0, 0, 0.4);
   color: white;
@@ -27,21 +27,20 @@
   user-select: none;
 
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-
-  position: absolute;
+    0px 3px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   float: left;
+  margin: 8px;
 }
 
 .chart-button:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgb(255, 128, 0);
 }
 
-.chart-button:active {
-  margin-top: 1px;
+.chart-button-active {
+  background-color: rgb(255, 128, 0);
 }
 
 #myChart {
-  padding-top: 5px;
-  padding-bottom: 10px;
+  height: calc(100% - 36px) !important;
+  width: 100% !important;
 }

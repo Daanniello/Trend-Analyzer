@@ -1,11 +1,11 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import "./TableCard.css";
+import Typography from "@material-ui/core/Typography";
 
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -21,7 +21,13 @@ function TableCardDetails(props) {
   const detailsObjects = [];
   props.details.forEach((article, index) => {
     detailsObjects.push(
-      <ListItem button component="a" href={article.url} target="_blank">
+      <ListItem
+        key={index}
+        button
+        component="a"
+        href={article.url}
+        target="_blank"
+      >
         <ListItemText primary={article.title} />
       </ListItem>
     );
@@ -53,45 +59,20 @@ function TableDetails(props) {
   };
 
   return (
-    <div Style="height:10px">
+    <Typography style={{ height: "10px" }}>
       <MenuIcon
-        style={{ color: props.color, "font-size": "20px" }}
+        style={{ color: props.color, fontSize: "20px" }}
         color="inherit"
         onClick={handleClickOpen}
       />
-      {/* <div className="DetailButton" onClick={handleClickOpen}>
-        <div
-          Style={
-            "border-radius: 2px;  width: 60%; height: 15%; background-color:" +
-            props.color
-          }
-        />
-        <div
-          Style={
-            "border-radius: 2px;  width: 60%; height: 15%; margin-top:2px; background-color:" +
-            props.color
-          }
-        />
-        <div
-          Style={
-            "border-radius: 2px; width: 60%; height: 15%; margin-top:2px; background-color:" +
-            props.color
-          }
-        />
-        <div
-          Style={
-            "border-radius: 2px; width: 60%; height: 15%; margin-top:2px; background-color:" +
-            props.color
-          }
-        />
-      </div> */}
+
       <TableCardDetails
         selectedValue={selectedValue}
         open={open}
         onClose={handleClose}
         details={props.details}
       />
-    </div>
+    </Typography>
   );
 }
 

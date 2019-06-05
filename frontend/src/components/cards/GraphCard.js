@@ -13,6 +13,7 @@ import * as moment from "moment";
 
 var Chart = require("chart.js");
 
+//Styles for the custom dialog
 const styles = theme => ({
   root: {
     margin: 0
@@ -24,8 +25,9 @@ const styles = theme => ({
   }
 });
 
+//Dialog
 const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose } = props;
+  const { children, classes } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root}>
       <Typography variant="h6">{children}</Typography>
@@ -34,7 +36,6 @@ const DialogTitle = withStyles(styles)(props => {
 });
 
 const DialogContent = withStyles(theme => ({}))(MuiDialogContent);
-
 const DialogActions = withStyles(theme => ({}))(MuiDialogActions);
 
 class GraphCard extends Component {
@@ -45,40 +46,42 @@ class GraphCard extends Component {
     chart: null,
     DateFormat: "MMMM",
     beginDate: "05-05-2019",
-    endDate: "05-05-2019"
+    endDate: "05-05-2019",
+    isCustom: false
   };
 
+  //Open custom dialog event
   handleClickOpen = () => {
     this.setState({
       open: true
     });
   };
 
+  //Close custom dialog event
   handleClose = () => {
     const state = this.state;
     state.open = false;
     this.setState(state);
-    // CHECK IF LEGIT DATE
     this.labels_custom();
   };
 
+  //triggers on date change
   setBeginDate = beginDate => {
     const state = this.state;
     state.beginDate = beginDate;
     this.setState(state);
-    console.log(beginDate + "begin");
   };
+
   setEndDate = endDate => {
     const state = this.state;
     state.endDate = endDate;
     this.setState(state);
-    console.log(endDate + "end");
   };
 
   constructor(props) {
     super(props);
 
-    let topics = require("./topics");
+    //let topics = require("./topics");
 
     this.calculateData = () => {
       const datasets = [];
@@ -90,7 +93,7 @@ class GraphCard extends Component {
           borderColor: topic.color,
           fill: false
         };
-        for (const label of this.state.labels) {
+        for (let i = 0; i < this.state.labels.length; i++) {
           dataset.data.push(0);
         }
         for (const article of topic.articles) {
@@ -109,6 +112,7 @@ class GraphCard extends Component {
       return datasets;
     };
 
+    //Chartjs load
     this.loadChart = () => {
       const datasets = this.calculateData();
       var ctx = document.getElementById("myChart").getContext("2d");
@@ -116,16 +120,11 @@ class GraphCard extends Component {
       const state = this.state;
       if (!state.chart) {
         state.chart = new Chart(ctx, {
-          // The type of chart we want to create
           type: "line",
-
-          // The data for our dataset
           data: {
             labels: [],
             datasets: []
           },
-
-          // Configuration options go here
           options: {
             legend: {
               display: false
@@ -146,7 +145,6 @@ class GraphCard extends Component {
       }
       state.chart.data.labels = this.state.labels;
       state.chart.data.datasets = datasets;
-      console.log(datasets);
       state.chart.update();
       this.setState(state);
     };
@@ -155,10 +153,11 @@ class GraphCard extends Component {
       var begin = moment(this.state.beginDate.replace("-", ""), "YYYYMMDD");
       var end = moment(this.state.endDate.replace("-", ""), "YYYYMMDD");
 
+      console.log(begin);
       if (
         end.diff(begin, "day") <= 0 ||
         begin.diff(moment.now(), "days") >= 0 ||
-        end.diff(moment.now(), "days") >= 0
+        end.diff(moment.now(), "days") > 0
       ) {
         return;
       }
@@ -205,6 +204,7 @@ class GraphCard extends Component {
       const state = this.state;
       state.labels = weekly;
       state.DateFormat = customFormat;
+      state.isCustom = true;
       this.setState(state);
       this.loadChart();
     };
@@ -219,6 +219,7 @@ class GraphCard extends Component {
       const state = this.state;
       state.labels = weekly;
       state.DateFormat = "WW";
+      state.isCustom = false;
       this.setState(state);
       this.loadChart();
     };
@@ -233,6 +234,7 @@ class GraphCard extends Component {
       const state = this.state;
       state.labels = monthly;
       state.DateFormat = "MMMM";
+      state.isCustom = false;
       this.setState(state);
       this.loadChart();
     };
@@ -247,6 +249,7 @@ class GraphCard extends Component {
       const state = this.state;
       state.labels = yearly;
       state.DateFormat = "YYYY";
+      state.isCustom = false;
       this.setState(state);
       this.loadChart();
     };
@@ -269,34 +272,50 @@ class GraphCard extends Component {
     return (
       <div className="graph-card">
         <div
-          className="chart-button"
+          className={
+            "chart-button" +
+            (this.state.DateFormat === "YYYY" && !this.state.isCustom
+              ? " chart-button-active"
+              : "")
+          }
           onClick={() => this.labels_yearly()}
-          Style="margin-left: 45px "
         >
           Yearly
         </div>
         <div
-          className="chart-button"
+          className={
+            "chart-button" +
+            (this.state.DateFormat === "MMMM" && !this.state.isCustom
+              ? " chart-button-active"
+              : "")
+          }
           onClick={() => this.labels_monthly()}
-          Style="margin-left: 115px "
+          style={{ marginLeft: "8px " }}
         >
           Monthly
         </div>
         <div
-          className="chart-button"
+          className={
+            "chart-button" +
+            (this.state.DateFormat === "WW" && !this.state.isCustom
+              ? " chart-button-active"
+              : "")
+          }
           onClick={() => this.labels_weekly()}
-          Style="margin-left: 200px "
+          style={{ marginLeft: "8px " }}
         >
           Weekly
         </div>
         <div
-          className="chart-button"
+          className={
+            "chart-button" + (this.state.isCustom ? " chart-button-active" : "")
+          }
           onClick={this.handleClickOpen}
-          Style="margin-left: 273px "
+          style={{ marginLeft: "8px " }}
         >
           Custom
         </div>
-        <canvas id="myChart" width="800" height="200" />
+        <canvas id="myChart" />
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
@@ -305,7 +324,7 @@ class GraphCard extends Component {
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
             Custom Date
           </DialogTitle>
-          <DialogContent dividers>
+          <DialogContent>
             <DialogPicker title="Start Date" onChange={this.setBeginDate} />
             <DialogPicker title="End Date" onChange={this.setEndDate} />
           </DialogContent>

@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import Typography from "@material-ui/core/Typography";
 
 const styles = {
   textField: {
@@ -17,9 +16,9 @@ const styles = {
 
 const SearchBar = props => {
   return (
-    <Typography className="searchbar">
+    <div className="searchbar">
       <TextField
-        Style="color:White"
+        style={{ color: "White" }}
         onChange={props.onChange}
         label="Search for a specific topic"
         type="search"
@@ -34,7 +33,7 @@ const SearchBar = props => {
           )
         }}
       />
-    </Typography>
+    </div>
   );
 };
 

@@ -60,6 +60,7 @@ class TableCard extends React.Component {
           if (this.state.inUseColors.indexOf(color) < 0) {
             return color;
           }
+          return false;
         })[0];
         this.state.inUseColors.push(availableColor);
         t.color = availableColor;
@@ -102,18 +103,11 @@ class TableCard extends React.Component {
           );
         }
       });
-      const state = this.state;
-      state.rows = rows;
-      this.setState(state);
+
+      this.state.rows = rows;
     };
 
     this.updateTopics();
-  }
-
-  componentDidMount() {
-    // const table = document.getElementsByClassName("table-collection")[0];
-    // console.log(tableHeight);
-    // table.setAttribute("containerHeight", tableHeight);
   }
 
   render() {
@@ -123,28 +117,47 @@ class TableCard extends React.Component {
         <Typography variant="h2" className="table-card">
           <div className="table-header">
             <div className="table-row">
-              <Typography className="table-row-title" Style="color:white">
+              <Typography
+                className="table-row-title"
+                style={{ color: "white" }}
+              >
                 Topic
               </Typography>
               <div className="table-row-seperate-header">
-                <Typography className="table-row-all" Style="color:white">
+                <Typography
+                  className="table-row-all"
+                  style={{ color: "white" }}
+                >
                   All
                 </Typography>
-                <Typography className="table-row-yearly" Style="color:white">
+                <Typography
+                  className="table-row-yearly"
+                  style={{ color: "white" }}
+                >
                   Yearly
                 </Typography>
-                <Typography className="table-row-monthly" Style="color:white">
+                <Typography
+                  className="table-row-monthly"
+                  style={{ color: "white" }}
+                >
                   Monthly
                 </Typography>
-                <Typography className="table-row-weekly" Style="color:white">
+                <Typography
+                  className="table-row-weekly"
+                  style={{ color: "white" }}
+                >
                   Weekly
                 </Typography>
-                <Typography className="table-row-details" Style="color:white">
+                <Typography
+                  className="table-row-details"
+                  style={{ color: "white" }}
+                >
                   Details
                 </Typography>
               </div>
             </div>
           </div>
+
           <div className="table-collection">
             <Infinite containerHeight={270} elementHeight={30}>
               {this.state.rows}

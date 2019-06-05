@@ -10,27 +10,22 @@ const TableCardRow = props => {
   colorStyle.color = props.color;
   return (
     <div className="table-row-content">
-      <Typography>
-        <Checkbox
-          onClick={() => props.handleCheck(props.id)}
-          checked={props.checked}
-          style={colorStyle}
-          className="checkbox"
-        />
-        <div className="table-row-title">{props.title}</div>
-        <div className="table-row-seperate">
-          <div className="table-row-all">{props.all}</div>
-          <div className="table-row-yearly">{props.yearly}</div>
-          <div className="table-row-monthly">{props.monthly}</div>
-          <div className="table-row-weekly">{props.weekly}</div>
-          <div className="table-row-details">
-            <TableCardDetails
-              color={colorStyle.color}
-              details={props.details}
-            />
-          </div>
+      <Checkbox
+        onClick={() => props.handleCheck(props.id)}
+        checked={props.checked}
+        style={colorStyle}
+        className="checkbox"
+      />
+      <Typography className="table-row-title">{props.title}</Typography>
+      <div className="table-row-seperate">
+        <Typography className="table-row-all">{props.all}</Typography>
+        <Typography className="table-row-yearly">{props.yearly}</Typography>
+        <Typography className="table-row-monthly">{props.monthly}</Typography>
+        <Typography className="table-row-weekly">{props.weekly}</Typography>
+        <div className="table-row-details">
+          <TableCardDetails color={colorStyle.color} details={props.details} />
         </div>
-      </Typography>
+      </div>
     </div>
   );
 };

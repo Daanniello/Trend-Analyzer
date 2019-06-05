@@ -16,7 +16,7 @@ function OnChange(props, value) {
 
 function DatePickers(props) {
   return (
-    <form class="form">
+    <form>
       <TextField
         id={"date" + props.title}
         label={props.title}

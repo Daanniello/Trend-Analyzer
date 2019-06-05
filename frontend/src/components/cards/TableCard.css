@@ -24,16 +24,14 @@
 }
 
 .table-header {
-  height: 32px;
+  height: 33px;
   width: 100%;
-  background-color: #551f5c;
-  border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+  background-color: rgb(255, 128, 0);
 }
 
 .table-row {
   float: left;
-  margin: 5px;
-  opacity: 0.6;
+  margin: 6.5px 5px 5px 5px;
   width: 100%;
 }
 

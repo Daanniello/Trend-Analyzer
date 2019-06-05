@@ -7,11 +7,8 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 const NavigationFooter = props => {
   return (
     <div id="navigation-footer">
-      {/* <div id="navigation-footer-button">
-      
-    </div> */}
       <ButtonBase
-        Style="background-color: #FF8000"
+        style={{ backgroundColor: "#FF8000" }}
         id="navigation-footer-button"
       >
         Update
