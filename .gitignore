@@ -9,6 +9,7 @@ creds.json
 **/node_modules/*
 **/lib/*
 **/.firebaserc
+**/build/*
 
 ### Firebase Patch ###
 .runtimeconfig.json

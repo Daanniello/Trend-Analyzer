@@ -8,7 +8,10 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}\\frontend\\src\\components\\cards\\GraphCard.js"
+      "program": "${workspaceFolder}\\functions\\src\\tests\\unit-test\\textrazor-service.test.ts",
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
     }
   ]
 }

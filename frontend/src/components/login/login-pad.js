@@ -3,7 +3,20 @@ import "./login-pad.css";
 
 import Backspace from "@material-ui/icons/Backspace";
 
+// Lets user use the keyboard for pincode input.
+let addPin, removePin;
+document.addEventListener("keydown", event => {
+  const { key } = event;
+  if (key === "Backspace") removePin();
+  if (isNaN(key)) return;
+  const number = +key;
+  addPin(number);
+});
+
+// Interface for users to input pincode numbers or get rid of them
 const LoginPad = props => {
+  addPin = props.addPin;
+  removePin = props.removePin;
   return (
     <div id="login-pad">
       <div className="login-pad-key" onClick={() => props.addPin(1)}>
