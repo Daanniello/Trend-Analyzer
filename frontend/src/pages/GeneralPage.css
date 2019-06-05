@@ -17,7 +17,6 @@
 
 .general-page-hot {
   width: 352px;
-  /* width: calc(25% - 16px); */
   height: calc(25% - 31.25px);
 }
 
@@ -32,8 +31,9 @@
 }
 
 @media only screen and (max-width: 1500px) {
-  #general-page-grid {
+  #page-content {
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   #general-page-pie {

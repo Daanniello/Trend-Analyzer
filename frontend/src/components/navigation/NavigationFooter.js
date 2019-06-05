@@ -22,10 +22,7 @@ const NavigationFooter = props => {
 
   return (
     <div id="navigation-footer">
-      {/* <div id="navigation-footer-button">
-      
-    </div> */}
-      <ButtonBase id="navigation-footer-button" onClick={performAnalyzeRequest}>
+      <ButtonBase id="navigation-footer-button" style={{ backgroundColor: "#FF8000" }} onClick={performAnalyzeRequest}>
         Update
       </ButtonBase>
 
