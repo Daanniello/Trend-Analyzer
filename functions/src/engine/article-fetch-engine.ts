@@ -30,6 +30,8 @@ abstract class ArticleFetchEngine {
 
     let count = 0;
     let stopLoop = false;
+
+    let newArticleCount = 0;
     while ((await this.isValidPage()) && count < 15) {
       count++;
 
@@ -61,6 +63,7 @@ abstract class ArticleFetchEngine {
           },
           article
         );
+        newArticleCount++;
       }
 
       // if the loop should be stopped STOP
@@ -72,6 +75,8 @@ abstract class ArticleFetchEngine {
       currentPageHTML = await this.getPageHTML(currentPageURL);
       this.setCheerioHTML(currentPageHTML);
     }
+
+    console.log(`ANALYZED ${newArticleCount} ARICLES FROM ${count} PAGES`);
   }
 
   private setCheerioHTML(pageHTML: string): void {

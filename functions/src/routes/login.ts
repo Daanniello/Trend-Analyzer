@@ -6,6 +6,7 @@ const router = express.Router();
 
 /* Implement endpoints */
 router.post("", async (req, res) => {
+  console.log("LOGGING IN");
   const pincode = req.header("x-pincode");
 
   // Check for a pincode in the header
