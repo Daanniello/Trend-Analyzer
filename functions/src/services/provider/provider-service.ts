@@ -41,10 +41,7 @@ abstract class ProviderService {
       timestamp: this.getArticleDate().unix()
     };
 
-    console.log("get length");
-    console.log(this.getByteLen(rawArticle.text));
     if (this.getByteLen(rawArticle.text) > MAX_ARTICLE_SIZE) {
-      console.log("resetting!");
       rawArticle.text = "";
     }
 

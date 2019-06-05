@@ -5,6 +5,7 @@ import AedesService from "../services/provider/aedes-service";
 import ProviderService from "../services/provider/provider-service";
 import TextRazorService from "../services/api/textrazor-service";
 import ArticleService from "../services/database/article-service";
+import Translator from "../services/api/translation-service";
 
 /* Ping Router */
 const router = express.Router();
@@ -14,21 +15,21 @@ const corporatienlService = new CorporationNLService();
 
 /* Implement endpoints */
 router.get("", async (req, res) => {
-  const url =
-    "https://www.aedes.nl/artikelen/aedes/vereniging/blog-marnix-norder.html";
+  const url = "https://www.corporatienl.nl/artikelen/predictive-modelling/";
 
   let service: ProviderService | null = checkDomain(url);
   console.log(service);
   const razor = new TextRazorService();
   try {
-    const aedes = new AedesService();
-
-    const rawArticle = await aedes.getRawArticle(url);
+    const corporatienl = new CorporationNLService();
+    const translator = new Translator();
+    const rawArticle = await corporatienl.getRawArticle(url);
 
     const article = await razor.postTextRazor(rawArticle);
 
     const service = new ArticleService();
 
+    translator.translate(rawArticle.text);
     const result = await service.add(article);
     res.json(result);
   } catch (e) {

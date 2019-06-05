@@ -12,6 +12,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@k3rn31p4nic/google-translate-api": "^1.0.5",
     "@types/cheerio": "^0.22.11",
     "@types/node-fetch": "^2.3.4",
     "blob": "0.0.5",

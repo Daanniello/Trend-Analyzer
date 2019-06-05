@@ -1,6 +1,7 @@
 import IRawArticle from "../../models/raw-article-model";
 import IArticle from "../../models/article-model";
 import AsyncRequest from "../../helpers/async-request";
+import Translator from "../../services/api/translation-service";
 
 const MIN_CATEGORY_SCORE = 0.4;
 const MIN_TOPIC_SCORE = 0.6;
@@ -8,10 +9,17 @@ const MIN_TOPIC_SCORE = 0.6;
 class TextRazorService {
   //Use to send POST request to text razor API
   async postTextRazor(rawArticle: IRawArticle): Promise<IArticle> {
+    const translation = new Translator();
+
     try {
       if (rawArticle.text) {
+        // Translate the text to English
+        const eng_txt = await translation.translate(
+          rawArticle.title + rawArticle.text
+        );
+
         const body: any = {
-          text: rawArticle.title + rawArticle.text,
+          text: eng_txt,
           extractors: "topics",
           language: "dut",
           classifiers: "textrazor_mediatopics"
@@ -38,7 +46,6 @@ class TextRazorService {
 
         return article;
       } else {
-        console.log("in else because article to large/no text was given!");
         const article: IArticle = {
           url: rawArticle.url,
           title: rawArticle.title,
@@ -97,7 +104,11 @@ class TextRazorService {
         for (var i = 0; i < jsonCategories.length; i++) {
           var cat = jsonCategories[i];
           if (cat.score > MIN_CATEGORY_SCORE) {
-            const splitCat = cat.label.split(">")[0];
+            // Split the categories on ">"
+            const splitCatArr = cat.label.split(">");
+            // Get the lowest level category
+            const splitCat = splitCatArr[splitCatArr.length - 1];
+
             categories.push({
               name: splitCat,
               score: cat.score
@@ -106,23 +117,17 @@ class TextRazorService {
         }
       }
     }
-
     return categories;
   }
 
   formatTopics(jsonTopics: any): { name: string; score: number }[] {
     const topics: { name: string; score: number }[] = [];
-    console.log("hier0");
     if (undefined !== jsonTopics && jsonTopics.length) {
-      console.log("hier1");
       if (jsonTopics.length > 0) {
-        console.log("hier2");
         for (var i = 0; i < jsonTopics.length; i++) {
           var top = jsonTopics[i];
-          console.log("hier3 + topscore " + top.score);
 
           if (top.score > MIN_TOPIC_SCORE) {
-            console.log("hier4");
             topics.push({
               name: top.label,
               score: top.score
