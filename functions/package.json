@@ -12,6 +12,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@k3rn31p4nic/google-translate-api": "^1.0.5",
     "@types/cheerio": "^0.22.11",
     "blob": "0.0.5",
     "axios": "^0.18.0",
