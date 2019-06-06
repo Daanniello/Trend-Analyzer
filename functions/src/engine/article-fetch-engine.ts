@@ -30,9 +30,7 @@ abstract class ArticleFetchEngine {
 
     let count = 0;
     let stopLoop = false;
-
-    let newArticleCount = 0;
-    while ((await this.isValidPage()) && count < 15) {
+    while ((await this.isValidPage()) && count < 5) {
       count++;
 
       // GET ARTICLES FROM PAGE
@@ -57,13 +55,7 @@ abstract class ArticleFetchEngine {
         if (stopLoop) break;
 
         const article = await this.analyzeArticle(rawArticle);
-        articleService.setByQuery(
-          {
-            url: rawArticle.url
-          },
-          article
-        );
-        newArticleCount++;
+        articleService.add(article);
       }
 
       // if the loop should be stopped STOP
@@ -75,8 +67,6 @@ abstract class ArticleFetchEngine {
       currentPageHTML = await this.getPageHTML(currentPageURL);
       this.setCheerioHTML(currentPageHTML);
     }
-
-    console.log(`ANALYZED ${newArticleCount} ARICLES FROM ${count} PAGES`);
   }
 
   private setCheerioHTML(pageHTML: string): void {
