@@ -8,8 +8,12 @@ class CorporatieNLFetchEngine extends ArticleFetchEngine {
   protected readonly baseURL: string = "https://www.corporatienl.nl/artikelen";
   protected readonly service: ProviderService = new CorporatieNLService();
 
-  protected nextPageURL(pageNumber: number): string {
-    return `${this.baseURL}/page/${pageNumber}`;
+  public async FetchInitialArticles(): Promise<void> {
+    this.FetchNewArticles();
+  }
+
+  protected nextPageURL(baseURL: string, pageNumber: number): string {
+    return `${baseURL}/page/${pageNumber}`;
   }
 
   protected isValidPage(): boolean {

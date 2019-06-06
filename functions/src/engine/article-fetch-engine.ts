@@ -13,16 +13,19 @@ import ArticleService from "../services/database/article-service";
 
 const request = new AsyncRequest();
 const TRS = new TextRazorService();
-const articleService = new ArticleService();
 
 abstract class ArticleFetchEngine {
   protected readonly baseURL: string = "";
   protected readonly service: ProviderService = new CorporatieNLService();
+  protected articleService = new ArticleService();
   protected currentPageNumber: number = 1;
   protected $: CheerioStatic = cheerio.load("");
 
-  public async FetchArticles(): Promise<void> {
-    let currentPageURL: string = this.nextPageURL(this.currentPageNumber);
+  public async FetchNewArticles(): Promise<void> {
+    let currentPageURL: string = this.nextPageURL(
+      this.baseURL,
+      this.currentPageNumber
+    );
     let currentPageHTML: string = await this.getPageHTML(currentPageURL);
     this.setCheerioHTML(currentPageHTML);
 
@@ -32,7 +35,11 @@ abstract class ArticleFetchEngine {
     let stopLoop = false;
 
     let newArticleCount = 0;
-    while ((await this.isValidPage()) && count < 15) {
+    while (
+      (await this.isValidPage()) &&
+      count <
+        15 /* TODO: Remove count, when working as whished there should be no problem fetching everthing */
+    ) {
       count++;
 
       // GET ARTICLES FROM PAGE
@@ -43,7 +50,7 @@ abstract class ArticleFetchEngine {
         const rawArticle = await this.getRawArticle(articleURL);
 
         // Check if we already have this article
-        const result = await articleService.getQuery({
+        const result = await this.articleService.getQuery({
           url: rawArticle.url,
           timestamp: rawArticle.timestamp
         });
@@ -57,7 +64,7 @@ abstract class ArticleFetchEngine {
         if (stopLoop) break;
 
         const article = await this.analyzeArticle(rawArticle);
-        articleService.setByQuery(
+        this.articleService.setByQuery(
           {
             url: rawArticle.url
           },
@@ -71,7 +78,10 @@ abstract class ArticleFetchEngine {
 
       // Go to the next page and retrieve the HTML
       this.currentPageNumber++;
-      currentPageURL = await this.nextPageURL(this.currentPageNumber);
+      currentPageURL = await this.nextPageURL(
+        this.baseURL,
+        this.currentPageNumber
+      );
       currentPageHTML = await this.getPageHTML(currentPageURL);
       this.setCheerioHTML(currentPageHTML);
     }
@@ -79,19 +89,21 @@ abstract class ArticleFetchEngine {
     console.log(`ANALYZED ${newArticleCount} ARICLES FROM ${count} PAGES`);
   }
 
-  private setCheerioHTML(pageHTML: string): void {
+  public async FetchInitialArticles(): Promise<void> {}
+
+  protected setCheerioHTML(pageHTML: string): void {
     this.$ = cheerio.load(pageHTML);
   }
 
-  private async getPageHTML(url: string): Promise<string> {
+  protected async getPageHTML(url: string): Promise<string> {
     return await request.get(url);
   }
 
-  private async analyzeArticle(rawArticle: IRawArticle): Promise<IArticle> {
+  protected async analyzeArticle(rawArticle: IRawArticle): Promise<IArticle> {
     return await TRS.postTextRazor(rawArticle);
   }
 
-  protected nextPageURL(pageNumber: number): string {
+  protected nextPageURL(baseURL: string, pageNumber: number): string {
     throw new Error("Abstract class error");
   }
 

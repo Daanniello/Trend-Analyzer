@@ -6,11 +6,67 @@ import IRawArticle from "../models/raw-article-model";
 
 class AedesFetchEngine extends ArticleFetchEngine {
   protected readonly baseURL: string =
-    "https://www.aedes.nl/search?documentType=article&orderBy=sortDate&order=desc";
+    "https://www.aedes.nl/search?documentType=article&orderBy=sortDate&order=desc&r23_r1";
   protected readonly service: ProviderService = new AedesService();
 
-  protected nextPageURL(pageNumber: number): string {
-    return `${this.baseURL}&r23_r1:page=${pageNumber}&r23_r1:pageSize=6`;
+  public async FetchInitialArticles(): Promise<void> {
+    let urls: string[] = [
+      "https://www.aedes.nl/search/years/2019/?r23_r1",
+      "https://www.aedes.nl/search/years/2018/?r23_r1",
+      "https://www.aedes.nl/search/years/2017/?r23_r1"
+    ];
+
+    for (let i = 0; i < urls.length; i++) {
+      console.log(urls[i]);
+      console.time("URL LOOP");
+
+      let newArticleCount = 0;
+      let count = 0;
+      let currentPageURL: string = this.nextPageURL(
+        urls[i],
+        this.currentPageNumber
+      );
+      let currentPageHTML: string = await this.getPageHTML(currentPageURL);
+      this.setCheerioHTML(currentPageHTML);
+
+      let stopLoop = false;
+
+      while (await this.isValidPage()) {
+        count++;
+
+        // GET ARTICLES FROM PAGE
+        const articleURLs = await this.fetchArticleURLs(currentPageHTML);
+
+        // LOOP OVER ARTICLES AND ANALYZE THEM
+        for (const articleURL of articleURLs) {
+          /*const rawArticle = */ await this.getRawArticle(articleURL);
+
+          //const article = await this.analyzeArticle(rawArticle);
+
+          //this.articleService.add(article);
+          newArticleCount++;
+        }
+
+        // if the loop should be stopped STOP
+        if (stopLoop) break;
+
+        // Go to the next page and retrieve the HTML
+        this.currentPageNumber++;
+        currentPageURL = await this.nextPageURL(
+          urls[i],
+          this.currentPageNumber
+        );
+        currentPageHTML = await this.getPageHTML(currentPageURL);
+        this.setCheerioHTML(currentPageHTML);
+      }
+      this.currentPageNumber = 1;
+      console.log(`ANALYZED ${newArticleCount} ARICLES FROM ${count} PAGES`);
+      console.timeEnd("URL LOOP");
+    }
+  }
+
+  protected nextPageURL(baseURL: string, pageNumber: number): string {
+    return `${baseURL}:page=${pageNumber}&r23_r1:pageSize=6`;
   }
 
   protected isValidPage(): boolean {
