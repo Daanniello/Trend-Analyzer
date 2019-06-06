@@ -8,7 +8,7 @@ const router = express.Router();
 // router.use("/general", require("./general"));
 // router.use("/topics", require("./topics"));
 // router.use("/categories", require("./categories"));
-// router.use("/login", require("./login"));
+router.use("/login", require("./login"));
 router.use("/articles", require("./articles"));
 
 module.exports = router;
