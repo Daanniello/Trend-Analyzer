@@ -1,6 +1,7 @@
 import IRawArticle from "../../models/raw-article-model";
 import IArticle from "../../models/article-model";
 import AsyncRequest from "../../helpers/async-request";
+import Translator from "../../services/api/translation-service";
 
 const MIN_CATEGORY_SCORE = 0.4;
 const MIN_TOPIC_SCORE = 0.6;
@@ -8,10 +9,17 @@ const MIN_TOPIC_SCORE = 0.6;
 class TextRazorService {
   //Use to send POST request to text razor API
   async postTextRazor(rawArticle: IRawArticle): Promise<IArticle> {
+    const translation = new Translator();
+
     try {
       if (rawArticle.text) {
+        // Translate the text to English
+        const eng_txt = await translation.translate(
+          rawArticle.title + rawArticle.text
+        );
+
         const body: any = {
-          text: rawArticle.title + rawArticle.text,
+          text: eng_txt,
           extractors: "topics",
           language: "dut",
           classifiers: "textrazor_mediatopics"
@@ -96,7 +104,11 @@ class TextRazorService {
         for (var i = 0; i < jsonCategories.length; i++) {
           var cat = jsonCategories[i];
           if (cat.score > MIN_CATEGORY_SCORE) {
-            const splitCat = cat.label.split(">")[0];
+            // Split the categories on ">"
+            const splitCatArr = cat.label.split(">");
+            // Get the lowest level category
+            const splitCat = splitCatArr[splitCatArr.length - 1];
+
             categories.push({
               name: splitCat,
               score: cat.score
@@ -105,7 +117,6 @@ class TextRazorService {
         }
       }
     }
-
     return categories;
   }
 

@@ -9,17 +9,15 @@ const AFE = new AedesFetchEngine();
 const router = express.Router();
 
 /* Implement endpoints */
-router.post("", (req, res) => {
-  (async () => {
-    console.time("ANALYZING ARTICLES");
-    console.time("ANALYZING AEDES");
-    await AFE.FetchArticles();
-    console.timeEnd("ANALYZING AEDES");
-    console.time("ANALYZING CORPORATIENL");
-    await CFE.FetchArticles();
-    console.timeEnd("ANALYZING CORPORATIENL");
-    console.timeEnd("ANALYZING ARTICLES");
-  })();
+router.post("", async (req, res) => {
+  console.time("ANALYZING ARTICLES");
+  console.time("ANALYZING AEDES");
+  await AFE.FetchArticles();
+  console.timeEnd("ANALYZING AEDES");
+  console.time("ANALYZING CORPORATIENL");
+  await CFE.FetchArticles();
+  console.timeEnd("ANALYZING CORPORATIENL");
+  console.timeEnd("ANALYZING ARTICLES");
   res.send("Analyze");
 });
 

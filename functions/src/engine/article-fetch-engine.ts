@@ -30,7 +30,7 @@ abstract class ArticleFetchEngine {
 
     let count = 0;
     let stopLoop = false;
-    while ((await this.isValidPage()) && count < 15) {
+    while ((await this.isValidPage()) && count < 5) {
       count++;
 
       // GET ARTICLES FROM PAGE
@@ -55,12 +55,7 @@ abstract class ArticleFetchEngine {
         if (stopLoop) break;
 
         const article = await this.analyzeArticle(rawArticle);
-        articleService.setByQuery(
-          {
-            url: rawArticle.url
-          },
-          article
-        );
+        articleService.add(article);
       }
 
       // if the loop should be stopped STOP
