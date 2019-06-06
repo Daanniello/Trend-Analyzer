@@ -28,6 +28,7 @@ class App extends Component {
       pages: [<GeneralPage />, <TopicPage />, <div />],
       lastUpdated: "16-05-2019 15:00",
       pinCode: "",
+      errorMsg: "",
       apiKey: "",
       loggedIn: false
     };
@@ -63,6 +64,7 @@ class App extends Component {
         state.apiKey = response.data.apiKey;
         state.loggedIn = true;
       } catch (error) {
+        state.errorMsg = error;
         const form = document.getElementById("login-form");
         form.classList.add("login-shake");
         await new Promise(resolve => setTimeout(resolve, 700));
@@ -113,6 +115,7 @@ class App extends Component {
                 addPin={this.addPin}
                 removePin={this.removePin}
                 pinCode={this.state.pinCode}
+                errorMsg={this.state.errorMsg}
               />
             </DialogContent>
           </Modal>

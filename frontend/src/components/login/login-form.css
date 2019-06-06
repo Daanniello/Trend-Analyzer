@@ -27,6 +27,13 @@
   text-align: center;
 }
 
+#login-form-footer {
+  color: red;
+  font-size: 14px;
+
+  text-align: center;
+}
+
 #pin-balls {
   width: 144px;
   height: 36px;

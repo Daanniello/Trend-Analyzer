@@ -21,7 +21,6 @@ const LoginForm = props => {
         }
       />
     );
-
     blueBalls.push(ball);
   }
 
@@ -31,11 +30,10 @@ const LoginForm = props => {
         <div id="login-form-header">
           {(() => {
             // If 4 numbers have been input show unlocking image instead of locked image
-            switch (props.pinCode.length) {
-              case 4:
-                return <LockOpen fontSize="inherit" />;
-              default:
-                return <Lock fontSize="inherit" />;
+            if (props.pinCode.length === 4) {
+              return <LockOpen fontSize="inherit" />;
+            } else {
+              return <Lock fontSize="inherit" />;
             }
           })()}
         </div>
@@ -44,6 +42,39 @@ const LoginForm = props => {
         </Typography>
         <div id="pin-balls">{blueBalls}</div>
         <LoginPad addPin={props.addPin} removePin={props.removePin} />
+        <div id="login-form-footer">
+          {(() => {
+            // If it's not possible to log in show an error message.
+            var errorMessage = String(props.errorMsg);
+            if (errorMessage.includes("401")) {
+              return (
+                <div id="login-form-footer">
+                  De pincode klopt niet!
+                  <br />
+                  <input type="email" name="emailaddress" />
+                  <button type="button">E-mail pincode!</button>
+                </div>
+              );
+              // TODO: Request pincode via mail
+            } else if (errorMessage.includes("Network")) {
+              return (
+                <div id="login-form-footer">
+                  Er is geen verbinding met de database!
+                </div>
+              );
+            } else if (errorMessage.includes("404")) {
+              return (
+                <div id="login-form-footer">
+                  De nodige database tabel bestaat niet!
+                </div>
+              );
+            } else if (props.errormsg) {
+              return <div id="login-form-footer">Er is een foutmelding!</div>;
+            } else {
+              return <div id="login-form-footer" />;
+            }
+          })()}
+        </div>
       </div>
     </div>
   );
