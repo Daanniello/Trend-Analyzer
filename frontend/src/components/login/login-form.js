@@ -24,6 +24,10 @@ const LoginForm = props => {
     blueBalls.push(ball);
   }
 
+  function showEmailPin() {
+    //TODO make it so you can email the pincode
+  }
+
   return (
     <div id="login-modal">
       <div id="login-form">
@@ -50,9 +54,13 @@ const LoginForm = props => {
               return (
                 <div id="login-form-footer">
                   De pincode klopt niet!
-                  <br />
-                  <input type="email" name="emailaddress" />
-                  <button type="button">E-mail pincode!</button>
+                  <a href="javascript:;" onclick={showEmailPin()}>
+                    <p>Wachtwoord vergeten?</p>
+                  </a>
+                  <p id="email-pin" style={divStyle}>
+                    <input type="email" name="emailaddress" />
+                    <button type="button">E-mail pincode!</button>
+                  </p>
                 </div>
               );
               // TODO: Request pincode via mail
