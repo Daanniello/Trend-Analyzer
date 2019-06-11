@@ -1,8 +1,10 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as express from "express";
+import * as dotenv from "dotenv";
 import * as cors from "cors";
 
+dotenv.config();
 admin.initializeApp(functions.config().firebase);
 
 /* Express */
