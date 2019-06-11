@@ -57,7 +57,7 @@ const LoginForm = props => {
                   <a href="javascript:;" onclick={showEmailPin()}>
                     <p>Wachtwoord vergeten?</p>
                   </a>
-                  <p id="email-pin" style={divStyle}>
+                  <p id="email-pin">
                     <input type="email" name="emailaddress" />
                     <button type="button">E-mail pincode!</button>
                   </p>
