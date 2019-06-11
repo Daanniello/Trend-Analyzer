@@ -3,6 +3,7 @@ import IArticle from "../../models/article-model";
 import AsyncRequest from "../../helpers/async-request";
 import Translator from "../../services/api/translation-service";
 
+const API_KEY = process.env.TEXTRAZOR_KEY;
 const MIN_CATEGORY_SCORE = 0.4;
 const MIN_TOPIC_SCORE = 0.6;
 
@@ -27,8 +28,7 @@ class TextRazorService {
 
         const options: any = {
           headers: {
-            "X-TextRazor-Key":
-              "52160e4b73992b0447931c3457c8f6ee8aa0d3c8465d5c1f1d597138"
+            "X-TextRazor-Key": API_KEY
           },
           body: body
         };

@@ -6,7 +6,7 @@ import * as express from "express";
 const router = express.Router();
 
 /* Implement endpoints */
-router.get("", async (req, res) => {
+router.get("", async (_req, res) => {
   res.send(require("../../articles"));
 
   // console.time("RETRIEVING ARTICLES");
