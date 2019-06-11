@@ -21,11 +21,13 @@ abstract class ArticleFetchEngine {
   protected currentPageNumber: number = 1;
   protected $: CheerioStatic = cheerio.load("");
 
-  public async FetchNewArticles(): Promise<void> {
+  public async FetchNewArticles(pageNumber = 1): Promise<void> {
+    this.currentPageNumber = pageNumber;
     let currentPageURL: string = this.nextPageURL(
       this.baseURL,
       this.currentPageNumber
     );
+
     let currentPageHTML: string = await this.getPageHTML(currentPageURL);
     this.setCheerioHTML(currentPageHTML);
 
@@ -35,11 +37,7 @@ abstract class ArticleFetchEngine {
     let stopLoop = false;
 
     let newArticleCount = 0;
-    while (
-      (await this.isValidPage()) &&
-      count <
-        15 /* TODO: Remove count, when working as whished there should be no problem fetching everthing */
-    ) {
+    while (await this.isValidPage()) {
       count++;
 
       // GET ARTICLES FROM PAGE
@@ -64,12 +62,7 @@ abstract class ArticleFetchEngine {
         if (stopLoop) break;
 
         const article = await this.analyzeArticle(rawArticle);
-        this.articleService.setByQuery(
-          {
-            url: rawArticle.url
-          },
-          article
-        );
+        this.articleService.add(article);
         newArticleCount++;
       }
 

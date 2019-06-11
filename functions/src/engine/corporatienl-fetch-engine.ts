@@ -9,7 +9,8 @@ class CorporatieNLFetchEngine extends ArticleFetchEngine {
   protected readonly service: ProviderService = new CorporatieNLService();
 
   public async FetchInitialArticles(): Promise<void> {
-    this.FetchNewArticles();
+    // TODO: Function times out in firebase, if this function needs to be called while running this needs to be fixed. Can be ran in node.js with database permissions
+    await this.FetchNewArticles();
   }
 
   protected nextPageURL(baseURL: string, pageNumber: number): string {
@@ -19,7 +20,6 @@ class CorporatieNLFetchEngine extends ArticleFetchEngine {
   protected isValidPage(): boolean {
     const pageNotFoundBody = this.$(".body--404");
     return pageNotFoundBody.length === 0;
-    // throw new Error("Abstract class error");
   }
 
   protected async fetchArticleURLs(page: string): Promise<string[]> {

@@ -10,10 +10,12 @@ class AedesFetchEngine extends ArticleFetchEngine {
   protected readonly service: ProviderService = new AedesService();
 
   public async FetchInitialArticles(): Promise<void> {
+    // TODO: Function times out in firebase, if this function needs to be called while running this needs to be fixed. Can be ran in node.js with database permissions
+
     let urls: string[] = [
-      "https://www.aedes.nl/search/years/2019/?r23_r1",
-      "https://www.aedes.nl/search/years/2018/?r23_r1",
-      "https://www.aedes.nl/search/years/2017/?r23_r1"
+      //"https://www.aedes.nl/search/years/2019/?r23_r1",
+      "https://www.aedes.nl/search/years/2018/?r23_r1" /*,
+      "https://www.aedes.nl/search/years/2017/?r23_r1"*/
     ];
 
     for (let i = 0; i < urls.length; i++) {
@@ -29,8 +31,6 @@ class AedesFetchEngine extends ArticleFetchEngine {
       let currentPageHTML: string = await this.getPageHTML(currentPageURL);
       this.setCheerioHTML(currentPageHTML);
 
-      let stopLoop = false;
-
       while (await this.isValidPage()) {
         count++;
 
@@ -39,16 +39,13 @@ class AedesFetchEngine extends ArticleFetchEngine {
 
         // LOOP OVER ARTICLES AND ANALYZE THEM
         for (const articleURL of articleURLs) {
-          /*const rawArticle = */ await this.getRawArticle(articleURL);
+          const rawArticle = await this.getRawArticle(articleURL);
 
-          //const article = await this.analyzeArticle(rawArticle);
+          const article = await this.analyzeArticle(rawArticle);
 
-          //this.articleService.add(article);
+          this.articleService.add(article);
           newArticleCount++;
         }
-
-        // if the loop should be stopped STOP
-        if (stopLoop) break;
 
         // Go to the next page and retrieve the HTML
         this.currentPageNumber++;
