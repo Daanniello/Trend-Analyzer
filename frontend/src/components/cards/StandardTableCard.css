@@ -1,0 +1,26 @@
+.standard-table-card {
+  height: auto;
+  height: 284px;
+  margin-top: 16px;
+  overflow: auto;
+}
+
+.standard-table-card-rows {
+  width: 100%;
+  height: 56px;
+
+  border-bottom: 1px solid gray;
+}
+
+.standard-table-card-header {
+  width: 100%;
+  height: 56px;
+  border-bottom: 1px solid gray;
+  background-color: #8ec012;
+}
+
+.title {
+  margin-top: 8px !important;
+  margin-left: 8px !important;
+  float: left;
+}

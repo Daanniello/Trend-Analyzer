@@ -9,9 +9,13 @@ import Navigation from "./components/navigation/Navigation";
 import LoginForm from "./components/login/login-form";
 import GeneralPage from "./pages/GeneralPage";
 import TopicPage from "./pages/TopicPage";
+import CatergoryPage from "./pages/CategoryPage";
+import SettingPage from "./pages/SettingPage";
 
 import Modal from "@material-ui/core/Modal";
 import DialogContent from "@material-ui/core/DialogContent";
+
+import ArticleDataConvert from "./services/ArticleDataConvert";
 
 const request = new RequestService();
 
@@ -25,7 +29,12 @@ class App extends Component {
     // The state of the app. Changes what the user sees and includes code needed to access certain pages.
     this.state = {
       currentPage: 0,
-      pages: [<GeneralPage />, <TopicPage />, <div />],
+      pages: [
+        <GeneralPage />,
+        <TopicPage />,
+        <CatergoryPage />,
+        <SettingPage />
+      ],
       lastUpdated: "16-05-2019 15:00",
       pinCode: "",
       apiKey: "",
@@ -62,6 +71,36 @@ class App extends Component {
         const response = await request.post("/login", {});
         state.apiKey = response.data.apiKey;
         state.loggedIn = true;
+
+        axios.defaults.headers = { "x-api-key": response.data.apiKey };
+
+        // const resTopic = await request.get("/topics");
+        // const resCategory = await request.get("/categories");
+        // const resGeneral = await request.get("/general");
+        const resArticles = require("./articles");
+        // console.log(resGeneral);
+        // console.log(resCategory);
+        // console.log(resTopic);
+        console.log("yeet0");
+        console.log(resArticles);
+
+        let converter = new ArticleDataConvert(resArticles);
+        const promises = [];
+
+        const result = await Promise.all(promises);
+
+        console.time("LOOP");
+        let topicData = converter.ConvertArticlesToTopics();
+        let categoryData = converter.ConvertArticlesToCategories();
+        let generalData = converter.ConvertArticlesToGeneral();
+        console.timeEnd("LOOP");
+
+        state.pages = [
+          <GeneralPage generalData={generalData} />,
+          <TopicPage topicData={topicData} />,
+          <CatergoryPage categoryData={categoryData} />,
+          <SettingPage />
+        ];
       } catch (error) {
         const form = document.getElementById("login-form");
         form.classList.add("login-shake");

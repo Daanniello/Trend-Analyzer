@@ -6,7 +6,10 @@ import Typography from "@material-ui/core/Typography";
 const NavigationHeader = props => {
   return (
     <div id="navigation-header">
-      <Typography variant="h6">Headline 6</Typography>
+      <img
+        id="logo"
+        src="https://www.kjenning.nl/images/logos/kjenning-header-logo.png"
+      />
     </div>
   );
 };

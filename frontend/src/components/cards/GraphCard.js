@@ -85,7 +85,7 @@ class GraphCard extends Component {
 
     this.calculateData = () => {
       const datasets = [];
-
+      console.log(this.state.topics);
       for (const topic of this.state.topics) {
         const dataset = {
           data: [],
@@ -102,7 +102,7 @@ class GraphCard extends Component {
             .format(this.state.DateFormat);
           this.state.labels.forEach((label, index) => {
             if (articleString === label) {
-              dataset.data[index] = ++dataset.data[index];
+              dataset.data[index] += Math.round(article.score * 100);
             }
           });
         }
@@ -256,7 +256,7 @@ class GraphCard extends Component {
   }
 
   componentDidMount() {
-    this.loadChart();
+    this.labels_monthly();
   }
 
   componentWillReceiveProps(nextProps) {

@@ -13,7 +13,6 @@ const request = new RequestService();
 const NavigationFooter = props => {
   const performAnalyzeRequest = async () => {
     try {
-      axios.defaults.headers = { "x-api-key": props.getApiKey() };
       const response = await request.post("/analyze", {});
     } catch (error) {
       console.log(error);
@@ -22,7 +21,11 @@ const NavigationFooter = props => {
 
   return (
     <div id="navigation-footer">
-      <ButtonBase id="navigation-footer-button" style={{ backgroundColor: "#FF8000" }} onClick={performAnalyzeRequest}>
+      <ButtonBase
+        id="navigation-footer-button"
+        style={{ backgroundColor: "#8ec012" }}
+        onClick={performAnalyzeRequest}
+      >
         Update
       </ButtonBase>
 

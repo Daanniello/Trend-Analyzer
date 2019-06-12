@@ -1,0 +1,15 @@
+.blacklist-card {
+  width: 50%;
+  height: auto;
+
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2), 0px 3px 4px rgba(0, 0, 0, 0.12),
+    0px 2px 4px rgba(0, 0, 0, 0.14);
+
+  overflow: hidden;
+  position: relative;
+  padding: 16px;
+}
+
+.inputfield {
+  padding-bottom: 8px;
+}

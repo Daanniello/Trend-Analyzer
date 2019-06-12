@@ -5,7 +5,7 @@
 
   cursor: pointer;
 
-  color: rgba(0, 0, 0, 0.54);
+  color: #551f5c;
 
   border-radius: 4px;
 }
@@ -27,7 +27,7 @@
 
   line-height: 24px;
 
-  color: rgba(0, 0, 0, 0.54);
+  color: #551f5c;
 
   float: left;
 }
