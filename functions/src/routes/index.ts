@@ -10,4 +10,6 @@ router.use("/topics", require("./topics"));
 router.use("/categories", require("./categories"));
 router.use("/login", require("./login"));
 
+router.use("/reset", require("./reset"));
+
 module.exports = router;

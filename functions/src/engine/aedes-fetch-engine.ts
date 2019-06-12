@@ -3,6 +3,7 @@ import ArticleFetchEngine from "./article-fetch-engine";
 import ProviderService from "../services/provider/provider-service";
 import AedesService from "../services/provider/aedes-service";
 import IRawArticle from "../models/raw-article-model";
+import moment = require("moment");
 
 class AedesFetchEngine extends ArticleFetchEngine {
   protected readonly baseURL: string =
@@ -11,12 +12,10 @@ class AedesFetchEngine extends ArticleFetchEngine {
 
   public async FetchInitialArticles(): Promise<void> {
     // TODO: Function times out in firebase, if this function needs to be called while running this needs to be fixed. Can be ran in node.js with database permissions
-
-    let urls: string[] = [
-      //"https://www.aedes.nl/search/years/2019/?r23_r1",
-      "https://www.aedes.nl/search/years/2018/?r23_r1" /*,
-      "https://www.aedes.nl/search/years/2017/?r23_r1"*/
-    ];
+    let urls: string[] = [];
+    for (let h = +moment().format("YYYY"); h >= 2017; h--) {
+      urls.push("https://www.aedes.nl/search/years/" + h + "/?r23_r1");
+    }
 
     for (let i = 0; i < urls.length; i++) {
       console.log(urls[i]);
