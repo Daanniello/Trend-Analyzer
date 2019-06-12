@@ -78,8 +78,6 @@ abstract class ArticleFetchEngine {
       currentPageHTML = await this.getPageHTML(currentPageURL);
       this.setCheerioHTML(currentPageHTML);
     }
-
-    console.log(`ANALYZED ${newArticleCount} ARICLES FROM ${count} PAGES`);
   }
 
   public async FetchInitialArticles(): Promise<void> {}
