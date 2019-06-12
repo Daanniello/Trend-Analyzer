@@ -11,4 +11,6 @@ const router = express.Router();
 router.use("/login", require("./login"));
 router.use("/articles", require("./articles"));
 
+router.use("/reset", require("./reset"));
+
 module.exports = router;

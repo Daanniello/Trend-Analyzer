@@ -8,14 +8,18 @@ class CorporatieNLFetchEngine extends ArticleFetchEngine {
   protected readonly baseURL: string = "https://www.corporatienl.nl/artikelen";
   protected readonly service: ProviderService = new CorporatieNLService();
 
-  protected nextPageURL(pageNumber: number): string {
-    return `${this.baseURL}/page/${pageNumber}`;
+  public async FetchInitialArticles(): Promise<void> {
+    // TODO: Function times out in firebase, if this function needs to be called while running this needs to be fixed. Can be ran in node.js with database permissions
+    await this.FetchNewArticles();
+  }
+
+  protected nextPageURL(baseURL: string, pageNumber: number): string {
+    return `${baseURL}/page/${pageNumber}`;
   }
 
   protected isValidPage(): boolean {
     const pageNotFoundBody = this.$(".body--404");
     return pageNotFoundBody.length === 0;
-    // throw new Error("Abstract class error");
   }
 
   protected async fetchArticleURLs(page: string): Promise<string[]> {
