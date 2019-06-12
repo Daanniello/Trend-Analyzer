@@ -14,18 +14,9 @@
   float: left;
 }
 
-.table-cart-container {
-  height: 44.2%;
-}
-
-.table-collection {
-  overflow-y: hidden;
+/* .table-collection {
   height: calc(100% - 33px);
-}
-
-.table-collection::-webkit-scrollbar {
-  display: none;
-}
+} */
 
 .table-header {
   height: 33px;
@@ -43,6 +34,7 @@
   float: left;
   width: 100%;
   padding: 5px 0 5px 0;
+  height: 20px !important;
   border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
 }
 

@@ -1,7 +1,8 @@
 import React from "react";
 import "./TableCard.css";
 import TableCardRow from "./TableCardRow";
-import Infinite from "react-infinite";
+
+import { FixedSizeList as List } from "react-window";
 
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -30,89 +31,69 @@ class TableCard extends React.Component {
     searchbarContent: "",
     inUseColors: [],
     rows: [],
-    data: [],
+    allData: [],
+    showData: [],
     sortCondition: "all"
   };
 
   constructor(props) {
     super(props);
 
-    this.state.data = this.props.data.filter(d => {
+    this.state.allData = this.props.data.filter(d => {
       d.checked = false;
       d.color = COLORS.default;
       return d;
     });
 
-    this.updateTopics();
+    this.state.showData = this.state.allData;
   }
 
   handleInputChange = e => {
-    const currentState = this.state;
-    this.state.searchbarContent = e.target.value;
-    this.setState(currentState);
-    this.updateTopics();
+    const state = this.state;
+    state.searchbarContent = e.target.value;
+    state.showData = this.getFilteredDataFromSearch();
+    this.setState(state);
+  };
+
+  getFilteredDataFromSearch = () => {
+    return this.state.allData.filter(item => {
+      return item.name
+        .toLowerCase()
+        .includes(this.state.searchbarContent.toLowerCase());
+    });
   };
 
   handleOnCheck = id => {
-    if (this.state.inUseColors.length >= COLORS.checked.length) {
+    const state = this.state;
+    if (state.inUseColors.length >= COLORS.checked.length) {
       return;
     }
-    let t = this.state.data[id];
+    let t = state.allData[id];
     t.checked = !t.checked;
     if (t.checked) {
       const availableColor = COLORS.checked.filter(color => {
-        if (this.state.inUseColors.indexOf(color) < 0) {
+        if (state.inUseColors.indexOf(color) < 0) {
           return color;
         }
         return false;
       })[0];
-      this.state.inUseColors.push(availableColor);
+      state.inUseColors.push(availableColor);
       t.color = availableColor;
       this.props.addTopic(t);
     } else {
-      this.state.inUseColors.splice(this.state.inUseColors.indexOf(t.color), 1);
+      state.inUseColors.splice(state.inUseColors.indexOf(t.color), 1);
       t.color = COLORS.default;
       this.props.removeTopic(t);
     }
-    this.state.data[id] = t;
-    this.updateTopics();
-  };
-
-  updateTopics = () => {
-    console.log("UPDATE");
-    const rows = [];
-    this.state.data.forEach((topic, index) => {
-      const { name, totals, articles, checked, color } = topic;
-      const displayConditional = name
-        .toLowerCase()
-        .includes(this.state.searchbarContent.toLowerCase());
-
-      if (displayConditional) {
-        rows.push(
-          <TableCardRow
-            id={index}
-            handleCheck={this.handleOnCheck}
-            checked={checked}
-            color={color}
-            key={`topic-${index}`}
-            title={name}
-            all={totals.allTime}
-            yearly={totals.last365}
-            monthly={totals.last30}
-            weekly={totals.last7}
-            details={articles}
-          />
-        );
-      }
-    });
-
-    this.state.rows = rows;
+    state.allData[id] = t;
+    state.showData = this.getFilteredDataFromSearch();
+    this.setState(state);
+    this.render();
   };
 
   sortData = condition => {
-    console.log(condition);
     const state = this.state;
-    state.data = state.data.sort((a, b) => {
+    state.allData = state.allData.sort((a, b) => {
       if (condition === "all") {
         return b.totals.allTime - a.totals.allTime;
       } else if (condition === "year") {
@@ -125,12 +106,36 @@ class TableCard extends React.Component {
     });
     state.sortCondition = condition;
     this.setState(state);
-    this.updateTopics();
+    this.handleInputChange();
+  };
+
+  Row = ({ index, key, style }) => {
+    console.log(1);
+    const item = this.state.showData[index];
+    if (!item) return;
+    const { checked, color, name, totals, articles } = item;
+    return (
+      <TableCardRow
+        id={index}
+        key={key}
+        style={style}
+        handleCheck={this.handleOnCheck}
+        checked={checked}
+        color={color}
+        key={`topic-${index}`}
+        title={name}
+        all={totals.allTime}
+        yearly={totals.last365}
+        monthly={totals.last30}
+        weekly={totals.last7}
+        details={articles}
+      />
+    );
   };
 
   render() {
     return (
-      <div className="table-cart-container">
+      <div className="table-card-container">
         <SearchBar
           onChange={this.handleInputChange}
           description={this.props.tableTitle}
@@ -196,9 +201,14 @@ class TableCard extends React.Component {
           </div>
 
           <div className="table-collection">
-            <Infinite containerHeight={270} elementHeight={30}>
-              {this.state.rows}
-            </Infinite>
+            <List
+              id={"list" + this.state.inUseColors.length}
+              height={270}
+              itemSize={35}
+              itemCount={this.state.showData.length}
+            >
+              {this.Row}
+            </List>
           </div>
         </Typography>
       </div>

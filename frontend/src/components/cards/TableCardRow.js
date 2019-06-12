@@ -9,7 +9,7 @@ const TableCardRow = props => {
   const colorStyle = {};
   colorStyle.color = props.color;
   return (
-    <div className="table-row-content">
+    <div style={props.style} className="table-row-content">
       <Checkbox
         onClick={() => props.handleCheck(props.id)}
         checked={props.checked}

@@ -8,7 +8,6 @@ class AnalyzedCard extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.providers);
     const labels = Object.keys(this.props.providers).map(key => key);
     const data = Object.keys(this.props.providers).map(
       key => this.props.providers[key]
