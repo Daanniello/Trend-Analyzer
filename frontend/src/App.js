@@ -74,15 +74,7 @@ class App extends Component {
 
         axios.defaults.headers = { "x-api-key": response.data.apiKey };
 
-        // const resTopic = await request.get("/topics");
-        // const resCategory = await request.get("/categories");
-        // const resGeneral = await request.get("/general");
         const resArticles = require("./articles");
-        // console.log(resGeneral);
-        // console.log(resCategory);
-        // console.log(resTopic);
-        console.log("yeet0");
-        console.log(resArticles);
 
         let converter = new ArticleDataConvert(resArticles);
         const promises = [];

@@ -2,7 +2,6 @@ import React from "react";
 import "./StandardTableCard.css";
 import { Typography } from "@material-ui/core";
 import StanderdTableCardRow from "./StandardTableCardRow";
-import { white } from "material-ui/styles/colors";
 
 class StandardTableCard extends React.Component {
   state = {};
