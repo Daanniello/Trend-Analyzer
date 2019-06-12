@@ -12,7 +12,7 @@ abstract class DatabaseService<T> {
     const documentRef = collectionRef.doc(key);
     // Retrieve the data at KEY
     const doc = await documentRef.get();
-
+    console.log(`GET DOCUMENT FROM ${this.collection}`);
     return doc.data() as T;
   }
 
@@ -37,6 +37,8 @@ abstract class DatabaseService<T> {
       return doc.data() as T;
     });
 
+    console.log(`GETQUERY DOCUMENTS FROM ${this.collection}`);
+
     return docs;
   }
 
@@ -52,6 +54,8 @@ abstract class DatabaseService<T> {
       return doc.data() as T;
     });
 
+    console.log(`GETALL DOCUMENTS FROM ${this.collection}`);
+
     return docs;
   }
 
@@ -59,6 +63,7 @@ abstract class DatabaseService<T> {
     // Create a reference to the database collection
     const collectionRef = this.db.collection(this.collection);
     const documentRef = await collectionRef.add(data);
+    console.log(`ADD DOCUMENT TO ${this.collection}`);
     return documentRef;
   }
 
@@ -70,35 +75,8 @@ abstract class DatabaseService<T> {
     const collectionRef = this.db.collection(this.collection);
     const documentRef = collectionRef.doc(key);
     await documentRef.set(data, { merge: true });
+    console.log(`SET DOCUMENT TO ${this.collection}`);
     return documentRef;
-  }
-
-  async setByQuery(
-    options: any,
-    data: T
-  ): Promise<FirebaseFirestore.DocumentReference> {
-    // Create a reference to the database collection
-    const collectionRef = this.db.collection(this.collection);
-
-    // Create the query reference
-    let queryRef:
-      | FirebaseFirestore.CollectionReference
-      | FirebaseFirestore.Query = collectionRef;
-    // Apply options
-    for (const prop in options) {
-      queryRef = queryRef.where(prop, "==", options[prop]);
-    }
-
-    // Get the snapshot of all documents in the collection
-    const snapshot = await queryRef.get();
-    const documentRef = snapshot.docs[0].ref;
-
-    if (documentRef) {
-      await documentRef.set(data, { merge: true });
-      return documentRef;
-    } else {
-      return await this.add(data);
-    }
   }
 
   async delete(key: string): Promise<FirebaseFirestore.WriteResult> {
@@ -106,6 +84,7 @@ abstract class DatabaseService<T> {
     const collectionRef = this.db.collection(this.collection);
     const documentRef = collectionRef.doc(key);
     const result = await documentRef.delete();
+    console.log(`DELETE DOCUMENT FROM ${this.collection}`);
     return result;
   }
 
@@ -121,8 +100,9 @@ abstract class DatabaseService<T> {
     for (const doc of snapshot.docs) {
       batch.delete(doc.ref);
     }
-    const writeResults = await batch.commit();
 
+    const writeResults = await batch.commit();
+    console.log(`DELETEALL DOCUMENT FROM ${this.collection}`);
     return writeResults;
   }
 }
