@@ -53,8 +53,8 @@ class TableCard extends React.Component {
     this.updateTopics();
   };
 
-  handleOnCheck = id => {
-    if (this.state.inUseColors.length >= COLORS.checked.length) {
+  handleOnCheck = (id, check) => {
+    if (this.state.inUseColors.length >= COLORS.checked.length && !check) {
       return;
     }
     let t = this.state.data[id];

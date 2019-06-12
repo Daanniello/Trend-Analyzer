@@ -62,7 +62,14 @@ const GeneralPage = props => {
       {/* <div className="general-page-item" id="general-page-graph">
         <AnalyzedCard generalData={props.generalData} />
       </div> */}
-      <div style={{ height: "500px" }}>
+      <div
+        style={{
+          height: "500px",
+          height: " 480px",
+          float: "left",
+          width: "100%"
+        }}
+      >
         <LatestArticle
           className="general-page-item"
           latestArticle={props.generalData.latestArticle[0][0]}

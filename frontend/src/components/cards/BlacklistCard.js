@@ -33,7 +33,7 @@ class BlacklistCard extends React.Component {
   render() {
     return (
       <div className="blacklist-card">
-        <Typography variant="h3" style={{ marginBottom: "16px" }}>
+        <Typography variant="h4" style={{ marginBottom: "16px" }}>
           Blacklist
         </Typography>
         <div className="inputfield">

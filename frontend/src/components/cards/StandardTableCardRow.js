@@ -14,7 +14,7 @@ class StanderdTableCardRow extends React.Component {
     return (
       <div className="standard-table-card-rows">
         <Typography
-          variant="h5"
+          variant="h6"
           style={{ float: "left", marginTop: "12px", marginLeft: "12px" }}
         >
           {this.props.text}

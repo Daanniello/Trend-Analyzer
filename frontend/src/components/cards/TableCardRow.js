@@ -11,7 +11,7 @@ const TableCardRow = props => {
   return (
     <div className="table-row-content">
       <Checkbox
-        onClick={() => props.handleCheck(props.id)}
+        onClick={() => props.handleCheck(props.id, props.checked)}
         checked={props.checked}
         style={colorStyle}
         className="checkbox"

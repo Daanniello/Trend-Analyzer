@@ -33,14 +33,14 @@ class StandardTableCard extends React.Component {
       <div className="standard-table-card">
         <div className="standard-table-card-header">
           <Typography
-            variant="h5"
+            variant="h6"
             className=""
             style={{ paddingLeft: "12px", paddingTop: "12px", color: "White" }}
           >
             Name
           </Typography>
         </div>
-        {this.loadData()}
+        <div className="standard-table-card-collection">{this.loadData()}</div>
       </div>
     );
   }

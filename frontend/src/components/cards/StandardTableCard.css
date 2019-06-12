@@ -2,7 +2,6 @@
   height: auto;
   height: 284px;
   margin-top: 16px;
-  overflow: auto;
 }
 
 .standard-table-card-rows {
@@ -10,6 +9,12 @@
   height: 56px;
 
   border-bottom: 1px solid gray;
+}
+
+.standard-table-card-collection {
+  overflow: auto;
+  height: 232px;
+  width: 100%;
 }
 
 .standard-table-card-header {

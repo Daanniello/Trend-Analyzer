@@ -53,18 +53,21 @@ const LatestArticleCard = props => {
           {props.latestArticle.title}
         </a>
       </Typography>
+      <div className="article-combined">
+        <div style={{ width: "50%", height: "100%", float: "left" }}>
+          {loadCategories()}
+        </div>
 
-      <div style={{ width: "50%", height: "auto", float: "left" }}>
-        {loadCategories()}
+        <div style={{ width: "50%", height: "100%", float: "left" }}>
+          {loadTopics()}
+        </div>
       </div>
-
-      <div style={{ width: "50%", height: "auto", float: "left" }}>
-        {loadTopics()}
+      <div className="latest-article-card-date">
+        <Typography>
+          Date:{" "}
+          {moment.unix(props.latestArticle.timestamp).format("DD-MM-YYYY")}
+        </Typography>
       </div>
-
-      <Typography className="latest-article-card-date">
-        Date: {moment.unix(props.latestArticle.timestamp).format("DD-MM-YYYY")}
-      </Typography>
     </div>
   );
 };
