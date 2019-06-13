@@ -1,5 +1,6 @@
 import React from "react";
 import "./AnalyzedCard.css";
+import Typography from "@material-ui/core/Typography";
 
 var Chart = require("chart.js");
 
@@ -14,6 +15,8 @@ class AnalyzedCard extends React.Component {
     );
     this.loadChart = () => {
       new Chart(document.getElementById("doughnut-chart"), {
+        textBaseline: "middel",
+
         type: "doughnut",
         data: {
           labels: labels,
@@ -21,8 +24,8 @@ class AnalyzedCard extends React.Component {
             {
               label: "Providers",
               backgroundColor: [
-                "#FF8000",
                 "#1EABD7",
+                "#FF8000",
                 "#C19000",
                 "#cad212",
                 "#D24DFF",
@@ -38,7 +41,7 @@ class AnalyzedCard extends React.Component {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,
+          maintainAspectRatio: false,
 
           cutoutPercentage: 60,
           legend: {
@@ -46,8 +49,10 @@ class AnalyzedCard extends React.Component {
             defaultFontSize: 25
           },
           title: {
-            display: false,
-            text: "Providers"
+            display: true,
+            text: data[0] + data[1] + " Articles",
+            position: "top",
+            fontSize: 20
           }
         }
       });
@@ -61,6 +66,9 @@ class AnalyzedCard extends React.Component {
   render() {
     return (
       <div className="analyzed-card">
+        {/* <div className="article-count">
+          <Typography>Yeet</Typography>
+        </div> */}
         <canvas id="doughnut-chart" />
       </div>
     );

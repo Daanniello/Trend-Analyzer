@@ -34,7 +34,7 @@ class StandardTableCard extends React.Component {
           <Typography
             variant="h6"
             className=""
-            style={{ paddingLeft: "12px", paddingTop: "12px", color: "White" }}
+            style={{ paddingLeft: "16px", paddingTop: "8px", color: "White" }}
           >
             Name
           </Typography>

@@ -15,13 +15,18 @@ class StanderdTableCardRow extends React.Component {
       <div className="standard-table-card-rows">
         <Typography
           variant="h6"
-          style={{ float: "left", marginTop: "12px", marginLeft: "12px" }}
+          style={{
+            float: "left",
+            paddingLeft: "16px",
+            paddingTop: "8px",
+            fontWeight: 350
+          }}
         >
           {this.props.text}
         </Typography>
         <Fab
           size="small"
-          style={{ float: "right", margin: "8px" }}
+          style={{ float: "right", margin: "4px" }}
           aria-label="Delete"
           onClick={() => this.props.blacklist.removeItem(this.props.index)}
         >

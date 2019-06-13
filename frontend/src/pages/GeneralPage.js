@@ -8,7 +8,7 @@ import AnalyzedCard from "../components/cards/AnalyzedCard";
 import LatestArticle from "../components/cards/LatestArticle";
 
 const GeneralPage = props => {
-  console.log(props.generalData.providers);
+  console.log(props.generalData);
   return (
     <div id="general-page-grid">
       <div className="general-page-item" id="general-page-header">
@@ -25,8 +25,16 @@ const GeneralPage = props => {
           iconColor="#D24DFF"
           type="Category"
           unit="week"
-          results={props.generalData.hot.category.week[0].amount}
-          text={props.generalData.hot.category.week[0].name}
+          results={
+            props.generalData.hot.category.week.length != false
+              ? props.generalData.hot.category.week[0].amount
+              : 0
+          }
+          text={
+            props.generalData.hot.category.week.length != false
+              ? props.generalData.hot.category.week[0].name
+              : "No topic this week"
+          }
         />
       </div>
       <div className="general-page-item general-page-hot">
@@ -35,8 +43,16 @@ const GeneralPage = props => {
           iconColor="#D80000"
           type="Topic"
           unit="week"
-          results={props.generalData.hot.topic.week[0].amount}
-          text={props.generalData.hot.topic.week[0].name}
+          results={
+            props.generalData.hot.topic.week.length != false
+              ? props.generalData.hot.topic.week[0].amount
+              : 0
+          }
+          text={
+            props.generalData.hot.topic.week.length != false
+              ? props.generalData.hot.topic.week[0].name
+              : "No category this week"
+          }
         />
       </div>
       <div className="general-page-item general-page-hot">
@@ -45,8 +61,16 @@ const GeneralPage = props => {
           iconColor="#cad212"
           type="Category"
           unit="month"
-          results={props.generalData.hot.category.month[0].amount}
-          text={props.generalData.hot.category.month[0].name}
+          results={
+            props.generalData.hot.category.month.length != false
+              ? props.generalData.hot.category.month[0].amount
+              : 0
+          }
+          text={
+            props.generalData.hot.category.month.length != false
+              ? props.generalData.hot.category.month[0].name
+              : "No category this month"
+          }
         />
       </div>
       <div className="general-page-item general-page-hot">
@@ -55,8 +79,16 @@ const GeneralPage = props => {
           iconColor="#1EABD7"
           type="Topic"
           unit="month"
-          results={props.generalData.hot.topic.month[0].amount}
-          text={props.generalData.hot.topic.month[0].name}
+          results={
+            props.generalData.hot.topic.month.length != false
+              ? props.generalData.hot.topic.month[0].amount
+              : 0
+          }
+          text={
+            props.generalData.hot.category.month.length != false
+              ? props.generalData.hot.topic.month[0].name
+              : "No category this month"
+          }
         />
       </div>
       {/* <div className="general-page-item" id="general-page-graph">
@@ -65,7 +97,6 @@ const GeneralPage = props => {
       <div
         style={{
           height: "500px",
-          height: " 480px",
           float: "left",
           width: "100%"
         }}

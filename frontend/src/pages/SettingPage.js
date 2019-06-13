@@ -13,6 +13,18 @@ class SettingPage extends React.Component {
           <Typography style={{ color: "#551F5C" }} variant="h4">
             Settings
           </Typography>
+
+          <div className="settings-info">
+            <Typography variant="caption">
+              {" "}
+              Companies: Aedes, CorporatieNL
+            </Typography>
+            <Typography variant="caption"> Date: 2019</Typography>
+            <Typography variant="caption">
+              {" "}
+              Application version: 1.0.0
+            </Typography>
+          </div>
         </div>
         <BlacklistCard />
       </div>

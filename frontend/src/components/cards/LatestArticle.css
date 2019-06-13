@@ -34,8 +34,9 @@
   font-size: 12px !important;
   text-align: center;
   opacity: 0.5;
-
-  bottom: 10%;
+  position: absolute;
+  bottom: 3%;
+  left: calc(50% - 53px);
 }
 
 .href {
@@ -43,6 +44,7 @@
   text-align: center;
 
   display: inline-block;
+  width: calc(100% - 25px - 16px - 8px);
 }
 
 @media only screen and (max-width: 1500px) {

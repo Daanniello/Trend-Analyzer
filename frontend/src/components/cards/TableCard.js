@@ -212,7 +212,7 @@ class TableCard extends React.Component {
           <div className="table-collection">
             <List
               id={"list" + this.state.random}
-              height={270}
+              height={210}
               itemSize={35}
               itemCount={this.state.showData.length}
             >

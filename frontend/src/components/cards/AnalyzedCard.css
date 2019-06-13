@@ -11,9 +11,12 @@
 
 #doughnut-chart {
   max-height: calc(100% - 32px);
-  max-width: 600px;
+  max-width: 440px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.article-count {
 }

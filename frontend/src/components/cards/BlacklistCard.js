@@ -4,6 +4,9 @@ import Typography from "@material-ui/core/Typography";
 import SimpleTextField from "../fields/SimpleTextfield";
 import AddButton from "../Buttons/AddButton";
 import StandardTableCard from "./StandardTableCard";
+import RequestService from "../../services/request-service";
+
+const request = new RequestService();
 
 class BlacklistCard extends React.Component {
   state = {
@@ -24,6 +27,8 @@ class BlacklistCard extends React.Component {
   addItem = () => {
     const newItemElement = document.getElementById("outlined-name");
     if (newItemElement.value === "") return;
+
+    //const response = await request.post("/blacklist", {});
     const state = this.state;
     state.items.push(newItemElement.value);
     newItemElement.value = "";
@@ -33,7 +38,7 @@ class BlacklistCard extends React.Component {
   render() {
     return (
       <div className="blacklist-card">
-        <Typography variant="h4" style={{ marginBottom: "16px" }}>
+        <Typography variant="h5" style={{ marginBottom: "16px" }}>
           Blacklist
         </Typography>
         <div className="inputfield">
