@@ -10,5 +10,6 @@ const router = express.Router();
 // router.use("/categories", require("./categories"));
 router.use("/login", require("./login"));
 router.use("/articles", require("./articles"));
+router.use("/mail", require("./mail"));
 
 module.exports = router;

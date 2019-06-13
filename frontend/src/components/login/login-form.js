@@ -9,6 +9,7 @@ import LoginPad from "./login-pad";
 
 const LoginForm = props => {
   const blueBalls = [];
+  var emailInput = "";
 
   // Shows the amount of numbers that have been input for the pincode as blue balls
   for (let i = 0; i < 4; i++) {
@@ -24,8 +25,8 @@ const LoginForm = props => {
     blueBalls.push(ball);
   }
 
-  function showEmailPin() {
-    //TODO make it so you can email the pincode
+  function handleEmailSubmit() {
+    props.sendMail(emailInput);
   }
 
   return (
@@ -50,34 +51,66 @@ const LoginForm = props => {
           {(() => {
             // If it's not possible to log in show an error message.
             var errorMessage = String(props.errorMsg);
-            if (errorMessage.includes("401")) {
+            if (props.displayEmailInputState) {
               return (
                 <div id="login-form-footer">
-                  De pincode klopt niet!
-                  <a href="javascript:;" onclick={showEmailPin()}>
-                    <p>Wachtwoord vergeten?</p>
-                  </a>
-                  <p id="email-pin">
-                    <input type="email" name="emailaddress" />
-                    <button type="button">E-mail pincode!</button>
-                  </p>
+                  <form
+                    onSubmit={() => {
+                      // not in use atm, delete if not used
+                      handleEmailSubmit();
+                    }}
+                  >
+                    <input
+                      type="email"
+                      onChange={evt => {
+                        emailInput = evt.target.value;
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleEmailSubmit();
+                      }}
+                    >
+                      E-mail pincode!
+                    </button>
+                  </form>
+                </div>
+              );
+            } else if (errorMessage.includes("401")) {
+              return (
+                <div id="login-form-footer">
+                  <p>Incorrect pincode!</p>
+                  <button
+                    type="button"
+                    className="link-button"
+                    onClick={props.displayEmailInput}
+                  >
+                    <p>Forgot the pincode?</p>
+                  </button>
                 </div>
               );
               // TODO: Request pincode via mail
             } else if (errorMessage.includes("Network")) {
               return (
-                <div id="login-form-footer">
-                  Er is geen verbinding met de database!
-                </div>
+                <div id="login-form-footer">No connection to the database!</div>
               );
             } else if (errorMessage.includes("404")) {
               return (
-                <div id="login-form-footer">
-                  De nodige database tabel bestaat niet!
-                </div>
+                <div id="login-form-footer">The database does not exist!</div>
               );
             } else if (props.errormsg) {
-              return <div id="login-form-footer">Er is een foutmelding!</div>;
+              return (
+                <div id="login-form-footer">
+                  An unexpected error has occured!
+                </div>
+              );
+            } else if (errorMessage.includes("E-mail")) {
+              return (
+                <div id="login-form-footer">
+                  Please check your e-mail for the pincode!
+                </div>
+              );
             } else {
               return <div id="login-form-footer" />;
             }

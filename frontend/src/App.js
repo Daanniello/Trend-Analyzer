@@ -30,7 +30,8 @@ class App extends Component {
       pinCode: "",
       errorMsg: "",
       apiKey: "",
-      loggedIn: false
+      loggedIn: false,
+      displayEmailInput: false
     };
 
     // Sets the current page
@@ -65,10 +66,7 @@ class App extends Component {
         state.loggedIn = true;
       } catch (error) {
         state.errorMsg = error;
-        const form = document.getElementById("login-form");
-        form.classList.add("login-shake");
-        await new Promise(resolve => setTimeout(resolve, 700));
-        form.classList.remove("login-shake");
+        this.shakeIt();
         state.pinCode = "";
       }
       this.setState(state);
@@ -93,6 +91,46 @@ class App extends Component {
       state.apiKey = value;
       this.setState(state);
     };
+
+    this.toggleDisplayEmailInput = () => {
+      const state = this.state;
+      if (state.displayEmailInput === false) {
+        state.displayEmailInput = true;
+      } else {
+        state.displayEmailInput = false;
+      }
+      this.setState(state);
+    };
+
+    // Shake the login screen (for when there is a bad request)
+    this.shakeIt = async value => {
+      const form = document.getElementById("login-form");
+      form.classList.add("login-shake");
+      await new Promise(resolve => setTimeout(resolve, 700));
+      form.classList.remove("login-shake");
+    };
+
+    this.sendMail = async value => {
+      const mail = value;
+      try {
+        axios.defaults.headers = {
+          "x-email": mail
+        };
+        const response = await request.post("/mail", {});
+        if (response.data === true) {
+          const state = this.state;
+          state.errorMsg = "E-mail sent!";
+          this.setState(state);
+          this.toggleDisplayEmailInput();
+        } else {
+          this.shakeIt();
+          console.log("Invalid e-mail address!");
+        }
+      } catch (error) {
+        this.shakeIt();
+        console.log(error);
+      }
+    };
   }
 
   render() {
@@ -116,6 +154,9 @@ class App extends Component {
                 removePin={this.removePin}
                 pinCode={this.state.pinCode}
                 errorMsg={this.state.errorMsg}
+                displayEmailInputState={this.state.displayEmailInput}
+                displayEmailInput={this.toggleDisplayEmailInput}
+                sendMail={this.sendMail}
               />
             </DialogContent>
           </Modal>

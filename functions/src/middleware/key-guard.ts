@@ -12,7 +12,7 @@ module.exports = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  if (req.path.indexOf("/login") === 0) {
+  if (req.path.indexOf("/login") === 0 || req.path.indexOf("/mail") === 0) {
     return next();
   }
 
