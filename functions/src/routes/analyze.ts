@@ -12,10 +12,10 @@ const router = express.Router();
 router.post("", async (req, res) => {
   console.time("ANALYZING ARTICLES");
   console.time("ANALYZING AEDES");
-  await AFE.FetchArticles();
+  await AFE.FetchNewArticles();
   console.timeEnd("ANALYZING AEDES");
   console.time("ANALYZING CORPORATIENL");
-  await CFE.FetchArticles();
+  await CFE.FetchNewArticles();
   console.timeEnd("ANALYZING CORPORATIENL");
   console.timeEnd("ANALYZING ARTICLES");
   res.send("Analyze");
