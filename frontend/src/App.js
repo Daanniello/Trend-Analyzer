@@ -34,6 +34,16 @@ class App extends Component {
       displayEmailInput: false
     };
 
+    // Lets user use the keyboard for pincode input.
+    this.keyHandler = event => {
+      const { key } = event;
+      if (key === "Backspace") this.removePin();
+      if (isNaN(key)) return;
+      const number = +key;
+      this.addPin(number);
+    };
+    document.addEventListener("keydown", this.keyHandler, true);
+
     // Sets the current page
     this.setPage = newPage => {
       if (this.state.currentPage === newPage) return;
@@ -92,12 +102,15 @@ class App extends Component {
       this.setState(state);
     };
 
+    // Show email email input and send button, disable keyboard pincode number input
     this.toggleDisplayEmailInput = () => {
       const state = this.state;
       if (state.displayEmailInput === false) {
         state.displayEmailInput = true;
+        document.removeEventListener("keydown", this.keyHandler, true);
       } else {
         state.displayEmailInput = false;
+        document.addEventListener("keydown", this.keyHandler, true);
       }
       this.setState(state);
     };
@@ -110,6 +123,7 @@ class App extends Component {
       form.classList.remove("login-shake");
     };
 
+    // Send the mail via the backend, shake login when an error occures
     this.sendMail = async value => {
       const mail = value;
       try {

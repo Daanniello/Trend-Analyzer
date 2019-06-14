@@ -4,6 +4,8 @@ import "./login-form.css";
 import Lock from "@material-ui/icons/Lock";
 import LockOpen from "@material-ui/icons/LockOpen";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 import LoginPad from "./login-pad";
 
@@ -25,6 +27,7 @@ const LoginForm = props => {
     blueBalls.push(ball);
   }
 
+  // Send mail via app.js
   function handleEmailSubmit() {
     props.sendMail(emailInput);
   }
@@ -51,30 +54,29 @@ const LoginForm = props => {
           {(() => {
             // If it's not possible to log in show an error message.
             var errorMessage = String(props.errorMsg);
+            // If user clicks forgot password, show password input
             if (props.displayEmailInputState) {
               return (
                 <div id="login-form-footer">
-                  <form
-                    onSubmit={() => {
-                      // not in use atm, delete if not used
+                  <TextField
+                    style={{ marginRight: "8px" }}
+                    id="standard-bare"
+                    placeholder="johndoe@mail.com"
+                    inputProps={{ "aria-label": "bare" }}
+                    onChange={evt => {
+                      emailInput = evt.target.value;
+                    }}
+                  />
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => {
                       handleEmailSubmit();
                     }}
+                    color="primary"
                   >
-                    <input
-                      type="email"
-                      onChange={evt => {
-                        emailInput = evt.target.value;
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        handleEmailSubmit();
-                      }}
-                    >
-                      E-mail pincode!
-                    </button>
-                  </form>
+                    Mail me!
+                  </Button>
                 </div>
               );
             } else if (errorMessage.includes("401")) {
@@ -90,7 +92,6 @@ const LoginForm = props => {
                   </button>
                 </div>
               );
-              // TODO: Request pincode via mail
             } else if (errorMessage.includes("Network")) {
               return (
                 <div id="login-form-footer">No connection to the database!</div>
@@ -112,7 +113,17 @@ const LoginForm = props => {
                 </div>
               );
             } else {
-              return <div id="login-form-footer" />;
+              return (
+                <div id="login-form-footer">
+                  <button
+                    type="button"
+                    className="link-button"
+                    onClick={props.displayEmailInput}
+                  >
+                    <p>Forgot the pincode?</p>
+                  </button>
+                </div>
+              );
             }
           })()}
         </div>

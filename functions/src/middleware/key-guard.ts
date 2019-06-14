@@ -18,7 +18,7 @@ module.exports = async (
 
   const receivedKey = req.headers["x-api-key"];
   const service = new CredentialService();
-  const creds = await service.get("km.corporatienl@gmail.com");
+  const creds = await service.get(process.env.EMAIL_USER as string);
 
   if (receivedKey != creds.apiKey) {
     res.sendStatus(401);
