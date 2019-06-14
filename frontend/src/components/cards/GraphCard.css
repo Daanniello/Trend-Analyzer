@@ -30,14 +30,15 @@
     0px 3px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   float: left;
   margin: 8px;
+  line-height: 20px;
 }
 
 .chart-button:hover {
-  background-color: rgb(255, 128, 0);
+  background-color: #8ec012;
 }
 
 .chart-button-active {
-  background-color: rgb(255, 128, 0);
+  background-color: #8ec012;
 }
 
 #myChart {

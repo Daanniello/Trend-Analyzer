@@ -11,9 +11,9 @@
   margin: 8px;
 }
 
-.topic-header {
+.header {
   width: 100%;
-  height: 45px !important;
+  height: 45px;
 }
 
 .header-text {

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import "./NavigationFooter.css";
-import * as axios from "axios";
+
+import * as moment from "moment";
 
 import RequestService from "../../services/request-service";
 
@@ -9,12 +10,12 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 
 const request = new RequestService();
 
-// Sends an API-key header as a request to analyze the trends
 const NavigationFooter = props => {
   const performAnalyzeRequest = async () => {
     try {
-      axios.defaults.headers = { "x-api-key": props.getApiKey() };
+      props.setDisableButton(moment().unix());
       const response = await request.post("/analyze", {});
+      props.setTimestamp(response.data.lastUpdated);
     } catch (error) {
       console.log(error);
     }
@@ -22,7 +23,16 @@ const NavigationFooter = props => {
 
   return (
     <div id="navigation-footer">
-      <ButtonBase id="navigation-footer-button" style={{ backgroundColor: "#FF8000" }} onClick={performAnalyzeRequest}>
+      <ButtonBase
+        disabled={props.updateDisabled}
+        id="navigation-footer-button"
+        style={{
+          backgroundColor: props.updateDisabled ? "darkgray" : "#8ec012"
+        }}
+        onClick={() => {
+          performAnalyzeRequest();
+        }}
+      >
         Update
       </ButtonBase>
 
@@ -44,5 +54,4 @@ const NavigationFooter = props => {
   );
 };
 
-//  + props.timeStamp
 export default NavigationFooter;

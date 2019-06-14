@@ -1,12 +1,12 @@
 import React from "react";
 
-import "./TopicPage.css";
+import "./CategoryPage.css";
 
 import Typography from "@material-ui/core/Typography";
 import TableCard from "../components/cards/TableCard";
 import GraphCard from "../components/cards/GraphCard";
 
-class TopicPage extends React.Component {
+class CategoryPage extends React.Component {
   state = {
     topics: []
   };
@@ -35,14 +35,14 @@ class TopicPage extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="topic-header">
+        <div className="header">
           <Typography style={{ color: "#551F5C" }} variant="h4">
-            Topic
+            Category
           </Typography>
         </div>
         <TableCard
-          tableTitle="Topics"
-          data={this.props.topicData}
+          tableTitle="Categories"
+          data={this.props.categoryData}
           addTopic={this.addTopic}
           removeTopic={this.removeTopic}
         />
@@ -52,4 +52,4 @@ class TopicPage extends React.Component {
   }
 }
 
-export default TopicPage;
+export default CategoryPage;

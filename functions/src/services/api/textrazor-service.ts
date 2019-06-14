@@ -167,7 +167,7 @@ class TextRazorService {
       if (!exists) {
         uniqueCategories.push(category);
       } else if (exists && higher) {
-        if (highestCatPos != -1) {
+        if (highestCatPos !== -1) {
           uniqueCategories[highestCatPos] = category;
         }
       }

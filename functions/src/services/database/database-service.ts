@@ -78,6 +78,44 @@ abstract class DatabaseService<T> {
     console.log(`SET DOCUMENT TO ${this.collection}`);
     return documentRef;
   }
+  async setWithoutMerge(
+    key: string,
+    data: T
+  ): Promise<FirebaseFirestore.DocumentReference> {
+    // Create a reference to the database collection
+    const collectionRef = this.db.collection(this.collection);
+    const documentRef = collectionRef.doc(key);
+    await documentRef.set(data, { merge: false });
+    return documentRef;
+  }
+
+  async setByQuery(
+    options: any,
+    data: T
+  ): Promise<FirebaseFirestore.DocumentReference> {
+    // Create a reference to the database collection
+    const collectionRef = this.db.collection(this.collection);
+
+    // Create the query reference
+    let queryRef:
+      | FirebaseFirestore.CollectionReference
+      | FirebaseFirestore.Query = collectionRef;
+    // Apply options
+    for (const prop in options) {
+      queryRef = queryRef.where(prop, "==", options[prop]);
+    }
+
+    // Get the snapshot of all documents in the collection
+    const snapshot = await queryRef.get();
+    const documentRef = snapshot.docs[0].ref;
+
+    if (documentRef) {
+      await documentRef.set(data, { merge: true });
+      return documentRef;
+    } else {
+      return await this.add(data);
+    }
+  }
 
   async delete(key: string): Promise<FirebaseFirestore.WriteResult> {
     // Create a reference to the database collection

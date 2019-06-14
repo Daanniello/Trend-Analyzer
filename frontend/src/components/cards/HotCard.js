@@ -29,7 +29,7 @@ const HotCard = props => {
           align="center"
           variant="overline"
         >
-          {props.results} results this week
+          {props.results} results this {props.unit}
         </Typography>
       </div>
     </div>

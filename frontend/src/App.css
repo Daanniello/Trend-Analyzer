@@ -8,7 +8,9 @@
   height: calc(100% - 16px);
   float: left;
 
-  margin: 8px;
+  padding: 8px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .login-shake {
@@ -16,6 +18,10 @@
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+.MuiDialogContent-root-60 {
+  padding: 0 !important;
 }
 
 @keyframes shake {

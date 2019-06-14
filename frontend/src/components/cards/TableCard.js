@@ -1,7 +1,8 @@
 import React from "react";
 import "./TableCard.css";
 import TableCardRow from "./TableCardRow";
-import Infinite from "react-infinite";
+
+import { FixedSizeList as List } from "react-window";
 
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -25,95 +26,130 @@ const COLORS = {
   ]
 };
 
-let topics = require("./topics");
-topics = topics.filter(topic => {
-  let t = topic;
-  t.checked = false;
-  t.color = COLORS.default;
-  return t;
-});
-
 class TableCard extends React.Component {
   state = {
     searchbarContent: "",
     inUseColors: [],
-    rows: []
+    rows: [],
+    allData: [],
+    showData: [],
+    sortCondition: "all",
+    random: Math.random() * 1000,
+    items: []
   };
 
   constructor(props) {
     super(props);
-    this.handleInputChange = e => {
-      const currentState = this.state;
-      this.state.searchbarContent = e.target.value;
-      this.setState(currentState);
-      this.updateTopics();
-    };
+    // TODO: HIERZO :!_+?D
 
-    this.handleOnCheck = id => {
-      if (this.state.inUseColors.length >= COLORS.checked.length) {
-        return;
-      }
-      let t = topics[id];
-      t.checked = !t.checked;
-      if (t.checked) {
-        const availableColor = COLORS.checked.filter(color => {
-          if (this.state.inUseColors.indexOf(color) < 0) {
-            return color;
-          }
-          return false;
-        })[0];
-        this.state.inUseColors.push(availableColor);
-        t.color = availableColor;
-        this.props.addTopic(t);
-      } else {
-        this.state.inUseColors.splice(
-          this.state.inUseColors.indexOf(t.color),
-          1
-        );
-        t.color = COLORS.default;
-        this.props.removeTopic(t);
-      }
-      topics[id] = t;
-      this.updateTopics();
-    };
+    this.state.allData = this.props.data.filter(d => {
+      d.checked = false;
+      d.color = COLORS.default;
+      return d;
+    });
 
-    this.updateTopics = () => {
-      const rows = [];
-      topics.forEach((topic, index) => {
-        const { name, totals, articles, checked, color } = topic;
-        const displayConditional = name
-          .toLowerCase()
-          .includes(this.state.searchbarContent.toLowerCase());
+    this.state.showData = this.state.allData;
+  }
 
-        if (displayConditional) {
-          rows.push(
-            <TableCardRow
-              id={index}
-              handleCheck={this.handleOnCheck}
-              checked={checked}
-              color={color}
-              key={`topic-${index}`}
-              title={name}
-              all={totals.allTime}
-              yearly={totals.last365}
-              monthly={totals.last30}
-              weekly={totals.last7}
-              details={articles}
-            />
-          );
+  handleInputChange = e => {
+    const state = this.state;
+    state.searchbarContent = e.target.value;
+    state.showData = this.getFilteredDataFromSearch();
+    this.setState(state);
+  };
+
+  getFilteredDataFromSearch = () => {
+    return this.state.allData.filter(item => {
+      return item.name
+        .toLowerCase()
+        .includes(this.state.searchbarContent.toLowerCase());
+    });
+  };
+
+  handleOnCheck = (id, check) => {
+    if (this.state.inUseColors.length >= COLORS.checked.length && !check) {
+      return;
+    }
+    const state = this.state;
+    let t = state.allData[id];
+    t.checked = !t.checked;
+    if (t.checked) {
+      const availableColor = COLORS.checked.filter(color => {
+        if (state.inUseColors.indexOf(color) < 0) {
+          return color;
         }
-      });
+        return false;
+      })[0];
+      state.inUseColors.push(availableColor);
+      t.color = availableColor;
+      this.props.addTopic(t);
+    } else {
+      state.inUseColors.splice(state.inUseColors.indexOf(t.color), 1);
+      t.color = COLORS.default;
+      this.props.removeTopic(t);
+    }
+    state.allData[id] = t;
+    state.showData = this.getFilteredDataFromSearch();
+    this.setState(state);
+    this.updateList();
+  };
 
-      this.state.rows = rows;
-    };
+  sortData = condition => {
+    const state = this.state;
+    state.allData = state.allData.sort((a, b) => {
+      if (condition === "all") {
+        return b.totals.allTime - a.totals.allTime;
+      } else if (condition === "year") {
+        return b.totals.last365 - a.totals.last365;
+      } else if (condition === "month") {
+        return b.totals.last30 - a.totals.last30;
+      } else if (condition === "week") {
+        return b.totals.last7 - a.totals.last7;
+      }
+      return 0;
+    });
+    state.sortCondition = condition;
+    this.setState(state);
+    state.showData = this.getFilteredDataFromSearch();
+    this.setState(state);
+    this.updateList();
+  };
 
-    this.updateTopics();
+  Row = ({ index, style }) => {
+    const item = this.state.showData[index];
+    if (!item) return;
+    const { checked, color, name, totals, articles } = item;
+    return (
+      <TableCardRow
+        id={index}
+        style={style}
+        handleCheck={this.handleOnCheck}
+        checked={checked}
+        color={color}
+        key={`topic-${index}`}
+        title={name}
+        all={totals.allTime}
+        yearly={totals.last365}
+        monthly={totals.last30}
+        weekly={totals.last7}
+        details={articles}
+      />
+    );
+  };
+
+  updateList() {
+    const state = this.state;
+    state.random = Math.random() * 1000;
+    this.setState(state);
   }
 
   render() {
     return (
-      <div className="table-cart-container">
-        <SearchBar onChange={this.handleInputChange} />
+      <div className="table-card-container">
+        <SearchBar
+          onChange={this.handleInputChange}
+          description={this.props.tableTitle}
+        />
         <Typography variant="h2" className="table-card">
           <div className="table-header">
             <div className="table-row">
@@ -121,30 +157,46 @@ class TableCard extends React.Component {
                 className="table-row-title"
                 style={{ color: "white" }}
               >
-                Topic
+                {this.props.tableTitle}
               </Typography>
               <div className="table-row-seperate-header">
                 <Typography
+                  onClick={() => this.sortData("all")}
                   className="table-row-all"
-                  style={{ color: "white" }}
+                  style={{
+                    color:
+                      this.state.sortCondition === "all" ? "purple" : "white"
+                  }}
                 >
                   All
                 </Typography>
                 <Typography
+                  onClick={() => this.sortData("year")}
                   className="table-row-yearly"
-                  style={{ color: "white" }}
+                  style={{
+                    color:
+                      this.state.sortCondition === "year" ? "purple" : "white"
+                  }}
                 >
                   Yearly
                 </Typography>
                 <Typography
+                  onClick={() => this.sortData("month")}
                   className="table-row-monthly"
-                  style={{ color: "white" }}
+                  style={{
+                    color:
+                      this.state.sortCondition === "month" ? "purple" : "white"
+                  }}
                 >
                   Monthly
                 </Typography>
                 <Typography
+                  onClick={() => this.sortData("week")}
                   className="table-row-weekly"
-                  style={{ color: "white" }}
+                  style={{
+                    color:
+                      this.state.sortCondition === "week" ? "purple" : "white"
+                  }}
                 >
                   Weekly
                 </Typography>
@@ -159,9 +211,14 @@ class TableCard extends React.Component {
           </div>
 
           <div className="table-collection">
-            <Infinite containerHeight={270} elementHeight={30}>
-              {this.state.rows}
-            </Infinite>
+            <List
+              id={"list" + this.state.random}
+              height={210}
+              itemSize={35}
+              itemCount={this.state.showData.length}
+            >
+              {this.Row}
+            </List>
           </div>
         </Typography>
       </div>

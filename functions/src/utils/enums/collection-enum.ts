@@ -2,7 +2,8 @@
 enum Collection {
   Articles = "articles",
   Credentials = "credentials",
-  Updates = "updates"
+  Updates = "updates",
+  Blacklists = "blacklists"
 }
 
 export default Collection;

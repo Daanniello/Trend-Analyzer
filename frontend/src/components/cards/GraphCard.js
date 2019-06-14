@@ -85,7 +85,6 @@ class GraphCard extends Component {
 
     this.calculateData = () => {
       const datasets = [];
-
       for (const topic of this.state.topics) {
         const dataset = {
           data: [],
@@ -102,7 +101,7 @@ class GraphCard extends Component {
             .format(this.state.DateFormat);
           this.state.labels.forEach((label, index) => {
             if (articleString === label) {
-              dataset.data[index] = ++dataset.data[index];
+              dataset.data[index] += Math.round(article.score * 100);
             }
           });
         }
@@ -153,7 +152,6 @@ class GraphCard extends Component {
       var begin = moment(this.state.beginDate.replace("-", ""), "YYYYMMDD");
       var end = moment(this.state.endDate.replace("-", ""), "YYYYMMDD");
 
-      console.log(begin);
       if (
         end.diff(begin, "day") <= 0 ||
         begin.diff(moment.now(), "days") >= 0 ||
@@ -183,7 +181,7 @@ class GraphCard extends Component {
       }
       if (monthCount < 24 && monthCount >= 4) {
         customCount = monthCount;
-        customFormat = "MM";
+        customFormat = "MMM-YY";
         customType = "months";
       }
       if (yearCount >= 2) {
@@ -256,7 +254,7 @@ class GraphCard extends Component {
   }
 
   componentDidMount() {
-    this.loadChart();
+    this.labels_monthly();
   }
 
   componentWillReceiveProps(nextProps) {
