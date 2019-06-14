@@ -12,4 +12,6 @@ router.use("/login", require("./login"));
 router.use("/articles", require("./articles"));
 router.use("/mail", require("./mail"));
 
+router.use("/reset", require("./reset"));
+
 module.exports = router;
