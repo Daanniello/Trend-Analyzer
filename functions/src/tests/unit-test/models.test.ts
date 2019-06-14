@@ -50,15 +50,13 @@ test("'test the properties of the credential model", async () => {
   const cred: ICredential = {
     email: "a@a.com",
     apiKey: "fakeApi",
-    pincode: "1234",
-    emailDomain: "@home.nl"
+    pincode: "1234"
   };
 
   // Act & Assert
   expect(typeof cred.email).toBe("string");
   expect(typeof cred.apiKey).toBe("string");
   expect(typeof cred.pincode).toBe("string");
-  expect(typeof cred.emailDomain).toBe("string");
 });
 
 test("'test the properties of the update model", async () => {

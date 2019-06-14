@@ -4,7 +4,7 @@ import CredentialService from "../../services/database/credential-service";
 class MailService {
   async SendMail(dest: string) {
     const service = new CredentialService();
-    const credentials = await service.get("km.corporatienl@gmail.com");
+    const credentials = await service.get(process.env.EMAIL_CLIENT as string);
 
     console.log("MailService mail: " + dest);
     /**
@@ -13,13 +13,13 @@ class MailService {
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: credentials.email,
-        pass: "Koelkast2"
+        user: process.env.EMAIL_CLIENT,
+        pass: process.env.EMAIL_PASSWORD as string
       }
     });
 
     let mailOptions = {
-      from: "Trend Analyzer <" + credentials.email + ">",
+      from: "Trend Analyzer <" + process.env.EMAIL_CLIENT + ">",
       to: dest,
       subject: "Pincode Trend Analyzer",
       html:

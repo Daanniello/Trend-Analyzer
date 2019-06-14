@@ -1,6 +1,5 @@
 import * as express from "express";
 import MailService from "../services/mail/mail-service";
-import CredentialService from "../services/database/credential-service";
 
 /* Ping Router */
 const router = express.Router();
@@ -15,10 +14,8 @@ router.post("", async (req, res) => {
     console.log("No destination mail found!");
     return res.send(false);
   }
-  const service = new CredentialService();
-  const credentials = await service.get("km.corporatienl@gmail.com");
 
-  if (String(destMail).endsWith(credentials.emailDomain)) {
+  if (String(destMail).endsWith(process.env.EMAIL_DOMAIN as string)) {
     // TODO Send mail
     const mailService = new MailService();
     try {
