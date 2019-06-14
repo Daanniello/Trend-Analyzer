@@ -31,7 +31,7 @@ class App extends Component {
     this.state = {
       currentPage: 0,
       pages: [<div />, <div />, <div />, <div />],
-      lastUpdated: "",
+      lastUpdated: "1-1-2000 00:00:00",
       pinCode: "",
       apiKey: "",
       loggedIn: false,
