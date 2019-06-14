@@ -18,11 +18,6 @@ class AedesFetchEngine extends ArticleFetchEngine {
     }
 
     for (let i = 0; i < urls.length; i++) {
-      console.log(urls[i]);
-      console.time("URL LOOP");
-
-      let newArticleCount = 0;
-      let count = 0;
       let currentPageURL: string = this.nextPageURL(
         urls[i],
         this.currentPageNumber
@@ -31,8 +26,6 @@ class AedesFetchEngine extends ArticleFetchEngine {
       this.setCheerioHTML(currentPageHTML);
 
       while (await this.isValidPage()) {
-        count++;
-
         // GET ARTICLES FROM PAGE
         const articleURLs = await this.fetchArticleURLs(currentPageHTML);
 
@@ -43,7 +36,6 @@ class AedesFetchEngine extends ArticleFetchEngine {
           const article = await this.analyzeArticle(rawArticle);
 
           this.articleService.add(article);
-          newArticleCount++;
         }
 
         // Go to the next page and retrieve the HTML
@@ -56,8 +48,6 @@ class AedesFetchEngine extends ArticleFetchEngine {
         this.setCheerioHTML(currentPageHTML);
       }
       this.currentPageNumber = 1;
-      console.log(`ANALYZED ${newArticleCount} ARICLES FROM ${count} PAGES`);
-      console.timeEnd("URL LOOP");
     }
   }
 
