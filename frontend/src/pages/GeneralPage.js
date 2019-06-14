@@ -8,7 +8,6 @@ import AnalyzedCard from "../components/cards/AnalyzedCard";
 import LatestArticle from "../components/cards/LatestArticle";
 
 const GeneralPage = props => {
-  console.log(props.generalData);
   return (
     <div id="general-page-grid">
       <div className="general-page-item" id="general-page-header">

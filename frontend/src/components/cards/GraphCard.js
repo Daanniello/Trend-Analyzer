@@ -85,7 +85,6 @@ class GraphCard extends Component {
 
     this.calculateData = () => {
       const datasets = [];
-      console.log(this.state.topics);
       for (const topic of this.state.topics) {
         const dataset = {
           data: [],
@@ -153,7 +152,6 @@ class GraphCard extends Component {
       var begin = moment(this.state.beginDate.replace("-", ""), "YYYYMMDD");
       var end = moment(this.state.endDate.replace("-", ""), "YYYYMMDD");
 
-      console.log(begin);
       if (
         end.diff(begin, "day") <= 0 ||
         begin.diff(moment.now(), "days") >= 0 ||

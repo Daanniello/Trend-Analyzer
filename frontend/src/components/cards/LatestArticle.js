@@ -11,7 +11,6 @@ const LatestArticleCard = props => {
       <Typography className="latest-article-card-url">Categories:</Typography>
     );
     for (const category of props.latestArticle.categories) {
-      console.log(category);
       categories.push(
         <Typography variant="caption" className="latest-article-card-url">
           {category.name} ({Math.round(category.score * 100)})

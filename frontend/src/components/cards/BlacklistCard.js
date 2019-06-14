@@ -14,8 +14,6 @@ class BlacklistCard extends React.Component {
   };
   constructor(props) {
     super(props);
-
-    console.log(this.state);
   }
 
   removeItem = index => {

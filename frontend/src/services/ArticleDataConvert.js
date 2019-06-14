@@ -21,7 +21,6 @@ class ArticleDataConverter {
       month: {},
       week: {}
     };
-    console.log(this.articles);
     this.articles = this.articles.sort((a, b) => {
       return b.timestamp - a.timestamp;
     });
@@ -37,9 +36,6 @@ class ArticleDataConverter {
         return article;
       }
     });
-
-    console.log(this.latestArticles[0]);
-    console.log(this.latestArticles[1]);
 
     for (const article of this.articles) {
       // Count the provider count

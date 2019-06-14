@@ -12,7 +12,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 const articles = ["article One", "Article Two"];
 
 function TableCardDetails(props) {
-  // console.log(props);
   const { onClose, selectedValue, ...other } = props;
   function handleClose() {
     onClose(selectedValue);
