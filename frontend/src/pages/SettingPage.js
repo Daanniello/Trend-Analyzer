@@ -26,7 +26,10 @@ class SettingPage extends React.Component {
             </Typography>
           </div>
         </div>
-        <BlacklistCard />
+        <BlacklistCard
+          onTopicBlacklistChanged={this.props.onTopicBlacklistChanged}
+          items={this.props.items}
+        />
       </div>
     );
   }

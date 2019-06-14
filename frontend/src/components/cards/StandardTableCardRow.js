@@ -5,10 +5,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Fab from "@material-ui/core/Fab";
 
 class StanderdTableCardRow extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {};
   render() {
     return (
@@ -26,11 +22,21 @@ class StanderdTableCardRow extends React.Component {
         </Typography>
         <Fab
           size="small"
-          style={{ float: "right", margin: "4px" }}
+          style={{
+            float: "right",
+            margin: "6px",
+            width: "32px",
+            height: "32px"
+          }}
           aria-label="Delete"
           onClick={() => this.props.blacklist.removeItem(this.props.index)}
         >
-          <DeleteIcon />
+          <DeleteIcon
+            style={{
+              width: "16px",
+              height: "16px"
+            }}
+          />
         </Fab>
       </div>
     );

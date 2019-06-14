@@ -8,12 +8,17 @@ const LatestArticleCard = props => {
     const categories = [];
 
     categories.push(
-      <Typography className="latest-article-card-url">Categories:</Typography>
+      <Typography key={"category-header"} className="latest-article-card-url">
+        Categories:
+      </Typography>
     );
-    for (const category of props.latestArticle.categories) {
-      console.log(category);
+    for (const [i, category] of props.latestArticle.categories.entries()) {
       categories.push(
-        <Typography variant="caption" className="latest-article-card-url">
+        <Typography
+          key={`category-${i}`}
+          variant="caption"
+          className="latest-article-card-url"
+        >
           {category.name} ({Math.round(category.score * 100)})
         </Typography>
       );
@@ -26,11 +31,17 @@ const LatestArticleCard = props => {
     const topics = [];
 
     topics.push(
-      <Typography className="latest-article-card-url">Topics:</Typography>
+      <Typography key={"topic-header"} className="latest-article-card-url">
+        Topics:
+      </Typography>
     );
-    for (const topic of props.latestArticle.topics) {
+    for (const [i, topic] of props.latestArticle.topics.entries()) {
       topics.push(
-        <Typography variant="caption" className="latest-article-card-url">
+        <Typography
+          key={`topic-${i}`}
+          variant="caption"
+          className="latest-article-card-url"
+        >
           {topic.name} ({Math.round(topic.score * 100)})
         </Typography>
       );
@@ -48,7 +59,12 @@ const LatestArticleCard = props => {
         Company: {props.latestArticle.provider}
       </Typography>
       <Typography className="latest-article-card-url">
-        <a href={props.latestArticle.url} className="href" target="_blank">
+        <a
+          href={props.latestArticle.url}
+          className="href"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {" "}
           {props.latestArticle.title}
         </a>

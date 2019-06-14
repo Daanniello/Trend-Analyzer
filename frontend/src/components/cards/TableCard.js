@@ -34,11 +34,13 @@ class TableCard extends React.Component {
     allData: [],
     showData: [],
     sortCondition: "all",
-    random: Math.random() * 1000
+    random: Math.random() * 1000,
+    items: []
   };
 
   constructor(props) {
     super(props);
+    // TODO: HIERZO :!_+?D
 
     this.state.allData = this.props.data.filter(d => {
       d.checked = false;
@@ -104,6 +106,7 @@ class TableCard extends React.Component {
       } else if (condition === "week") {
         return b.totals.last7 - a.totals.last7;
       }
+      return 0;
     });
     state.sortCondition = condition;
     this.setState(state);
@@ -112,15 +115,13 @@ class TableCard extends React.Component {
     this.updateList();
   };
 
-  Row = ({ index, key, style }) => {
-    console.log(1);
+  Row = ({ index, style }) => {
     const item = this.state.showData[index];
     if (!item) return;
     const { checked, color, name, totals, articles } = item;
     return (
       <TableCardRow
         id={index}
-        key={key}
         style={style}
         handleCheck={this.handleOnCheck}
         checked={checked}

@@ -8,7 +8,6 @@ import AnalyzedCard from "../components/cards/AnalyzedCard";
 import LatestArticle from "../components/cards/LatestArticle";
 
 const GeneralPage = props => {
-  console.log(props.generalData);
   return (
     <div id="general-page-grid">
       <div className="general-page-item" id="general-page-header">
@@ -26,12 +25,12 @@ const GeneralPage = props => {
           type="Category"
           unit="week"
           results={
-            props.generalData.hot.category.week.length != false
+            props.generalData.hot.category.week.length > 0
               ? props.generalData.hot.category.week[0].amount
               : 0
           }
           text={
-            props.generalData.hot.category.week.length != false
+            props.generalData.hot.category.week.length > 0
               ? props.generalData.hot.category.week[0].name
               : "No topic this week"
           }
@@ -44,12 +43,12 @@ const GeneralPage = props => {
           type="Topic"
           unit="week"
           results={
-            props.generalData.hot.topic.week.length != false
+            props.generalData.hot.topic.week.length > 0
               ? props.generalData.hot.topic.week[0].amount
               : 0
           }
           text={
-            props.generalData.hot.topic.week.length != false
+            props.generalData.hot.topic.week.length > 0
               ? props.generalData.hot.topic.week[0].name
               : "No category this week"
           }
@@ -62,12 +61,12 @@ const GeneralPage = props => {
           type="Category"
           unit="month"
           results={
-            props.generalData.hot.category.month.length != false
+            props.generalData.hot.category.month.length !== false
               ? props.generalData.hot.category.month[0].amount
               : 0
           }
           text={
-            props.generalData.hot.category.month.length != false
+            props.generalData.hot.category.month.length !== false
               ? props.generalData.hot.category.month[0].name
               : "No category this month"
           }
@@ -80,12 +79,12 @@ const GeneralPage = props => {
           type="Topic"
           unit="month"
           results={
-            props.generalData.hot.topic.month.length != false
+            props.generalData.hot.topic.month.length !== false
               ? props.generalData.hot.topic.month[0].amount
               : 0
           }
           text={
-            props.generalData.hot.category.month.length != false
+            props.generalData.hot.category.month.length !== false
               ? props.generalData.hot.topic.month[0].name
               : "No category this month"
           }

@@ -21,25 +21,24 @@ class ArticleDataConverter {
       month: {},
       week: {}
     };
-    console.log(this.articles);
+
     this.articles = this.articles.sort((a, b) => {
       return b.timestamp - a.timestamp;
     });
     this.latestArticles = [];
     this.latestArticles[0] = this.articles.filter(article => {
-      if (article.provider == "CorporatieNL") {
+      if (article.provider === "CorporatieNL") {
         return article;
       }
+      return false;
     });
 
     this.latestArticles[1] = this.articles.filter(article => {
-      if (article.provider == "Aedes") {
+      if (article.provider === "Aedes") {
         return article;
       }
+      return false;
     });
-
-    console.log(this.latestArticles[0]);
-    console.log(this.latestArticles[1]);
 
     for (const article of this.articles) {
       // Count the provider count

@@ -73,6 +73,17 @@ abstract class DatabaseService<T> {
     return documentRef;
   }
 
+  async setWithoutMerge(
+    key: string,
+    data: T
+  ): Promise<FirebaseFirestore.DocumentReference> {
+    // Create a reference to the database collection
+    const collectionRef = this.db.collection(this.collection);
+    const documentRef = collectionRef.doc(key);
+    await documentRef.set(data, { merge: false });
+    return documentRef;
+  }
+
   async setByQuery(
     options: any,
     data: T

@@ -38,7 +38,6 @@ test("test the format topics", async () => {
     { label: "topic3", score: "0.2" }
   ];
   const json = JSON.parse(JSON.stringify(topics));
-  console.log(json);
   // Act
   const formattedTopics: {
     name: string;
@@ -46,7 +45,6 @@ test("test the format topics", async () => {
   }[] = SERVICE.formatTopics(json);
 
   // Assert - expect MIN_TOPIC_SCORE to be 0.6
-  console.log(formattedTopics);
   expect(formattedTopics.length).toBe(2);
   expect(formattedTopics[0].name).toBe("topic");
   expect(formattedTopics[1].name).toBe("topic2");

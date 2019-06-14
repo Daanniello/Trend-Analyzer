@@ -1,13 +1,12 @@
 import React from "react";
 import "./NavigationHeader.css";
 
-import Typography from "@material-ui/core/Typography";
-
-const NavigationHeader = props => {
+const NavigationHeader = () => {
   return (
     <div id="navigation-header">
       <img
         id="logo"
+        alt="Kjenning Logo"
         src="https://www.kjenning.nl/images/logos/kjenning-header-logo.png"
       />
     </div>

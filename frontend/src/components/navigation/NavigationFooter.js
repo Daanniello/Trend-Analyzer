@@ -1,6 +1,5 @@
 import React from "react";
 import "./NavigationFooter.css";
-import * as axios from "axios";
 
 import RequestService from "../../services/request-service";
 
@@ -13,7 +12,7 @@ const request = new RequestService();
 const NavigationFooter = props => {
   const performAnalyzeRequest = async () => {
     try {
-      const response = await request.post("/analyze", {});
+      await request.post("/analyze", {});
     } catch (error) {
       console.log(error);
     }

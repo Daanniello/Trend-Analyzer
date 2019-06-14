@@ -8,10 +8,9 @@ export default function AddButton(props) {
     <div>
       <Fab
         size="small"
-        color="primary"
         onClick={() => props.blacklist.addItem()}
         aria-label="Add"
-        color="#8ec012"
+        color="default"
       >
         <AddIcon />
       </Fab>

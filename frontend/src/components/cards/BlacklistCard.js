@@ -10,29 +10,35 @@ const request = new RequestService();
 
 class BlacklistCard extends React.Component {
   state = {
-    items: ["WORK", "IN", "PROGRESS"]
+    items: []
   };
   constructor(props) {
     super(props);
 
-    console.log(this.state);
+    this.state.items = this.props.items;
   }
 
   removeItem = index => {
     const state = this.state;
     state.items.splice(index, 1);
     this.setState(state);
+    this.props.onTopicBlacklistChanged(this.state.items);
   };
 
   addItem = () => {
     const newItemElement = document.getElementById("outlined-name");
     if (newItemElement.value === "") return;
 
-    //const response = await request.post("/blacklist", {});
     const state = this.state;
-    state.items.push(newItemElement.value);
+
+    const itemarray = this.state.items;
+
+    itemarray.push(newItemElement.value);
+    state.items = itemarray;
     newItemElement.value = "";
     this.setState(state);
+    request.post("/blacklist", { items: state.items });
+    this.props.onTopicBlacklistChanged(state.items);
   };
 
   render() {

@@ -4,27 +4,22 @@ import { Typography } from "@material-ui/core";
 import StanderdTableCardRow from "./StandardTableCardRow";
 
 class StandardTableCard extends React.Component {
-  state = {};
-
-  constructor(props) {
-    super(props);
-  }
-
   RemoveBlacklist() {}
 
   loadData() {
     let items = this.props.items;
-    let andere = [];
+    let other = [];
     for (let i = 0; i < items.length; i++) {
-      andere.push(
+      other.push(
         <StanderdTableCardRow
+          key={i}
           index={i}
           text={items[i]}
           blacklist={this.props.blacklist}
         />
       );
     }
-    return andere;
+    return other;
   }
 
   render() {
