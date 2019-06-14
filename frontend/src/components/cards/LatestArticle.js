@@ -12,6 +12,7 @@ const LatestArticleCard = props => {
         Categories:
       </Typography>
     );
+
     for (const [i, category] of props.latestArticle.categories.entries()) {
       categories.push(
         <Typography

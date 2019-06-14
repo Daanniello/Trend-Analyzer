@@ -3,6 +3,7 @@ import { Component } from "react";
 import "./App.css";
 
 import * as axios from "axios";
+import * as moment from "moment";
 import RequestService from "./services/request-service";
 
 import Navigation from "./components/navigation/Navigation";
@@ -26,29 +27,25 @@ class App extends Component {
     // The state of the app. Changes what the user sees and includes code needed to access certain pages.
     this.state = {
       currentPage: 0,
-      pages: [
-        <GeneralPage />,
-        <TopicPage />,
-        <CatergoryPage />,
-        <SettingPage />
-      ],
-      lastUpdated: "16-05-2019 15:00",
+      pages: [<div />, <div />, <div />, <div />],
+      lastUpdated: "1-1-2000 00:00:00",
       pinCode: "",
       apiKey: "",
       loggedIn: false,
       rawArticles: [],
       filteredArticles: [],
       tableData: [],
-      blacklistItems: []
+      blacklistItems: [],
+      updateDisabled: true
     };
   }
 
   // Sets the current page
   setPage = newPage => {
     if (this.state.currentPage === newPage) return;
-    const state = this.state;
-    state.currentPage = newPage;
-    this.setState(state);
+
+    this.state.currentPage = newPage;
+    this.setState(this.state);
   };
 
   // Adds a number to the pincode if below 4 and if 4 it sends to check if it's the correct code
@@ -96,11 +93,18 @@ class App extends Component {
       axios.defaults.headers = {
         "x-pincode": this.state.pinCode
       };
-      const response = await request.post("/login", {});
+      let response = await request.post("/login", {});
       this.state.apiKey = response.data.apiKey;
       this.state.loggedIn = true;
 
       axios.defaults.headers = { "x-api-key": response.data.apiKey };
+
+      this.state.lastUpdated = moment
+        .unix(response.data.lastUpdated)
+        .local()
+        .format("DD-MM-YYYY HH:mm:ss");
+
+      this.setDisableButton(response.data.lastUpdated);
 
       await this.getArticles();
       await this.getBlacklistItems();
@@ -166,12 +170,13 @@ class App extends Component {
 
   // Remove last pincode number input
   removePin = () => {
-    const state = this.state;
+    if (this.state.pinCode.length >= 4) return;
+
     this.state.pinCode = this.state.pinCode.substring(
       0,
       this.state.pinCode.length - 1
     );
-    this.setState(state);
+    this.setState(this.state);
   };
 
   getApiKey = () => {
@@ -179,9 +184,35 @@ class App extends Component {
   };
 
   setApiKey = async value => {
-    const state = this.state;
-    state.apiKey = value;
-    this.setState(state);
+    this.state.apiKey = value;
+    this.setState(this.state);
+  };
+
+  setTimestamp = unix => {
+    const date = moment
+      .unix(unix)
+      .local()
+      .format("DD-MM-YYYY HH:mm:ss");
+    this.state.lastUpdated = date;
+    this.setDisableButton(unix);
+    this.setState(this.state);
+  };
+
+  setDisableButton = unix => {
+    if (
+      moment.unix(unix).isBefore(
+        moment()
+          .clone()
+          .add(-30, "m")
+      )
+    ) {
+      // Can update
+      this.state.updateDisabled = false;
+    } else {
+      // Can't update
+      this.state.updateDisabled = true;
+    }
+    this.setState(this.state);
   };
 
   render() {
@@ -192,6 +223,9 @@ class App extends Component {
           setPage={this.setPage}
           currentPage={this.state.currentPage}
           lastUpdated={this.state.lastUpdated}
+          setTimestamp={this.setTimestamp}
+          setDisableButton={this.setDisableButton}
+          updateDisabled={this.state.updateDisabled}
         />
         {this.state.loggedIn === true ? (
           <div id="page-content">

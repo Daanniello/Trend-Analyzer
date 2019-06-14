@@ -50,6 +50,9 @@ const Navigation = props => {
       <NavigationFooter
         getApiKey={props.getApiKey}
         lastUpdated={props.lastUpdated}
+        setTimestamp={props.setTimestamp}
+        updateDisabled={props.updateDisabled}
+        setDisableButton={props.setDisableButton}
       />
     </div>
   );
