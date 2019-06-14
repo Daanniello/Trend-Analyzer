@@ -30,6 +30,7 @@ class App extends Component {
       pages: [<div />, <div />, <div />, <div />],
       lastUpdated: "1-1-2000 00:00:00",
       pinCode: "",
+      errorMsg: "",
       apiKey: "",
       loggedIn: false,
       rawArticles: [],
@@ -238,6 +239,7 @@ class App extends Component {
                 addPin={this.addPin}
                 removePin={this.removePin}
                 pinCode={this.state.pinCode}
+                errorMsg={this.state.errorMsg}
               />
             </DialogContent>
           </Modal>
