@@ -11,6 +11,11 @@ class AedesFetchEngine extends ArticleFetchEngine {
   protected readonly service: ProviderService = new AedesService();
 
   public async FetchInitialArticles(): Promise<void> {
+    if (this.articleService == null) {
+      console.log("NO DATABASE");
+      return;
+    }
+
     // TODO: Function times out in firebase, if this function needs to be called while running this needs to be fixed. Can be ran in node.js with database permissions
     let urls: string[] = [];
     for (let h = +moment().format("YYYY"); h >= 2017; h--) {
@@ -18,16 +23,16 @@ class AedesFetchEngine extends ArticleFetchEngine {
     }
 
     for (let i = 0; i < urls.length; i++) {
-      let currentPageURL: string = this.nextPageURL(
-        urls[i],
-        this.currentPageNumber
-      );
-      let currentPageHTML: string = await this.getPageHTML(currentPageURL);
-      this.setCheerioHTML(currentPageHTML);
+      // let currentPageURL: string = this.nextPageURL(
+      //   urls[i],
+      //   this.currentPageNumber
+      // );
+      // let currentPageHTML: string = await this.getPageHTML(currentPageURL);
+      this.setCheerioHTML(urls[i], this.currentPageNumber);
 
       while (await this.isValidPage()) {
         // GET ARTICLES FROM PAGE
-        const articleURLs = await this.fetchArticleURLs(currentPageHTML);
+        const articleURLs = await this.fetchArticleURLs();
 
         // LOOP OVER ARTICLES AND ANALYZE THEM
         for (const articleURL of articleURLs) {
@@ -40,12 +45,12 @@ class AedesFetchEngine extends ArticleFetchEngine {
 
         // Go to the next page and retrieve the HTML
         this.currentPageNumber++;
-        currentPageURL = await this.nextPageURL(
-          urls[i],
-          this.currentPageNumber
-        );
-        currentPageHTML = await this.getPageHTML(currentPageURL);
-        this.setCheerioHTML(currentPageHTML);
+        // currentPageURL = await this.nextPageURL(
+        //   urls[i],
+        //   this.currentPageNumber
+        // );
+        // currentPageHTML = await this.getPageHTML(currentPageURL);
+        this.setCheerioHTML(urls[i], this.currentPageNumber);
       }
       this.currentPageNumber = 1;
     }
@@ -62,7 +67,7 @@ class AedesFetchEngine extends ArticleFetchEngine {
     return articles.length > 0;
   }
 
-  protected async fetchArticleURLs(page: string): Promise<string[]> {
+  protected async fetchArticleURLs(): Promise<string[]> {
     const articleHrefs: string[] = [];
 
     if (this.currentPageNumber === 1) {
