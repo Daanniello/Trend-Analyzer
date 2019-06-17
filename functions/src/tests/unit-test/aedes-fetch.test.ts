@@ -1,6 +1,6 @@
-import CorporatieNLFetchEngine from "../../engine/corporatienl-fetch-engine";
+import AedesFetchEngine from "../../engine/aedes-fetch-engine";
 
-class TestCorporatieNLFetchEngine extends CorporatieNLFetchEngine {
+class TestAedesFetchEngine extends AedesFetchEngine {
   constructor() {
     super(false);
   }
@@ -25,25 +25,24 @@ class TestCorporatieNLFetchEngine extends CorporatieNLFetchEngine {
   }
 }
 
-test("Test the CorporatieNL fetch engine", async () => {
+test("Test the Aedes fetch engine", async () => {
   // Arrange
-  const engine = new TestCorporatieNLFetchEngine();
+  const engine = new TestAedesFetchEngine();
   await engine.testSetCheerioHTML(engine["baseURL"], 1);
   const urls = await engine.testFetchArticleURLs();
-  engine.increasePageNumber(); // Increase currentPageNumber to check if it leave out the 4 recent articles
-  const urls2 = await engine.testFetchArticleURLs();
 
   // Act
 
   // Assert
 
-  expect(engine["baseURL"]).toBe("https://www.corporatienl.nl/artikelen");
+  expect(engine["baseURL"]).toBe(
+    "https://www.aedes.nl/search?documentType=article&orderBy=sortDate&order=desc&r23_r1"
+  );
   expect(engine.testNextPageURL(engine["baseURL"], 1)).toBe(
-    "https://www.corporatienl.nl/artikelen/page/1"
+    "https://www.aedes.nl/search?documentType=article&orderBy=sortDate&order=desc&r23_r1:page=1&r23_r1:pageSize=6"
   );
   expect(engine.testIsValidPage()).toBe(true);
-  expect(urls.length).toBe(12);
-  expect(urls2.length).toBe(8);
+  expect(urls.length).toBe(6);
 
   await engine.testSetCheerioHTML(engine["baseURL"], 1000);
   expect(engine.testIsValidPage()).toBe(false);
