@@ -33,7 +33,7 @@ class BlacklistCard extends React.Component {
 
     const itemarray = this.state.items;
 
-    itemarray.push(newItemElement.value);
+    itemarray.push(newItemElement.value.toLowerCase());
     state.items = itemarray;
     newItemElement.value = "";
     this.setState(state);
