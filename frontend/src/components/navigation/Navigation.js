@@ -8,6 +8,7 @@ import NavigationFooter from "./NavigationFooter";
 import PieChart from "@material-ui/icons/PieChart";
 import TableChart from "@material-ui/icons/TableChart";
 import ShowChart from "@material-ui/icons/ShowChart";
+import Settings from "@material-ui/icons/Settings";
 
 const Navigation = props => {
   const items = [
@@ -22,6 +23,10 @@ const Navigation = props => {
     {
       text: "Categories",
       icon: <ShowChart />
+    },
+    {
+      text: "Settings",
+      icon: <Settings />
     }
   ];
 
@@ -45,6 +50,10 @@ const Navigation = props => {
       <NavigationFooter
         getApiKey={props.getApiKey}
         lastUpdated={props.lastUpdated}
+        setTimestamp={props.setTimestamp}
+        updateDisabled={props.updateDisabled}
+        setDisableButton={props.setDisableButton}
+        pageColor={props.pageColor}
       />
     </div>
   );

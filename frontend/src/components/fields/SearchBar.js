@@ -20,7 +20,7 @@ const SearchBar = props => {
       <TextField
         style={{ color: "White" }}
         onChange={props.onChange}
-        label="Search for a specific topic"
+        label={"Search for a specific " + props.description}
         type="search"
         margin="normal"
         variant="outlined"

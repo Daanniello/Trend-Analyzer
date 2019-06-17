@@ -3,15 +3,20 @@ import { Component } from "react";
 import "./App.css";
 
 import * as axios from "axios";
+import * as moment from "moment";
 import RequestService from "./services/request-service";
 
 import Navigation from "./components/navigation/Navigation";
 import LoginForm from "./components/login/login-form";
 import GeneralPage from "./pages/GeneralPage";
 import TopicPage from "./pages/TopicPage";
+import CatergoryPage from "./pages/CategoryPage";
+import SettingPage from "./pages/SettingPage";
 
 import Modal from "@material-ui/core/Modal";
 import DialogContent from "@material-ui/core/DialogContent";
+
+import ArticleDataConvert from "./services/ArticleDataConvert";
 
 const request = new RequestService();
 
@@ -19,133 +24,272 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // Stores wheter logged in
-    window.localStorage.loggedIn = undefined;
-
     // The state of the app. Changes what the user sees and includes code needed to access certain pages.
     this.state = {
       currentPage: 0,
-      pages: [<GeneralPage />, <TopicPage />, <div />],
-      lastUpdated: "16-05-2019 15:00",
+      pages: [<div />, <div />, <div />, <div />],
+      lastUpdated: "1-1-2000 00:00:00",
       pinCode: "",
       errorMsg: "",
       apiKey: "",
       loggedIn: false,
-      displayEmailInput: false
-    };
-
-    // Lets user use the keyboard for pincode input.
-    this.keyHandler = event => {
-      const { key } = event;
-      if (key === "Backspace") this.removePin();
-      if (isNaN(key)) return;
-      const number = +key;
-      this.addPin(number);
+      displayEmailInput: false,
+      rawArticles: [],
+      filteredArticles: [],
+      tableData: [],
+      blacklistItems: [],
+      updateDisabled: true,
+      pageColor: "#551F5C"
     };
     document.addEventListener("keydown", this.keyHandler, true);
-
-    // Sets the current page
-    this.setPage = newPage => {
-      if (this.state.currentPage === newPage) return;
-      const state = this.state;
-      state.currentPage = newPage;
-      this.setState(state);
-    };
-
-    // Adds a number to the pincode if below 4 and if 4 it sends to check if it's the correct code
-    this.addPin = async value => {
-      const state = this.state;
-      if (state.pinCode.length < 4) {
-        state.pinCode += value;
-        if (state.pinCode.length === 4) {
-          this.checkLogin(state);
-        }
-      }
-      this.setState(state);
-    };
-
-    // Checks wheter login should succeed or not
-    this.checkLogin = async value => {
-      const state = value;
-      try {
-        axios.defaults.headers = {
-          "x-pincode": state.pinCode
-        };
-        const response = await request.post("/login", {});
-        state.apiKey = response.data.apiKey;
-        state.loggedIn = true;
-      } catch (error) {
-        state.errorMsg = error;
-        this.shakeIt();
-        state.pinCode = "";
-      }
-      this.setState(state);
-    };
-
-    // Remove last pincode number input
-    this.removePin = () => {
-      const state = this.state;
-      this.state.pinCode = this.state.pinCode.substring(
-        0,
-        this.state.pinCode.length - 1
-      );
-      this.setState(state);
-    };
-
-    this.getApiKey = () => {
-      return this.state.apiKey;
-    };
-
-    this.setApiKey = async value => {
-      const state = this.state;
-      state.apiKey = value;
-      this.setState(state);
-    };
-
-    // Show email email input and send button, disable keyboard pincode number input
-    this.toggleDisplayEmailInput = () => {
-      const state = this.state;
-      if (state.displayEmailInput === false) {
-        state.displayEmailInput = true;
-        document.removeEventListener("keydown", this.keyHandler, true);
-      } else {
-        state.displayEmailInput = false;
-        document.addEventListener("keydown", this.keyHandler, true);
-      }
-      this.setState(state);
-    };
-
-    // Shake the login screen (for when there is a bad request)
-    this.shakeIt = async value => {
-      const form = document.getElementById("login-form");
-      form.classList.add("login-shake");
-      await new Promise(resolve => setTimeout(resolve, 700));
-      form.classList.remove("login-shake");
-    };
-
-    // Send the mail via the backend, shake login when an error occures
-    this.sendMail = async value => {
-      const mail = value;
-      try {
-        axios.defaults.headers = {
-          "x-email": mail
-        };
-        const response = await request.post("/mail", {});
-        if (response.data === true) {
-          const state = this.state;
-          state.errorMsg = "E-mail sent!";
-          this.setState(state);
-          this.toggleDisplayEmailInput();
-        } else {
-          this.shakeIt();
-          console.log("Invalid e-mail address!");
-        }
-      } catch (error) {
-        this.shakeIt();
-        console.log(error);
-      }
-    };
   }
+
+  // Lets user use the keyboard for pincode input.
+  keyHandler = event => {
+    const { key } = event;
+    if (key === "Backspace") this.removePin();
+    if (isNaN(key)) return;
+    const number = +key;
+    this.addPin(number);
+  };
+
+  // Sets the current page
+  setPage = newPage => {
+    if (this.state.currentPage === newPage) return;
+    const state = this.state;
+    state.currentPage = newPage;
+    this.setState(state);
+  };
+
+  addPin = async value => {
+    const state = this.state;
+    if (state.pinCode.length < 4) {
+      state.pinCode += value;
+      if (state.pinCode.length === 4) {
+        this.checkLogin(state);
+        // >>>>>>> develop
+      }
+    }
+    this.setState(state);
+  };
+
+  onPageChange = color => {
+    const state = this.state;
+    state.pageColor = color;
+    this.setState(state);
+  };
+
+  onTopicBlacklistChanged = items => {
+    request.post("/blacklist", { items: items });
+
+    this.blacklistItems = items;
+    this.applyBlacklist();
+    this.createPageFormats();
+    this.setPages();
+    this.setState(this.state);
+
+    return items;
+  };
+
+  // Show email email input and send button, disable keyboard pincode number input
+  toggleDisplayEmailInput = () => {
+    const state = this.state;
+    if (state.displayEmailInput === false) {
+      state.displayEmailInput = true;
+      document.removeEventListener("keydown", this.keyHandler, true);
+    } else {
+      state.displayEmailInput = false;
+      document.addEventListener("keydown", this.keyHandler, true);
+    }
+    this.setState(state);
+  };
+
+  FiltertTableData = (data, blacklistedItems) => {
+    let filteredData = [];
+    try {
+      filteredData = data.filter(d => {
+        if (blacklistedItems.indexOf(d.name) >= 0) {
+          return false;
+        }
+        return true;
+      });
+      return filteredData;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  shakeIt = async () => {
+    const form = document.getElementById("login-form");
+    form.classList.add("login-shake");
+    await new Promise(resolve => setTimeout(resolve, 700));
+    form.classList.remove("login-shake");
+  };
+
+  // Checks wheter login should succeed or not
+  checkLogin = async () => {
+    try {
+      axios.defaults.headers = {
+        "x-pincode": this.state.pinCode
+      };
+      let response = await request.post("/login", {});
+      this.state.apiKey = response.data.apiKey;
+      this.state.loggedIn = true;
+
+      axios.defaults.headers = { "x-api-key": response.data.apiKey };
+
+      this.state.lastUpdated = moment
+        .unix(response.data.lastUpdated)
+        .local()
+        .format("DD-MM-YYYY HH:mm:ss");
+
+      this.setDisableButton(response.data.lastUpdated);
+
+      await this.getArticles();
+      await this.getBlacklistItems();
+      this.applyBlacklist();
+      this.createPageFormats();
+      this.setPages();
+    } catch (error) {
+      this.state.errorMsg = error;
+      this.shakeIt();
+      this.state.pinCode = "";
+    }
+    this.setState(this.state);
+  };
+
+  // Send the mail via the backend, shake login when an error occures
+  sendMail = async value => {
+    const mail = value;
+    try {
+      axios.defaults.headers = {
+        "x-email": mail
+      };
+      const response = await request.post("/mail", {});
+      if (response.data === true) {
+        const state = this.state;
+        state.errorMsg = "E-mail sent!";
+        this.setState(state);
+        this.toggleDisplayEmailInput();
+      } else {
+        this.shakeIt();
+        console.log("Invalid e-mail address!");
+      }
+    } catch (error) {
+      this.shakeIt();
+      console.log(error);
+    }
+  };
+
+  getArticles = async () => {
+    // TODO: IMPLEMENT BACKEND AGAIN
+    this.state.rawArticles = await require("./articles");
+  };
+
+  getBlacklistItems = async () => {
+    this.state.blacklistItems = (await request.get("/blacklist")).data.items;
+  };
+
+  applyBlacklist = () => {
+    this.state.filteredArticles = this.state.rawArticles.map(article => {
+      article.topics = article.topics.filter(topic => {
+        if (this.state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
+          return false;
+        }
+        return true;
+      });
+      article.categories = article.categories.filter(categorie => {
+        if (
+          this.state.blacklistItems.indexOf(categorie.name.toLowerCase()) >= 0
+        ) {
+          return false;
+        }
+        return true;
+      });
+      return article;
+    });
+  };
+
+  createPageFormats = () => {
+    const converter = new ArticleDataConvert(this.state.filteredArticles);
+
+    this.state.tableData[0] = converter.ConvertArticlesToGeneral(); // GENERAL
+    this.state.tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
+    this.state.tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
+  };
+
+  setPages = () => {
+    this.state.pages = [
+      <GeneralPage
+        generalData={this.state.tableData[0]}
+        pageColor="#551F5C"
+        onPageChange={this.onPageChange}
+      />,
+      <TopicPage
+        topicData={this.state.tableData[1]}
+        pageColor="#9FD714"
+        onPageChange={this.onPageChange}
+      />,
+      <CatergoryPage
+        categoryData={this.state.tableData[2]}
+        pageColor="#FF8000"
+        onPageChange={this.onPageChange}
+      />,
+      <SettingPage
+        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
+        items={this.state.blacklistItems}
+        pageColor="#9D000F"
+        onPageChange={this.onPageChange}
+      />
+    ];
+  };
+
+  // Remove last pincode number input
+  removePin = () => {
+    if (this.state.pinCode.length >= 4) return;
+
+    this.state.pinCode = this.state.pinCode.substring(
+      0,
+      this.state.pinCode.length - 1
+    );
+    this.setState(this.state);
+  };
+
+  getApiKey = () => {
+    return this.state.apiKey;
+  };
+
+  setApiKey = async value => {
+    this.state.apiKey = value;
+    this.setState(this.state);
+  };
+
+  setTimestamp = unix => {
+    const date = moment
+      .unix(unix)
+      .local()
+      .format("DD-MM-YYYY HH:mm:ss");
+    this.state.lastUpdated = date;
+    this.setDisableButton(unix);
+    this.setState(this.state);
+  };
+
+  setDisableButton = unix => {
+    if (
+      moment.unix(unix).isBefore(
+        moment()
+          .clone()
+          .add(-30, "m")
+      )
+    ) {
+      // Can update
+      this.state.updateDisabled = false;
+    } else {
+      // Can't update
+      this.state.updateDisabled = true;
+    }
+    this.setState(this.state);
+  };
 
   render() {
     return (
@@ -155,6 +299,10 @@ class App extends Component {
           setPage={this.setPage}
           currentPage={this.state.currentPage}
           lastUpdated={this.state.lastUpdated}
+          setTimestamp={this.setTimestamp}
+          setDisableButton={this.setDisableButton}
+          updateDisabled={this.state.updateDisabled}
+          pageColor={this.state.pageColor}
         />
         {this.state.loggedIn === true ? (
           <div id="page-content">

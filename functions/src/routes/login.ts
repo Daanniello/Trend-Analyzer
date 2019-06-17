@@ -1,5 +1,6 @@
 import * as express from "express";
 import CredentialService from "../services/database/credential-service";
+import UpdateService from "../services/database/update-service";
 
 /* Ping Router */
 const router = express.Router();
@@ -16,9 +17,15 @@ router.post("", async (req, res) => {
   const service = new CredentialService();
   const credentials = await service.get("km.corporatienl@gmail.com");
 
+  const updateService = new UpdateService();
+  const lastupdate = await updateService.get("lastupdate");
+
   if (pincode !== credentials.pincode) return res.sendStatus(401);
 
-  return res.send({ apiKey: credentials.apiKey });
+  return res.send({
+    apiKey: credentials.apiKey,
+    lastUpdated: lastupdate.timestamp
+  });
 });
 
 module.exports = router;
