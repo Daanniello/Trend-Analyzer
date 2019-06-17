@@ -12,24 +12,28 @@ router.post("", async (req, res) => {
   // Check for mail adres in the header
   if (!destMail) {
     console.log("No destination mail found!");
-    return res.send(false);
+    return res.sendStatus(401);
   }
 
-  if (String(destMail).endsWith(process.env.EMAIL_DOMAIN as string)) {
-    // TODO Send mail
+  const stringMail = String(destMail);
+
+  if (!stringMail.endsWith(process.env.EMAIL_DOMAIN as string)) {
+    return res.sendStatus(401);
+  }
+
+  try {
     const mailService = new MailService();
-    try {
-      await mailService.SendMail(String(destMail));
-    } catch (error) {
-      console.log(error);
-      return res.send(false);
-    }
-
-    return res.send(true);
-  } else {
-    console.log("Wrong e-mail domain!");
-    return res.send(false);
+    await mailService.SendMail(stringMail);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
   }
+
+  // if (String(destMail).endsWith(process.env.EMAIL_DOMAIN as string)) {
+  // } else {
+  //   return res.sendStatus(401);
+  // }
 });
 
 module.exports = router;

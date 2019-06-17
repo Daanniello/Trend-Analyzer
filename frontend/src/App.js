@@ -160,26 +160,28 @@ class App extends Component {
 
   // Send the mail via the backend, shake login when an error occures
   sendMail = async value => {
-    const mail = value;
     try {
+      const mail = value;
+      if (mail === "") throw new Error();
+      if (!this.validateEmail(mail)) throw new Error();
       axios.defaults.headers = {
         "x-email": mail
       };
-      const response = await request.post("/mail", {});
-      if (response.data === true) {
-        const state = this.state;
-        state.errorMsg = "E-mail sent!";
-        this.setState(state);
-        this.toggleDisplayEmailInput();
-      } else {
-        this.shakeIt();
-        console.log("Invalid e-mail address!");
-      }
+      await request.post("/mail", {});
+      const state = this.state;
+      state.errorMsg = "E-mail sent!";
+      this.setState(state);
+      this.toggleDisplayEmailInput();
     } catch (error) {
       this.shakeIt();
       console.log(error);
     }
   };
+
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
 
   getArticles = async () => {
     // TODO: IMPLEMENT BACKEND AGAIN

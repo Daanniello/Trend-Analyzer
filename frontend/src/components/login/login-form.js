@@ -109,7 +109,10 @@ const LoginForm = props => {
             } else if (errorMessage.includes("E-mail")) {
               return (
                 <div id="login-form-footer">
-                  Please check your e-mail for the pincode!
+                  <Typography>
+                    {" "}
+                    Please check your e-mail for the pincode!
+                  </Typography>
                 </div>
               );
             } else {
