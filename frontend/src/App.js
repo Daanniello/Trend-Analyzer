@@ -37,7 +37,8 @@ class App extends Component {
       filteredArticles: [],
       tableData: [],
       blacklistItems: [],
-      updateDisabled: true
+      updateDisabled: true,
+      pageColor: "#551F5C"
     };
   }
 
@@ -58,6 +59,12 @@ class App extends Component {
         this.checkLogin(state);
       }
     }
+    this.setState(state);
+  };
+
+  onPageChange = color => {
+    const state = this.state;
+    state.pageColor = color;
     this.setState(state);
   };
 
@@ -159,12 +166,26 @@ class App extends Component {
 
   setPages = () => {
     this.state.pages = [
-      <GeneralPage generalData={this.state.tableData[0]} />,
-      <TopicPage topicData={this.state.tableData[1]} />,
-      <CatergoryPage categoryData={this.state.tableData[2]} />,
+      <GeneralPage
+        generalData={this.state.tableData[0]}
+        pageColor="#551F5C"
+        onPageChange={this.onPageChange}
+      />,
+      <TopicPage
+        topicData={this.state.tableData[1]}
+        pageColor="#9FD714"
+        onPageChange={this.onPageChange}
+      />,
+      <CatergoryPage
+        categoryData={this.state.tableData[2]}
+        pageColor="#FF8000"
+        onPageChange={this.onPageChange}
+      />,
       <SettingPage
         onTopicBlacklistChanged={this.onTopicBlacklistChanged}
         items={this.state.blacklistItems}
+        pageColor="#9D000F"
+        onPageChange={this.onPageChange}
       />
     ];
   };
@@ -227,6 +248,7 @@ class App extends Component {
           setTimestamp={this.setTimestamp}
           setDisableButton={this.setDisableButton}
           updateDisabled={this.state.updateDisabled}
+          pageColor={this.state.pageColor}
         />
         {this.state.loggedIn === true ? (
           <div id="page-content">

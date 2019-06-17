@@ -270,37 +270,41 @@ class GraphCard extends Component {
     return (
       <div className="graph-card">
         <div
-          className={
-            "chart-button" +
-            (this.state.DateFormat === "YYYY" && !this.state.isCustom
-              ? " chart-button-active"
-              : "")
-          }
+          className={"chart-button"}
           onClick={() => this.labels_yearly()}
+          style={{
+            marginLeft: "8px ",
+            backgroundColor:
+              this.state.DateFormat === "YYYY" && !this.state.isCustom
+                ? "#A9A9A9"
+                : this.props.pageColor
+          }}
         >
           Yearly
         </div>
         <div
-          className={
-            "chart-button" +
-            (this.state.DateFormat === "MMMM" && !this.state.isCustom
-              ? " chart-button-active"
-              : "")
-          }
+          className={"chart-button"}
           onClick={() => this.labels_monthly()}
-          style={{ marginLeft: "8px " }}
+          style={{
+            marginLeft: "8px ",
+            backgroundColor:
+              this.state.DateFormat === "MMMM" && !this.state.isCustom
+                ? "#A9A9A9"
+                : this.props.pageColor
+          }}
         >
           Monthly
         </div>
         <div
-          className={
-            "chart-button" +
-            (this.state.DateFormat === "WW" && !this.state.isCustom
-              ? " chart-button-active"
-              : "")
-          }
+          className={"chart-button"}
           onClick={() => this.labels_weekly()}
-          style={{ marginLeft: "8px " }}
+          style={{
+            marginLeft: "8px ",
+            backgroundColor:
+              this.state.DateFormat === "WW" && !this.state.isCustom
+                ? "#A9A9A9"
+                : this.props.pageColor
+          }}
         >
           Weekly
         </div>
@@ -309,7 +313,12 @@ class GraphCard extends Component {
             "chart-button" + (this.state.isCustom ? " chart-button-active" : "")
           }
           onClick={this.handleClickOpen}
-          style={{ marginLeft: "8px " }}
+          style={{
+            marginLeft: "8px ",
+            backgroundColor: this.state.isCustom
+              ? "#A9A9A9"
+              : this.props.pageColor
+          }}
         >
           Custom
         </div>

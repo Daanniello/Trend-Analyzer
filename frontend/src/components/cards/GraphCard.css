@@ -1,5 +1,5 @@
 .graph-card {
-  min-width: 540px;
+  min-width: 350px;
   width: 100%;
   height: 47%;
   margin-top: 16px;
@@ -38,10 +38,16 @@
 }
 
 .chart-button-active {
-  background-color: #8ec012;
+  background-color: gray;
 }
 
 #myChart {
   height: calc(100% - 36px) !important;
   width: 100% !important;
+}
+
+@media only screen and (max-width: 1000px) {
+  .graph-card {
+    height: auto;
+  }
 }

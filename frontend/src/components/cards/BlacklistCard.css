@@ -1,5 +1,5 @@
 .blacklist-card {
-  width: calc(100% - 256px - 32px);
+  width: calc(100% - 256px - 32px - 32px);
   min-width: 400px;
   max-width: 800px;
   height: auto;

@@ -53,6 +53,7 @@ const Navigation = props => {
         setTimestamp={props.setTimestamp}
         updateDisabled={props.updateDisabled}
         setDisableButton={props.setDisableButton}
+        pageColor={props.pageColor}
       />
     </div>
   );

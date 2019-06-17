@@ -27,7 +27,7 @@ const NavigationFooter = props => {
         disabled={props.updateDisabled}
         id="navigation-footer-button"
         style={{
-          backgroundColor: props.updateDisabled ? "darkgray" : "#8ec012"
+          backgroundColor: props.updateDisabled ? "darkgray" : props.pageColor
         }}
         onClick={() => {
           performAnalyzeRequest();

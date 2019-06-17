@@ -14,6 +14,8 @@ class TopicPage extends React.Component {
   constructor(props) {
     super(props);
 
+    props.onPageChange(props.pageColor);
+
     this.addTopic = topic => {
       const state = this.state;
       state.topics.push(topic);
@@ -45,8 +47,12 @@ class TopicPage extends React.Component {
           data={this.props.topicData}
           addTopic={this.addTopic}
           removeTopic={this.removeTopic}
+          pageColor={this.props.pageColor}
         />
-        <GraphCard topics={this.state.topics} />
+        <GraphCard
+          topics={this.state.topics}
+          pageColor={this.props.pageColor}
+        />
       </div>
     );
   }

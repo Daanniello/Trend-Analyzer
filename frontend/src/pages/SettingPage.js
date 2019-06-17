@@ -6,6 +6,11 @@ import Typography from "@material-ui/core/Typography";
 
 class SettingPage extends React.Component {
   state = {};
+  constructor(props) {
+    super(props);
+    props.onPageChange(props.pageColor);
+  }
+
   render() {
     return (
       <div className="container">
@@ -29,6 +34,7 @@ class SettingPage extends React.Component {
         <BlacklistCard
           onTopicBlacklistChanged={this.props.onTopicBlacklistChanged}
           items={this.props.items}
+          pageColor={this.props.pageColor}
         />
       </div>
     );

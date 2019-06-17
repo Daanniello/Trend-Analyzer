@@ -25,7 +25,10 @@ class StandardTableCard extends React.Component {
   render() {
     return (
       <div className="standard-table-card">
-        <div className="standard-table-card-header">
+        <div
+          className="standard-table-card-header"
+          style={{ backgroundColor: this.props.pageColor }}
+        >
           <Typography
             variant="h6"
             className=""
