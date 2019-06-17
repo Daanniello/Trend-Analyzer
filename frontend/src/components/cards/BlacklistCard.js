@@ -53,7 +53,11 @@ class BlacklistCard extends React.Component {
             <AddButton blacklist={this} />
           </div>
         </div>
-        <StandardTableCard blacklist={this} items={this.state.items} />
+        <StandardTableCard
+          pageColor={this.props.pageColor}
+          blacklist={this}
+          items={this.state.items}
+        />
       </div>
     );
   }

@@ -8,6 +8,7 @@ import AnalyzedCard from "../components/cards/AnalyzedCard";
 import LatestArticle from "../components/cards/LatestArticle";
 
 const GeneralPage = props => {
+  props.onPageChange(props.pageColor);
   return (
     <div id="general-page-grid">
       <div className="general-page-item" id="general-page-header">
@@ -97,7 +98,8 @@ const GeneralPage = props => {
         style={{
           height: "500px",
           float: "left",
-          width: "100%"
+          width: "100%",
+          marginBottom: "24px"
         }}
       >
         <LatestArticle

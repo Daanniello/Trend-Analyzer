@@ -151,7 +151,10 @@ class TableCard extends React.Component {
           description={this.props.tableTitle}
         />
         <Typography variant="h2" className="table-card">
-          <div className="table-header">
+          <div
+            className="table-header"
+            style={{ backgroundColor: this.props.pageColor }}
+          >
             <div className="table-row">
               <Typography
                 className="table-row-title"
