@@ -4,11 +4,14 @@ import "./login-form.css";
 import Lock from "@material-ui/icons/Lock";
 import LockOpen from "@material-ui/icons/LockOpen";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 import LoginPad from "./login-pad";
 
 const LoginForm = props => {
   const blueBalls = [];
+  var emailInput = "";
 
   // Shows the amount of numbers that have been input for the pincode as blue balls
   for (let i = 0; i < 4; i++) {
@@ -22,6 +25,11 @@ const LoginForm = props => {
       />
     );
     blueBalls.push(ball);
+  }
+
+  // Send mail via app.js
+  function handleEmailSubmit() {
+    props.sendMail(emailInput);
   }
 
   return (
@@ -46,32 +54,79 @@ const LoginForm = props => {
           {(() => {
             // If it's not possible to log in show an error message.
             var errorMessage = String(props.errorMsg);
-            if (errorMessage.includes("401")) {
+            // If user clicks forgot password, show password input
+            if (props.displayEmailInputState) {
               return (
                 <div id="login-form-footer">
-                  De pincode klopt niet!
-                  <br />
-                  <input type="email" name="emailaddress" />
-                  <button type="button">E-mail pincode!</button>
+                  <TextField
+                    style={{ marginRight: "8px" }}
+                    id="standard-bare"
+                    placeholder="johndoe@mail.com"
+                    inputProps={{ "aria-label": "bare" }}
+                    onChange={evt => {
+                      emailInput = evt.target.value;
+                    }}
+                  />
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => {
+                      handleEmailSubmit();
+                    }}
+                    color="primary"
+                  >
+                    Mail me!
+                  </Button>
                 </div>
               );
-              // TODO: Request pincode via mail
-            } else if (errorMessage.includes("Network")) {
+            } else if (errorMessage.includes("401")) {
               return (
                 <div id="login-form-footer">
-                  Er is geen verbinding met de database!
+                  <p>Incorrect pincode!</p>
+                  <button
+                    type="button"
+                    className="link-button"
+                    onClick={props.displayEmailInput}
+                  >
+                    <p>Forgot the pincode?</p>
+                  </button>
                 </div>
+              );
+            } else if (errorMessage.includes("Network")) {
+              return (
+                <div id="login-form-footer">No connection to the database!</div>
               );
             } else if (errorMessage.includes("404")) {
               return (
-                <div id="login-form-footer">
-                  De nodige database tabel bestaat niet!
-                </div>
+                <div id="login-form-footer">The database does not exist!</div>
               );
             } else if (props.errormsg) {
-              return <div id="login-form-footer">Er is een foutmelding!</div>;
+              return (
+                <div id="login-form-footer">
+                  An unexpected error has occured!
+                </div>
+              );
+            } else if (errorMessage.includes("E-mail")) {
+              return (
+                <div id="login-form-footer">
+                  <Typography>
+                    {" "}
+                    Please check your e-mail for the pincode!
+                  </Typography>
+                </div>
+              );
             } else {
-              return <div id="login-form-footer" />;
+              return (
+                <div id="login-form-footer">
+                  <button
+                    type="button"
+                    className="link-button"
+                    onClick={props.displayEmailInput}
+                  >
+                    <p>Forgot the pincode?</p>
+                  </button>
+                </div>
+              );
             }
           })()}
         </div>

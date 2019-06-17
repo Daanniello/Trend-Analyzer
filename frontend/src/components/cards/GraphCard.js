@@ -276,8 +276,8 @@ class GraphCard extends Component {
             marginLeft: "8px ",
             backgroundColor:
               this.state.DateFormat === "YYYY" && !this.state.isCustom
-                ? "#A9A9A9"
-                : this.props.pageColor
+                ? this.props.pageColor
+                : "#A9A9A9"
           }}
         >
           Yearly
@@ -289,8 +289,8 @@ class GraphCard extends Component {
             marginLeft: "8px ",
             backgroundColor:
               this.state.DateFormat === "MMMM" && !this.state.isCustom
-                ? "#A9A9A9"
-                : this.props.pageColor
+                ? this.props.pageColor
+                : "#A9A9A9"
           }}
         >
           Monthly
@@ -302,8 +302,8 @@ class GraphCard extends Component {
             marginLeft: "8px ",
             backgroundColor:
               this.state.DateFormat === "WW" && !this.state.isCustom
-                ? "#A9A9A9"
-                : this.props.pageColor
+                ? this.props.pageColor
+                : "#A9A9A9"
           }}
         >
           Weekly
@@ -316,8 +316,8 @@ class GraphCard extends Component {
           style={{
             marginLeft: "8px ",
             backgroundColor: this.state.isCustom
-              ? "#A9A9A9"
-              : this.props.pageColor
+              ? this.props.pageColor
+              : "#A9A9A9"
           }}
         >
           Custom

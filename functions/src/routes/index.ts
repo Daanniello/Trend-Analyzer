@@ -11,6 +11,7 @@ router.use("/analyze", require("./analyze"));
 router.use("/login", require("./login"));
 router.use("/blacklist", require("./blacklist"));
 router.use("/articles", require("./articles"));
+router.use("/mail", require("./mail"));
 router.use("/reset", require("./reset"));
 
 module.exports = router;

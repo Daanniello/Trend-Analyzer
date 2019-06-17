@@ -5,7 +5,7 @@
 
 #login-form {
   width: 384px;
-  height: 544px;
+  height: 558px;
 
   background-color: white;
   position: absolute;
@@ -28,9 +28,8 @@
 }
 
 #login-form-footer {
-  color: red;
+  color: firebrick;
   font-size: 14px;
-
   text-align: center;
 }
 
@@ -39,6 +38,21 @@
   height: 36px;
 
   margin: 24px calc(50% - 72px) 0 calc(50% - 72px);
+}
+
+.link-button {
+  font-size: 9px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+.link-button:hover,
+.link-button:focus {
+  text-decoration: none;
 }
 
 .pin-ball {

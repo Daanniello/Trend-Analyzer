@@ -33,6 +33,7 @@ class App extends Component {
       errorMsg: "",
       apiKey: "",
       loggedIn: false,
+      displayEmailInput: false,
       rawArticles: [],
       filteredArticles: [],
       tableData: [],
@@ -40,23 +41,33 @@ class App extends Component {
       updateDisabled: true,
       pageColor: "#551F5C"
     };
+    document.addEventListener("keydown", this.keyHandler, true);
   }
+
+  // Lets user use the keyboard for pincode input.
+  keyHandler = event => {
+    const { key } = event;
+    if (key === "Backspace") this.removePin();
+    if (isNaN(key)) return;
+    const number = +key;
+    this.addPin(number);
+  };
 
   // Sets the current page
   setPage = newPage => {
     if (this.state.currentPage === newPage) return;
-
-    this.state.currentPage = newPage;
-    this.setState(this.state);
+    const state = this.state;
+    state.currentPage = newPage;
+    this.setState(state);
   };
 
-  // Adds a number to the pincode if below 4 and if 4 it sends to check if it's the correct code
   addPin = async value => {
     const state = this.state;
     if (state.pinCode.length < 4) {
       state.pinCode += value;
       if (state.pinCode.length === 4) {
         this.checkLogin(state);
+        // >>>>>>> develop
       }
     }
     this.setState(state);
@@ -80,6 +91,19 @@ class App extends Component {
     return items;
   };
 
+  // Show email email input and send button, disable keyboard pincode number input
+  toggleDisplayEmailInput = () => {
+    const state = this.state;
+    if (state.displayEmailInput === false) {
+      state.displayEmailInput = true;
+      document.removeEventListener("keydown", this.keyHandler, true);
+    } else {
+      state.displayEmailInput = false;
+      document.addEventListener("keydown", this.keyHandler, true);
+    }
+    this.setState(state);
+  };
+
   FiltertTableData = (data, blacklistedItems) => {
     let filteredData = [];
     try {
@@ -93,6 +117,13 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  shakeIt = async () => {
+    const form = document.getElementById("login-form");
+    form.classList.add("login-shake");
+    await new Promise(resolve => setTimeout(resolve, 700));
+    form.classList.remove("login-shake");
   };
 
   // Checks wheter login should succeed or not
@@ -120,14 +151,37 @@ class App extends Component {
       this.createPageFormats();
       this.setPages();
     } catch (error) {
-      const form = document.getElementById("login-form");
-      form.classList.add("login-shake");
-      await new Promise(resolve => setTimeout(resolve, 700));
-      form.classList.remove("login-shake");
+      this.state.errorMsg = error;
+      this.shakeIt();
       this.state.pinCode = "";
     }
     this.setState(this.state);
   };
+
+  // Send the mail via the backend, shake login when an error occures
+  sendMail = async value => {
+    try {
+      const mail = value;
+      if (mail === "") throw new Error();
+      if (!this.validateEmail(mail)) throw new Error();
+      axios.defaults.headers = {
+        "x-email": mail
+      };
+      await request.post("/mail", {});
+      const state = this.state;
+      state.errorMsg = "E-mail sent!";
+      this.setState(state);
+      this.toggleDisplayEmailInput();
+    } catch (error) {
+      this.shakeIt();
+      console.log(error);
+    }
+  };
+
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
 
   getArticles = async () => {
     // TODO: IMPLEMENT BACKEND AGAIN
@@ -264,6 +318,9 @@ class App extends Component {
                 removePin={this.removePin}
                 pinCode={this.state.pinCode}
                 errorMsg={this.state.errorMsg}
+                displayEmailInputState={this.state.displayEmailInput}
+                displayEmailInput={this.toggleDisplayEmailInput}
+                sendMail={this.sendMail}
               />
             </DialogContent>
           </Modal>
