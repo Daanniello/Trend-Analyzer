@@ -83,7 +83,7 @@ const LoginForm = props => {
               return (
                 <div id="login-form-footer">
                   <Typography style={{ color: "firebrick" }}>
-                    <p>Incorrect pincode!</p>
+                    Incorrect pincode!
                   </Typography>
                   <button
                     type="button"
