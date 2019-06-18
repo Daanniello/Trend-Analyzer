@@ -14,6 +14,9 @@ test("Test the CorporatieNL provider service", async () => {
   // Assert
   expect(article.url).toBe(url);
   expect(typeof article.title).toBe("string");
+  expect(article.title).toBe(
+    "Is stroomopslag de volgende stap naar energieneutraal wonen?"
+  );
   expect(typeof article.text).toBe("string");
   expect(Number.isNaN(article.timestamp)).toBe(false);
   expect(article.provider).toBe(Provider.CorporatieNL);
@@ -31,6 +34,9 @@ test("Test the Aedes provider service", async () => {
   // Assert
   expect(article.url).toBe(url);
   expect(typeof article.title).toBe("string");
+  expect(article.title).toBe(
+    "Woningcorporaties: nieuwbouw huurwoningen in gevaar"
+  );
   expect(typeof article.text).toBe("string");
   expect(Number.isNaN(article.timestamp)).toBe(false);
   expect(article.provider).toBe(Provider.Aedes);
