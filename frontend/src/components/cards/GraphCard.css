@@ -10,6 +10,29 @@
   overflow: hidden;
 }
 
+.chart-button-custom-range {
+  width: 200px;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  border-radius: 17px;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 300;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 3px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  float: left;
+  margin: 8px;
+  line-height: 20px;
+}
+
 .chart-button {
   width: auto;
   padding-left: 8px;
