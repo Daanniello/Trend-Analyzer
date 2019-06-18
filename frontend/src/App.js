@@ -134,7 +134,6 @@ class App extends Component {
       };
       let response = await request.post("/login", {});
       this.state.apiKey = response.data.apiKey;
-      this.state.loggedIn = true;
 
       axios.defaults.headers = { "x-api-key": response.data.apiKey };
 
@@ -145,11 +144,23 @@ class App extends Component {
 
       this.setDisableButton(response.data.lastUpdated);
 
+      console.time("1");
       await this.getArticles();
+      console.timeEnd("1");
+      console.time("2");
       await this.getBlacklistItems();
+      console.timeEnd("2");
+      console.time("3");
       this.applyBlacklist();
+      console.timeEnd("3");
+      console.time("4");
       this.createPageFormats();
+      console.timeEnd("4");
+      console.time("5");
       this.setPages();
+      console.timeEnd("5");
+
+      this.state.loggedIn = true;
     } catch (error) {
       this.state.errorMsg = error;
       this.shakeIt();
@@ -184,7 +195,7 @@ class App extends Component {
   }
 
   getArticles = async () => {
-    this.state.rawArticles = await request.post("/articles", {});
+    this.state.rawArticles = (await request.get("/articles")).data;
   };
 
   getBlacklistItems = async () => {
