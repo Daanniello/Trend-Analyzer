@@ -82,7 +82,9 @@ const LoginForm = props => {
             } else if (errorMessage.includes("401")) {
               return (
                 <div id="login-form-footer">
-                  <p>Incorrect pincode!</p>
+                  <Typography style={{ color: "firebrick" }}>
+                    <p>Incorrect pincode!</p>
+                  </Typography>
                   <button
                     type="button"
                     className="link-button"
@@ -94,22 +96,32 @@ const LoginForm = props => {
               );
             } else if (errorMessage.includes("Network")) {
               return (
-                <div id="login-form-footer">No connection to the database!</div>
+                <div id="login-form-footer">
+                  <Typography style={{ color: "firebrick" }}>
+                    No connection to the database!
+                  </Typography>
+                </div>
               );
             } else if (errorMessage.includes("404")) {
               return (
-                <div id="login-form-footer">The database does not exist!</div>
+                <div id="login-form-footer">
+                  <Typography style={{ color: "firebrick" }}>
+                    The database does not exist!
+                  </Typography>
+                </div>
               );
             } else if (props.errormsg) {
               return (
                 <div id="login-form-footer">
-                  An unexpected error has occured!
+                  <Typography style={{ color: "firebrick" }}>
+                    An unexpected error has occured!
+                  </Typography>
                 </div>
               );
             } else if (errorMessage.includes("E-mail")) {
               return (
                 <div id="login-form-footer">
-                  <Typography>
+                  <Typography style={{ color: "darkgreen" }}>
                     {" "}
                     Please check your e-mail for the pincode!
                   </Typography>
