@@ -1,6 +1,6 @@
 import * as axios from "axios";
 axios.defaults.baseURL =
-  "https://us-central1-trend-analyzer-5f614.cloudfunctions.net/api";
+  "https://us-central1-trend-analyzer-5f614.cloudfunctions.net/api"; // https://localhost:5000/trend-analyzer-5f614/us-central1/api
 
 class RequestService {
   async get(uri) {

@@ -184,8 +184,7 @@ class App extends Component {
   }
 
   getArticles = async () => {
-    // TODO: IMPLEMENT BACKEND AGAIN
-    this.state.rawArticles = await require("./articles");
+    this.state.rawArticles = await request.post("/articles", {});
   };
 
   getBlacklistItems = async () => {
