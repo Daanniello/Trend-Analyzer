@@ -33,13 +33,9 @@ abstract class ArticleFetchEngine {
 
     const moment2017 = moment("2017", "YYYY").format();
 
-    let count = 0;
     let stopLoop = false;
 
-    let newArticleCount = 0;
     while (await this.isValidPage()) {
-      count++;
-
       // GET ARTICLES FROM PAGE
       const articleURLs = await this.fetchArticleURLs(currentPageHTML);
 
@@ -63,7 +59,6 @@ abstract class ArticleFetchEngine {
 
         const article = await this.analyzeArticle(rawArticle);
         this.articleService.add(article);
-        newArticleCount++;
       }
 
       // if the loop should be stopped STOP

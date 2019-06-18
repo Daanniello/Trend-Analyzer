@@ -15,7 +15,8 @@ test("Test the property types of the article model", () => {
     topics: [],
     categories: [],
     misc: [],
-    timestamp: moment().unix()
+    timestamp: moment().unix(),
+    mailOccurrences: []
   };
 
   // Act & assert
