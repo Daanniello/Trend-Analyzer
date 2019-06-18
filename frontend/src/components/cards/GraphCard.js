@@ -10,8 +10,17 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
 import DialogPicker from "../fields/DatePicker";
 import * as moment from "moment";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 var Chart = require("chart.js");
+
+const CUSTOM_DAY_FORMAT = "DDD-YY";
+const CUSTOM_WEEK_FORMAT = "Wo-YY";
+const CUSTOM_MONTH_FORMAT = "MMM-YY";
+const CUSTOM_YEAR_FORMAT = "YYYY";
 
 //Styles for the custom dialog
 const styles = theme => ({
@@ -47,7 +56,9 @@ class GraphCard extends Component {
     DateFormat: "MMMM",
     beginDate: "05-05-2019",
     endDate: "05-05-2019",
-    isCustom: false
+    isCustom: false,
+    customRange: "null",
+    customRangeType: "null"
   };
 
   //Open custom dialog event
@@ -55,6 +66,24 @@ class GraphCard extends Component {
     this.setState({
       open: true
     });
+  };
+
+  handleChange = event => {
+    const state = this.state;
+
+    state.customRange = event.target.value;
+    if (event.target.value === CUSTOM_DAY_FORMAT)
+      state.customRangeType = "days";
+    if (event.target.value === CUSTOM_WEEK_FORMAT)
+      state.customRangeType = "weeks";
+    if (event.target.value === CUSTOM_MONTH_FORMAT)
+      state.customRangeType = "months";
+    if (event.target.value === CUSTOM_YEAR_FORMAT)
+      state.customRangeType = "years";
+
+    this.setState(state);
+
+    console.log(this.state.customRange);
   };
 
   //Close custom dialog event
@@ -161,7 +190,7 @@ class GraphCard extends Component {
       }
 
       var customCount = 0;
-      var customFormat = "WW";
+      var customFormat = CUSTOM_WEEK_FORMAT;
       var customType = "weeks";
 
       var dayCount = end.diff(begin, "day");
@@ -169,27 +198,48 @@ class GraphCard extends Component {
       var monthCount = end.diff(begin, "month");
       var yearCount = end.diff(begin, "year");
 
-      if (dayCount < 14) {
-        customCount = dayCount;
-        customFormat = "DD";
-        customType = "days";
+      if (this.state.customRange === "null") {
+        if (dayCount < 14) {
+          customCount = dayCount;
+          customFormat = CUSTOM_DAY_FORMAT;
+          customType = "days";
+        }
+        if (weekCount < 26 && weekCount >= 2) {
+          customCount = weekCount;
+          customFormat = CUSTOM_WEEK_FORMAT;
+          customType = "weeks";
+        }
+        if (monthCount < 24 && monthCount >= 4) {
+          customCount = monthCount;
+          customFormat = CUSTOM_MONTH_FORMAT;
+          customType = "months";
+        }
+        if (yearCount >= 2) {
+          customCount = yearCount;
+          customFormat = CUSTOM_YEAR_FORMAT;
+          customType = "years";
+        }
+      } else {
+        customFormat = this.state.customRange;
+        customType = this.state.customRangeType;
+        switch (customFormat) {
+          case CUSTOM_DAY_FORMAT:
+            customCount = dayCount;
+            break;
+          case CUSTOM_WEEK_FORMAT:
+            customCount = weekCount;
+            break;
+          case CUSTOM_MONTH_FORMAT:
+            customCount = monthCount;
+            break;
+          case CUSTOM_YEAR_FORMAT:
+            customCount = yearCount;
+            break;
+          default:
+            break;
+        }
       }
-      if (weekCount < 26 && weekCount >= 2) {
-        customCount = weekCount;
-        customFormat = "WW";
-        customType = "weeks";
-      }
-      if (monthCount < 24 && monthCount >= 4) {
-        customCount = monthCount;
-        customFormat = "MMM-YY";
-        customType = "months";
-      }
-      if (yearCount >= 2) {
-        customCount = yearCount;
-        customFormat = "YY";
-        customType = "years";
-      }
-
+      console.log(customFormat, customType, customCount);
       const now = begin
         .subtract(customCount, customFormat)
         .subtract(1, customType);
@@ -198,6 +248,7 @@ class GraphCard extends Component {
       for (let index = 0; index <= customCount; index++) {
         weekly[index] = now.add(1, customType).format(customFormat);
       }
+      console.log(weekly);
 
       const state = this.state;
       state.labels = weekly;
@@ -322,6 +373,7 @@ class GraphCard extends Component {
         >
           Custom
         </div>
+
         <canvas id="myChart" />
         <Dialog
           onClose={this.handleClose}
@@ -334,6 +386,21 @@ class GraphCard extends Component {
           <DialogContent>
             <DialogPicker title="Start Date" onChange={this.setBeginDate} />
             <DialogPicker title="End Date" onChange={this.setEndDate} />
+            <form autoComplete="off">
+              <FormControl>
+                <InputLabel htmlFor="age-simple">Format</InputLabel>
+                <Select
+                  value={this.state.customRange}
+                  onChange={this.handleChange}
+                >
+                  <MenuItem value="null">Automatic</MenuItem>
+                  <MenuItem value={CUSTOM_DAY_FORMAT}>Days</MenuItem>
+                  <MenuItem value={CUSTOM_WEEK_FORMAT}>Weeks</MenuItem>
+                  <MenuItem value={CUSTOM_MONTH_FORMAT}>Months</MenuItem>
+                  <MenuItem value={CUSTOM_YEAR_FORMAT}>Years</MenuItem>
+                </Select>
+              </FormControl>
+            </form>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
