@@ -144,21 +144,11 @@ class App extends Component {
 
       this.setDisableButton(response.data.lastUpdated);
 
-      console.time("1");
       await this.getArticles();
-      console.timeEnd("1");
-      console.time("2");
       await this.getBlacklistItems();
-      console.timeEnd("2");
-      console.time("3");
       this.applyBlacklist();
-      console.timeEnd("3");
-      console.time("4");
       this.createPageFormats();
-      console.timeEnd("4");
-      console.time("5");
       this.setPages();
-      console.timeEnd("5");
 
       this.state.loggedIn = true;
     } catch (error) {

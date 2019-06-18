@@ -1,16 +1,19 @@
 import * as express from "express";
 
-import ArticleService from "../services/database/article-service";
+// @ts-ignore
+import * as articles from "../../articles.json";
+// import ArticleService from "../services/database/article-service";
 
 /* Ping Router */
 const router = express.Router();
 
 /* Implement endpoints */
 router.get("", async (_req, res) => {
-  console.time("RETRIEVING ARTICLES");
-  const service = new ArticleService();
-  res.send(await service.getAll());
-  console.timeEnd("RETRIEVING ARTICLES");
+  res.send(articles);
+  // console.time("RETRIEVING ARTICLES");
+  // const service = new ArticleService();
+  // res.send(await service.getAll());
+  // console.timeEnd("RETRIEVING ARTICLES");
 });
 
 module.exports = router;
