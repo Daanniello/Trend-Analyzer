@@ -1,5 +1,8 @@
 {
   "name": "functions",
+  "engines": {
+    "node": "8"
+  },
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
@@ -30,6 +33,7 @@
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.13",
+    "@types/nodemailer": "^6.2.0",
     "firebase-tools": "6.7.1",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
