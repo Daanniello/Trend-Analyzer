@@ -22,7 +22,7 @@ class CorporatieNLFetchEngine extends ArticleFetchEngine {
     return pageNotFoundBody.length === 0;
   }
 
-  protected async fetchArticleURLs(page: string): Promise<string[]> {
+  protected async fetchArticleURLs(): Promise<string[]> {
     const articleHrefs: string[] = [];
 
     if (this.currentPageNumber === 1) {

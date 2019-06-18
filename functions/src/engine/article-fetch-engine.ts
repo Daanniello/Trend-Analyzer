@@ -17,19 +17,29 @@ const TRS = new TextRazorService();
 abstract class ArticleFetchEngine {
   protected readonly baseURL: string = "";
   protected readonly service: ProviderService = new CorporatieNLService();
-  protected articleService = new ArticleService();
+  protected articleService: ArticleService | null;
   protected currentPageNumber: number = 1;
   protected $: CheerioStatic = cheerio.load("");
 
-  public async FetchNewArticles(pageNumber = 1): Promise<void> {
-    this.currentPageNumber = pageNumber;
-    let currentPageURL: string = this.nextPageURL(
-      this.baseURL,
-      this.currentPageNumber
-    );
+  constructor(database: boolean = true) {
+    this.articleService = database ? new ArticleService() : null;
+  }
 
-    let currentPageHTML: string = await this.getPageHTML(currentPageURL);
-    this.setCheerioHTML(currentPageHTML);
+  public async FetchNewArticles(pageNumber = 1): Promise<void> {
+    if (this.articleService == null) {
+      console.log("NO DATABASE");
+      return;
+    }
+
+    await this.setCheerioHTML(this.baseURL, this.currentPageNumber);
+
+    // this.currentPageNumber = pageNumber;
+    // let currentPageURL: string = this.nextPageURL(
+    //   this.baseURL,
+    //   this.currentPageNumber
+    // );
+    // let currentPageHTML: string = await this.getPageHTML(currentPageURL);
+    // this.setCheerioHTML(currentPageHTML);
 
     const moment2017 = moment("2017", "YYYY").format();
 
@@ -37,7 +47,7 @@ abstract class ArticleFetchEngine {
 
     while (await this.isValidPage()) {
       // GET ARTICLES FROM PAGE
-      const articleURLs = await this.fetchArticleURLs(currentPageHTML);
+      const articleURLs = await this.fetchArticleURLs();
 
       // LOOP OVER ARTICLES AND ANALYZE THEM
       for (const articleURL of articleURLs) {
@@ -57,8 +67,11 @@ abstract class ArticleFetchEngine {
         // Stop if one of the ifs before this is true
         if (stopLoop) break;
 
+        console.log(rawArticle.url);
+
         const article = await this.analyzeArticle(rawArticle);
-        this.articleService.add(article);
+
+        this.articleService.updateArticle(article.url, article);
       }
 
       // if the loop should be stopped STOP
@@ -66,23 +79,21 @@ abstract class ArticleFetchEngine {
 
       // Go to the next page and retrieve the HTML
       this.currentPageNumber++;
-      currentPageURL = await this.nextPageURL(
-        this.baseURL,
-        this.currentPageNumber
-      );
-      currentPageHTML = await this.getPageHTML(currentPageURL);
-      this.setCheerioHTML(currentPageHTML);
+      await this.setCheerioHTML(this.baseURL, this.currentPageNumber);
+      //currentPageHTML = await this.getPageHTML(currentPageURL);
+      //this.setCheerioHTML(currentPageHTML);
     }
   }
 
   public async FetchInitialArticles(): Promise<void> {}
 
-  protected setCheerioHTML(pageHTML: string): void {
+  protected async setCheerioHTML(
+    baseURL: string,
+    pageNumber: number
+  ): Promise<void> {
+    const url = this.nextPageURL(baseURL, pageNumber);
+    const pageHTML = await request.get(url);
     this.$ = cheerio.load(pageHTML);
-  }
-
-  protected async getPageHTML(url: string): Promise<string> {
-    return await request.get(url);
   }
 
   protected async analyzeArticle(rawArticle: IRawArticle): Promise<IArticle> {
@@ -97,7 +108,7 @@ abstract class ArticleFetchEngine {
     throw new Error("Abstract class error");
   }
 
-  protected async fetchArticleURLs(page: string): Promise<string[]> {
+  protected async fetchArticleURLs(): Promise<string[]> {
     throw new Error("Abstract class error");
   }
 

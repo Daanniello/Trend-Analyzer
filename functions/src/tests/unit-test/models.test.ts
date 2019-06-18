@@ -21,6 +21,7 @@ test("Test the property types of the article model", () => {
   // Act & assert
   expect(typeof article.url).toBe("string");
   expect(typeof article.provider).toBe("string");
+  expect(article.provider).toBe("CorporatieNL");
   expect(typeof article.title).toBe("string");
   expect(Array.isArray(article.topics)).toBe(true);
   expect(Array.isArray(article.categories)).toBe(true);
@@ -34,7 +35,7 @@ test("test the properties of the raw-articles model", async () => {
     provider: Provider.CorporatieNL,
     title: "Test tile",
     text: "Test text",
-    timestamp: Date.now()
+    timestamp: moment().unix()
   };
 
   // Act & Assert
@@ -62,7 +63,7 @@ test("'test the properties of the credential model", async () => {
 test("'test the properties of the update model", async () => {
   // Arrange
   const cred: IUpdate = {
-    timestamp: Date.now()
+    timestamp: moment().unix()
   };
 
   // Act & Assert

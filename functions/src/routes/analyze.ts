@@ -1,12 +1,12 @@
 import * as express from "express";
 import * as moment from "moment";
 
-// import CorporatieNLFetchEngine from "../engine/corporatienl-fetch-engine";
-// import AedesFetchEngine from "../engine/aedes-fetch-engine";
+import CorporatieNLFetchEngine from "../engine/corporatienl-fetch-engine";
+import AedesFetchEngine from "../engine/aedes-fetch-engine";
 import UpdateService from "../services/database/update-service";
 
-// const CFE = new CorporatieNLFetchEngine();
-// const AFE = new AedesFetchEngine();
+const CFE = new CorporatieNLFetchEngine();
+const AFE = new AedesFetchEngine();
 const DB = new UpdateService();
 
 /* Ping Router */
@@ -20,14 +20,14 @@ router.post("", (req, res) => {
       const timestamp: number = moment().unix();
       DB.set("lastupdate", { timestamp });
 
-      // console.time("ANALYZING ARTICLES");
-      // console.time("ANALYZING AEDES");
-      // await AFE.FetchArticles();
-      // console.timeEnd("ANALYZING AEDES");
-      // console.time("ANALYZING CORPORATIENL");
-      // await CFE.FetchArticles();
-      // console.timeEnd("ANALYZING CORPORATIENL");
-      // console.timeEnd("ANALYZING ARTICLES");
+      console.time("ANALYZING ARTICLES");
+      console.time("ANALYZING AEDES");
+      await AFE.FetchNewArticles();
+      console.timeEnd("ANALYZING AEDES");
+      console.time("ANALYZING CORPORATIENL");
+      await CFE.FetchNewArticles();
+      console.timeEnd("ANALYZING CORPORATIENL");
+      console.timeEnd("ANALYZING ARTICLES");
 
       res.send({
         lastUpdated: timestamp
