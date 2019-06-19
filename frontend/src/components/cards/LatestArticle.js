@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LatestArticle.css";
 import { Typography } from "@material-ui/core";
 import * as moment from "moment";
 
 const LatestArticleCard = props => {
+  const [loaded, setLoaded] = useState(true);
+  const [loadedText, setLoadedText] = useState("Load more...");
+
+  const loadMoreOnClick = () => {
+    console.log("CLICKED");
+    setLoaded(!loaded);
+    if (!loaded) {
+      setLoadedText("Load More...");
+    } else {
+      setLoadedText("Unload...");
+    }
+  };
+
   const loadCategories = () => {
     const categories = [];
 
@@ -70,14 +83,34 @@ const LatestArticleCard = props => {
           {props.latestArticle.title}
         </a>
       </Typography>
-      <div className="article-combined">
-        <div style={{ width: "50%", height: "100%", float: "left" }}>
+      <div
+        className="article-combined"
+        style={{ height: loaded === true ? "200px" : "auto" }}
+      >
+        <div
+          style={{
+            width: "50%",
+            height: "100%",
+            float: "left",
+            overflow: "hidden"
+          }}
+        >
           {loadCategories()}
         </div>
 
-        <div style={{ width: "50%", height: "100%", float: "left" }}>
+        <div
+          style={{
+            width: "50%",
+            height: "100%",
+            float: "left",
+            overflow: "hidden"
+          }}
+        >
           {loadTopics()}
         </div>
+      </div>
+      <div className="latest-article-card-load">
+        <Typography onClick={() => loadMoreOnClick()}>{loadedText}</Typography>
       </div>
       <div className="latest-article-card-date">
         <Typography>

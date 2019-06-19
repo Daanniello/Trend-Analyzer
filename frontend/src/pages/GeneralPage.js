@@ -96,10 +96,10 @@ const GeneralPage = props => {
       </div> */}
       <div
         style={{
-          height: "500px",
+          height: "auto",
           float: "left",
           width: "100%",
-          marginBottom: "24px"
+          marginBottom: "8px"
         }}
       >
         <LatestArticle
