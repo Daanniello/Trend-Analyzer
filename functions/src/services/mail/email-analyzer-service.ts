@@ -33,10 +33,6 @@ oAuthClient.setCredentials({
 class EmailAnalyzer {
   EmailAnayzer() {}
 
-  async GetContent() {
-    console.log("Enpoint approached!");
-    await this.analyzeEmails();
-  }
   async analyzeEmails(): Promise<any> {
     try {
       // Get the emails and store them in a list
@@ -44,7 +40,7 @@ class EmailAnalyzer {
         auth: oAuthClient,
         userId: "km.corporatienl@gmail.com",
         labelIds: [ARTICLE_LABEL],
-        maxResults: 30
+        maxResults: 100
       })).data;
 
       if (!data.messages) throw Error("NO MESSAGES FROM API CALL");
@@ -52,15 +48,15 @@ class EmailAnalyzer {
       // Get the plain emails
       const plainEmails = await this.getPlainEmails(data);
 
-      // Get the titles from the emails
-      let titleStrings: string[] = [];
+      // Get the links from the emails
+      let linkStrings: string[] = [];
       return new Promise(async (resolve, reject) => {
         try {
-          titleStrings = await this.getTitles(plainEmails);
-          resolve(titleStrings);
+          linkStrings = await this.getLinks(plainEmails);
+          resolve(linkStrings);
         } catch (error) {
           console.log(error);
-          reject(titleStrings);
+          reject(linkStrings);
         }
       });
     } catch (error) {
@@ -69,7 +65,7 @@ class EmailAnalyzer {
     }
   }
 
-  async getTitles(plainEmails: any) {
+  async getLinks(plainEmails: any) {
     try {
       for (const plainEmail of plainEmails) {
         const parsed = await simpleParser(plainEmail);
@@ -85,12 +81,10 @@ class EmailAnalyzer {
           return href.includes("http://mailchi.mp/corporatienl/nieuwsbrief");
         })[0];
 
-        //console.log(articleRef);
         if (!articleRef) continue;
 
         const articleHTML = await request.get(articleRef);
         const $ = cheerio.load(articleHTML);
-        //const titles = $("p[class=h1]");
 
         // Get all hyperlinks from article
         const links = $("a");
@@ -111,7 +105,7 @@ class EmailAnalyzer {
       }
       return plainEmails;
     } catch (error) {
-      console.log("Done analyzing!");
+      console.error("Done analyzing!");
       return plainEmails;
     }
   }
