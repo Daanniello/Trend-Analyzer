@@ -39,7 +39,9 @@ class App extends Component {
       tableData: [],
       blacklistItems: [],
       updateDisabled: true,
-      pageColor: "#551F5C"
+      pageColor: "#551F5C",
+      allowedProviders: ["Aedes", "CorporatieNL"],
+      emailOnly: true
     };
     document.addEventListener("keydown", this.keyHandler, true);
   }
@@ -147,6 +149,10 @@ class App extends Component {
       await this.getArticles();
       await this.getBlacklistItems();
       this.applyBlacklist();
+      this.applyProviderFilter(this.state.allowedProviders);
+      if (this.state.emailOnly) {
+        this.applyEmailOnlyFilter();
+      }
       this.createPageFormats();
       this.setPages();
 
@@ -213,6 +219,21 @@ class App extends Component {
       return article;
     });
   };
+
+  applyProviderFilter(allowedProviders) {
+    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
+    this.state.filteredArticles = articles.filter(article => {
+      return allowedProviders.indexOf(article.provider) >= 0;
+    });
+  }
+
+  applyEmailOnlyFilter() {
+    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
+    this.state.filteredArticles = articles.filter(article => {
+      if (!article.mailOccurences) return false;
+      return article.mailOccurences.length > 0;
+    });
+  }
 
   createPageFormats = () => {
     const converter = new ArticleDataConvert(this.state.filteredArticles);

@@ -54,6 +54,10 @@ class AnalyzedCard extends React.Component {
       key => this.props.providers[key]
     );
     this.loadChart = () => {
+      let total = 0;
+      for (const d of data) {
+        total += d;
+      }
       new Chart(document.getElementById("doughnut-chart"), {
         textBaseline: "middel",
 
@@ -82,7 +86,7 @@ class AnalyzedCard extends React.Component {
         options: {
           elements: {
             center: {
-              text: data[0] + data[1] + " Articles",
+              text: total + " Articles",
               color: "", //Default black
               fontStyle: "Helvetica", //Default Arial
               sidePadding: 15 //Default 20 (as a percentage)
