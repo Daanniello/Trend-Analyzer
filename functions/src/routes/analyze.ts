@@ -4,13 +4,12 @@ import * as moment from "moment";
 import CorporatieNLFetchEngine from "../engine/corporatienl-fetch-engine";
 import AedesFetchEngine from "../engine/aedes-fetch-engine";
 import UpdateService from "../services/database/update-service";
+import EmailAnalyzer from "../services/mail/email-analyzer-service";
 
 const CFE = new CorporatieNLFetchEngine();
 const AFE = new AedesFetchEngine();
 const EAS = new EmailAnalyzer();
 const DB = new UpdateService();
-
-import EmailAnalyzer from "../services/mail/email-analyzer-service";
 
 /* Ping Router */
 const router = express.Router();
