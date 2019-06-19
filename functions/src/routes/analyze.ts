@@ -7,7 +7,10 @@ import UpdateService from "../services/database/update-service";
 
 const CFE = new CorporatieNLFetchEngine();
 const AFE = new AedesFetchEngine();
+const EAS = new EmailAnalyzer();
 const DB = new UpdateService();
+
+import EmailAnalyzer from "../services/mail/email-analyzer-service";
 
 /* Ping Router */
 const router = express.Router();
@@ -28,7 +31,8 @@ router.post("", (req, res) => {
       await CFE.FetchNewArticles();
       console.timeEnd("ANALYZING CORPORATIENL");
       console.timeEnd("ANALYZING ARTICLES");
-
+      await EAS.analyzeEmails();
+      console.log("Analyzing emails!");
       res.send({
         lastUpdated: timestamp
       });

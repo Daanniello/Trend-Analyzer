@@ -10,6 +10,7 @@ interface IArticle {
   categories: { name: string; score: number }[];
   misc: { key: string; values: string[] }[];
   timestamp: number;
+  mailOccurrences: string[];
 }
 
 export default IArticle;

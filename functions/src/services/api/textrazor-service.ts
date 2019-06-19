@@ -53,7 +53,8 @@ class TextRazorService {
           categories: [],
           topics: [],
           misc: [],
-          timestamp: rawArticle.timestamp
+          timestamp: rawArticle.timestamp,
+          mailOccurrences: []
         };
         return article;
       }
@@ -71,7 +72,8 @@ class TextRazorService {
       categories: [],
       topics: [],
       misc: [],
-      timestamp: rawArticle.timestamp
+      timestamp: rawArticle.timestamp,
+      mailOccurrences: []
     };
 
     /*Category section */
