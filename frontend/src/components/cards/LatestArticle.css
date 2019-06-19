@@ -1,6 +1,7 @@
 .latest-article-card {
   width: calc(50% - 16px);
-  height: 100%;
+  height: auto;
+  padding-bottom: 50px;
 
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2), 0px 3px 4px rgba(0, 0, 0, 0.12),
     0px 2px 4px rgba(0, 0, 0, 0.14);
@@ -15,7 +16,7 @@
 }
 
 .article-combined {
-  height: auto;
+  height: 200px;
   width: 100%;
   float: left;
 }
@@ -37,6 +38,15 @@
   position: absolute;
   bottom: 3%;
   left: calc(50% - 53px);
+}
+
+.latest-article-card-load {
+  width: 100%;
+  height: 20px;
+  opacity: 0.6;
+  margin-bottom: 8px;
+  float: left;
+  text-align: center;
 }
 
 .href {
