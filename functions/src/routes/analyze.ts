@@ -15,13 +15,13 @@ const DB = new UpdateService();
 const router = express.Router();
 
 /* Implement endpoints */
-router.post("", (req, res) => {
-  (async () => {
-    const lastupdate = await DB.get("lastupdate");
-    if (moment.unix(lastupdate.timestamp).isBefore(moment().add(-30, "m"))) {
-      const timestamp: number = moment().unix();
-      DB.set("lastupdate", { timestamp });
+router.post("", async (req, res) => {
+  const lastupdate = await DB.get("lastupdate");
+  if (moment.unix(lastupdate.timestamp).isBefore(moment().add(-30, "m"))) {
+    const timestamp: number = moment().unix();
+    DB.set("lastupdate", { timestamp });
 
+    try {
       console.time("ANALYZING ARTICLES");
       console.time("ANALYZING AEDES");
       await AFE.FetchNewArticles();
@@ -30,17 +30,22 @@ router.post("", (req, res) => {
       await CFE.FetchNewArticles();
       console.timeEnd("ANALYZING CORPORATIENL");
       console.timeEnd("ANALYZING ARTICLES");
+      console.time("ANALYZING EMAILS");
       await EAS.analyzeEmails();
-      console.log("Analyzing emails!");
-      res.send({
-        lastUpdated: timestamp
-      });
-    } else {
-      res.send({
-        lastUpdated: lastupdate
-      });
+      console.timeEnd("ANALYZING EMAILS");
+    } catch (error) {
+      console.log(error);
+      console.log("Expected error(500) cause: Billing account not configured");
     }
-  })();
+
+    res.send({
+      lastUpdated: timestamp
+    });
+  } else {
+    res.send({
+      lastUpdated: lastupdate
+    });
+  }
 });
 
 module.exports = router;
