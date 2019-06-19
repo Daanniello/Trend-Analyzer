@@ -25,7 +25,7 @@ class StanderdTableCardRow extends React.Component {
           style={{
             float: "right",
             margin: "6px",
-            width: "32px",
+            width: "36px",
             height: "32px"
           }}
           aria-label="Delete"
