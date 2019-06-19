@@ -193,7 +193,9 @@ class App extends Component {
   };
 
   applyBlacklist = () => {
-    this.state.filteredArticles = this.state.rawArticles.map(article => {
+    this.state.filteredArticles = JSON.parse(
+      JSON.stringify(this.state.rawArticles)
+    ).map(article => {
       article.topics = article.topics.filter(topic => {
         if (this.state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
           return false;
