@@ -17,7 +17,7 @@ const Navigation = props => {
       icon: <PieChart />
     },
     {
-      text: "Topic",
+      text: "Topics",
       icon: <TableChart />
     },
     {

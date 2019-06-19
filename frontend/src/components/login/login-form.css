@@ -1,6 +1,7 @@
 #login-modal {
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  margin: 16px;
 }
 
 #login-form {
@@ -72,4 +73,10 @@
   height: 22px;
   border: 1px solid rgba(0, 0, 0, 0.54);
   background-color: rgba(0, 0, 0, 0.12);
+}
+
+@media only screen and (max-width: 400px) {
+  #login-form {
+    width: calc(100% - 32px);
+  }
 }
