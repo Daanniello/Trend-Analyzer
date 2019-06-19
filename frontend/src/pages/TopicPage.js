@@ -39,7 +39,7 @@ class TopicPage extends React.Component {
       <div className="container">
         <div className="topic-header">
           <Typography style={{ color: "#551F5C" }} variant="h4">
-            Topic
+            Topics
           </Typography>
         </div>
         <TableCard

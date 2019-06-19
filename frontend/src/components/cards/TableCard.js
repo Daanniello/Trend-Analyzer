@@ -119,9 +119,10 @@ class TableCard extends React.Component {
     const item = this.state.showData[index];
     if (!item) return;
     const { checked, color, name, totals, articles } = item;
+    const i = this.state.allData.findIndex(article => article.name === name);
     return (
       <TableCardRow
-        id={index}
+        id={i}
         style={style}
         handleCheck={this.handleOnCheck}
         checked={checked}
@@ -207,7 +208,7 @@ class TableCard extends React.Component {
                   className="table-row-details"
                   style={{ color: "white" }}
                 >
-                  Details
+                  Articles
                 </Typography>
               </div>
             </div>

@@ -39,7 +39,7 @@ class CategoryPage extends React.Component {
       <div className="container">
         <div className="header">
           <Typography style={{ color: "#551F5C" }} variant="h4">
-            Category
+            Categories
           </Typography>
         </div>
         <TableCard
