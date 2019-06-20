@@ -251,8 +251,8 @@ class App extends Component {
   applyEmailOnlyFilter() {
     const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
     this.state.filteredArticles = articles.filter(article => {
-      if (!article.mailOccurences) return false;
-      return article.mailOccurences.length > 0;
+      if (!article.mailOccurrences) return false;
+      return article.mailOccurrences.length > 0;
     });
 
     this.state.emailOnly = !this.state.emailOnly;
