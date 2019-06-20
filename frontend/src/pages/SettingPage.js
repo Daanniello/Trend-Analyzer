@@ -33,7 +33,6 @@ class SettingPage extends React.Component {
         let response = await request.post("/pincode", {});
         this.state.newPin = response.data;
 
-        console.log(String(this.state.newpin).length);
         this.setState(this.state);
       } catch (error) {
         console.log(error);
