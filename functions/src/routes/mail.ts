@@ -24,16 +24,12 @@ router.post("", async (req, res) => {
   try {
     const mailService = new MailService();
     await mailService.SendMail(stringMail);
+
     return res.sendStatus(200);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
   }
-
-  // if (String(destMail).endsWith(process.env.EMAIL_DOMAIN as string)) {
-  // } else {
-  //   return res.sendStatus(401);
-  // }
 });
 
 module.exports = router;

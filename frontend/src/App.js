@@ -242,6 +242,7 @@ class App extends Component {
         items={this.state.blacklistItems}
         pageColor="#9D000F"
         onPageChange={this.onPageChange}
+        apiKey={this.state.apiKey}
       />
     ];
   };

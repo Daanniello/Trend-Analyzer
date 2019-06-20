@@ -13,5 +13,6 @@ router.use("/blacklist", require("./blacklist"));
 router.use("/articles", require("./articles"));
 router.use("/mail", require("./mail"));
 router.use("/reset", require("./reset"));
+router.use("/pincode", require("./pincode"));
 
 module.exports = router;
