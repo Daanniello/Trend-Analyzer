@@ -19,7 +19,13 @@
 .settings-switches {
   width: auto;
   height: auto;
-  float: left;
 
   padding: 16px;
+}
+
+#new-pincode {
+  width: auto;
+  height: auto;
+  float: left;
+  margin: 16px;
 }

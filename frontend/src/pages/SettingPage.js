@@ -55,7 +55,7 @@ class SettingPage extends React.Component {
           <Typography style={{ color: "#551F5C" }} variant="h4">
             Settings
           </Typography>
-          <div className="settings-info">
+          {/* <div className="settings-info">
             <Typography variant="caption">
               {" "}
               Companies: Aedes, CorporatieNL
@@ -65,23 +65,7 @@ class SettingPage extends React.Component {
               {" "}
               Application version: 1.0.0
             </Typography>
-          </div>
-          <div id="new-pincode">
-            <Button variant="contained" size="small" onClick={this.setPincode}>
-              New Pincode!
-            </Button>
-
-            {(() => {
-              // If there is a new pincode, show it
-              if (!!String(this.state.newPin).trim()) {
-                return (
-                  <Typography>
-                    The new pincode is: <b>{this.state.newPin}</b>
-                  </Typography>
-                );
-              }
-            })()}
-          </div>
+          </div> */}
         </div>
         {/* <div className="settings-info">
           <Typography variant="caption">
@@ -120,6 +104,22 @@ class SettingPage extends React.Component {
             switchHandler={() => this.props.applyEmailOnlyFilter()}
             emailOnly={this.props.emailOnly}
           />
+        </div>
+        <div id="new-pincode">
+          <Button variant="contained" size="small" onClick={this.setPincode}>
+            Create new pincode
+          </Button>
+
+          {(() => {
+            // If there is a new pincode, show it
+            if (!!String(this.state.newPin).trim()) {
+              return (
+                <Typography>
+                  The new pincode is: <b>{this.state.newPin}</b>
+                </Typography>
+              );
+            }
+          })()}
         </div>
       </div>
     );
