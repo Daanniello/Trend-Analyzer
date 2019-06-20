@@ -40,8 +40,8 @@ class App extends Component {
       blacklistItems: [],
       updateDisabled: true,
       pageColor: "#551F5C",
-      allowedProviders: ["Aedes", "CorporatieNL"],
-      emailOnly: true
+      allowedProviders: [],
+      emailOnly: false
     };
     document.addEventListener("keydown", this.keyHandler, true);
   }
@@ -149,7 +149,10 @@ class App extends Component {
       await this.getArticles();
       await this.getBlacklistItems();
       this.applyBlacklist();
-      this.applyProviderFilter(this.state.allowedProviders);
+
+      this.applyProviderFilter("Aedes", true);
+      this.applyProviderFilter("CorporatieNL", true);
+
       if (this.state.emailOnly) {
         this.applyEmailOnlyFilter();
       }
@@ -220,11 +223,29 @@ class App extends Component {
     });
   };
 
-  applyProviderFilter(allowedProviders) {
+  applyProviderFilter(provider, boolean) {
+    this.applyBlacklist();
+
+    if (boolean) {
+      this.state.allowedProviders = this.state.allowedProviders;
+      this.state.allowedProviders.push(provider);
+    } else {
+      this.state.allowedProviders = this.state.allowedProviders;
+      this.state.allowedProviders.splice(
+        this.state.allowedProviders.indexOf(provider),
+        1
+      );
+    }
+    this.setState(this.state);
+
     const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
     this.state.filteredArticles = articles.filter(article => {
-      return allowedProviders.indexOf(article.provider) >= 0;
+      return this.state.allowedProviders.indexOf(article.provider) >= 0;
     });
+
+    this.createPageFormats();
+    this.setPages();
+    console.log(this.state.allowedProviders);
   }
 
   applyEmailOnlyFilter() {
@@ -233,6 +254,15 @@ class App extends Component {
       if (!article.mailOccurences) return false;
       return article.mailOccurences.length > 0;
     });
+
+    this.state.emailOnly = !this.state.emailOnly;
+
+    if (!this.state.emailOnly) {
+      this.applyBlacklist();
+    }
+
+    this.createPageFormats();
+    this.setPages();
   }
 
   createPageFormats = () => {
@@ -265,6 +295,12 @@ class App extends Component {
         items={this.state.blacklistItems}
         pageColor="#9D000F"
         onPageChange={this.onPageChange}
+        changeAllowedProviderHandler={(provider, boolean) =>
+          this.applyProviderFilter(provider, boolean)
+        }
+        applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
+        allowedProviders={this.state.allowedProviders}
+        emailOnly={this.state.emailOnly}
       />
     ];
   };
