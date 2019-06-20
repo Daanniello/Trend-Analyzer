@@ -26,6 +26,13 @@
   color: rgba(0, 0, 0, 0.54);
 }
 
+.login-pad-key :hover {
+  color: rgba(20, 167, 234, 1);
+}
+.login-pad-key :active {
+  color: rgba(0, 0, 0, 0.54);
+}
+
 .login-pad-backspace {
   line-height: 78px;
 }
