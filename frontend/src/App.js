@@ -39,7 +39,9 @@ class App extends Component {
       tableData: [],
       blacklistItems: [],
       updateDisabled: true,
-      pageColor: "#551F5C"
+      pageColor: "#551F5C",
+      allowedProviders: [],
+      emailOnly: false
     };
     document.addEventListener("keydown", this.keyHandler, true);
   }
@@ -147,6 +149,13 @@ class App extends Component {
       await this.getArticles();
       await this.getBlacklistItems();
       this.applyBlacklist();
+
+      this.applyProviderFilter("Aedes", true);
+      this.applyProviderFilter("CorporatieNL", true);
+
+      if (this.state.emailOnly) {
+        this.applyEmailOnlyFilter();
+      }
       this.createPageFormats();
       this.setPages();
 
@@ -193,7 +202,9 @@ class App extends Component {
   };
 
   applyBlacklist = () => {
-    this.state.filteredArticles = this.state.rawArticles.map(article => {
+    this.state.filteredArticles = JSON.parse(
+      JSON.stringify(this.state.rawArticles)
+    ).map(article => {
       article.topics = article.topics.filter(topic => {
         if (this.state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
           return false;
@@ -211,6 +222,48 @@ class App extends Component {
       return article;
     });
   };
+
+  applyProviderFilter(provider, boolean) {
+    this.applyBlacklist();
+
+    if (boolean) {
+      this.state.allowedProviders = this.state.allowedProviders;
+      this.state.allowedProviders.push(provider);
+    } else {
+      this.state.allowedProviders = this.state.allowedProviders;
+      this.state.allowedProviders.splice(
+        this.state.allowedProviders.indexOf(provider),
+        1
+      );
+    }
+    this.setState(this.state);
+
+    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
+    this.state.filteredArticles = articles.filter(article => {
+      return this.state.allowedProviders.indexOf(article.provider) >= 0;
+    });
+
+    this.createPageFormats();
+    this.setPages();
+    console.log(this.state.allowedProviders);
+  }
+
+  applyEmailOnlyFilter() {
+    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
+    this.state.filteredArticles = articles.filter(article => {
+      if (!article.mailOccurences) return false;
+      return article.mailOccurences.length > 0;
+    });
+
+    this.state.emailOnly = !this.state.emailOnly;
+
+    if (!this.state.emailOnly) {
+      this.applyBlacklist();
+    }
+
+    this.createPageFormats();
+    this.setPages();
+  }
 
   createPageFormats = () => {
     const converter = new ArticleDataConvert(this.state.filteredArticles);
@@ -242,6 +295,12 @@ class App extends Component {
         items={this.state.blacklistItems}
         pageColor="#9D000F"
         onPageChange={this.onPageChange}
+        changeAllowedProviderHandler={(provider, boolean) =>
+          this.applyProviderFilter(provider, boolean)
+        }
+        applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
+        allowedProviders={this.state.allowedProviders}
+        emailOnly={this.state.emailOnly}
         apiKey={this.state.apiKey}
       />
     ];

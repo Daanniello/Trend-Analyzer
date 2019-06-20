@@ -3,6 +3,8 @@ import "./SettingPage.css";
 
 import BlacklistCard from "../components/cards/BlacklistCard";
 import Typography from "@material-ui/core/Typography";
+import SwitchButton from "../components/Buttons/SwitchButton";
+import SwitchButtonStandard from "../components/Buttons/SwitchButtonStandard";
 
 import Button from "@material-ui/core/Button";
 import * as axios from "axios";
@@ -53,8 +55,7 @@ class SettingPage extends React.Component {
           <Typography style={{ color: "#551F5C" }} variant="h4">
             Settings
           </Typography>
-
-          <div className="settings-info">
+          {/* <div className="settings-info">
             <Typography variant="caption">
               {" "}
               Companies: Aedes, CorporatieNL
@@ -64,29 +65,62 @@ class SettingPage extends React.Component {
               {" "}
               Application version: 1.0.0
             </Typography>
-          </div>
-          <div id="new-pincode">
-            <Button variant="contained" size="small" onClick={this.setPincode}>
-              New Pincode!
-            </Button>
-
-            {(() => {
-              // If there is a new pincode, show it
-              if (!!String(this.state.newPin).trim()) {
-                return (
-                  <Typography>
-                    The new pincode is: <b>{this.state.newPin}</b>
-                  </Typography>
-                );
-              }
-            })()}
-          </div>
+          </div> */}
         </div>
+        {/* <div className="settings-info">
+          <Typography variant="caption">
+            {" "}
+            Companies: Aedes, CorporatieNL
+          </Typography>
+          <Typography variant="caption"> Date: 2019</Typography>
+          <Typography variant="caption"> Application version: 1.0.0</Typography>
+        </div> */}
         <BlacklistCard
           onTopicBlacklistChanged={this.props.onTopicBlacklistChanged}
           items={this.props.items}
           pageColor={this.props.pageColor}
         />
+        <div className="settings-switches">
+          <Typography variant="h6">Filter options</Typography>
+          <SwitchButton
+            name="CorporatieNL"
+            color="#1EABD7"
+            switchHandler={(provider, boolean) =>
+              this.props.changeAllowedProviderHandler(provider, boolean)
+            }
+            allowedProviders={this.props.allowedProviders}
+          />
+          <SwitchButton
+            name="Aedes"
+            color="#FF8000"
+            switchHandler={(provider, boolean) =>
+              this.props.changeAllowedProviderHandler(provider, boolean)
+            }
+            allowedProviders={this.props.allowedProviders}
+          />
+          <SwitchButtonStandard
+            name="E-mails only"
+            color="#D24DFF"
+            switchHandler={() => this.props.applyEmailOnlyFilter()}
+            emailOnly={this.props.emailOnly}
+          />
+        </div>
+        <div id="new-pincode">
+          <Button variant="contained" size="small" onClick={this.setPincode}>
+            Create new pincode
+          </Button>
+
+          {(() => {
+            // If there is a new pincode, show it
+            if (!!String(this.state.newPin).trim()) {
+              return (
+                <Typography>
+                  The new pincode is: <b>{this.state.newPin}</b>
+                </Typography>
+              );
+            }
+          })()}
+        </div>
       </div>
     );
   }

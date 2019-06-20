@@ -15,3 +15,17 @@
   height: 50px;
   float: left;
 }
+
+.settings-switches {
+  width: auto;
+  height: auto;
+
+  padding: 16px;
+}
+
+#new-pincode {
+  width: auto;
+  height: auto;
+  float: left;
+  margin: 16px;
+}
