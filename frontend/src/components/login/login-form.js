@@ -59,6 +59,7 @@ const LoginForm = props => {
               return (
                 <div id="login-form-footer">
                   <TextField
+                    autoFocus
                     style={{ marginRight: "8px" }}
                     id="standard-bare"
                     placeholder="johndoe@mail.com"
