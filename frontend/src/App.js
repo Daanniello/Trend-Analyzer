@@ -301,6 +301,7 @@ class App extends Component {
         applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
         allowedProviders={this.state.allowedProviders}
         emailOnly={this.state.emailOnly}
+        apiKey={this.state.apiKey}
       />
     ];
   };
