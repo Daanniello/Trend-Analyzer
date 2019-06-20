@@ -15,3 +15,11 @@
   height: 50px;
   float: left;
 }
+
+.settings-switches {
+  width: auto;
+  height: auto;
+  float: left;
+
+  padding: 16px;
+}

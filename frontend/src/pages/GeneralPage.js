@@ -9,6 +9,7 @@ import LatestArticle from "../components/cards/LatestArticle";
 
 const GeneralPage = props => {
   props.onPageChange(props.pageColor);
+  console.log(props.generalData);
   return (
     <div id="general-page-grid">
       <div className="general-page-item" id="general-page-header">
@@ -62,12 +63,12 @@ const GeneralPage = props => {
           type="Category"
           unit="month"
           results={
-            props.generalData.hot.category.month.length !== false
+            props.generalData.hot.category.month.length > 0
               ? props.generalData.hot.category.month[0].amount
               : 0
           }
           text={
-            props.generalData.hot.category.month.length !== false
+            props.generalData.hot.category.month.length > 0
               ? props.generalData.hot.category.month[0].name
               : "No category this month"
           }
@@ -80,12 +81,12 @@ const GeneralPage = props => {
           type="Topic"
           unit="month"
           results={
-            props.generalData.hot.topic.month.length !== false
+            props.generalData.hot.topic.month.length > 0
               ? props.generalData.hot.topic.month[0].amount
               : 0
           }
           text={
-            props.generalData.hot.category.month.length !== false
+            props.generalData.hot.category.month.length > 0
               ? props.generalData.hot.topic.month[0].name
               : "No category this month"
           }
@@ -102,14 +103,18 @@ const GeneralPage = props => {
           marginBottom: "8px"
         }}
       >
-        <LatestArticle
-          className="general-page-item"
-          latestArticle={props.generalData.latestArticle[0][0]}
-        />
-        <LatestArticle
-          className="general-page-item"
-          latestArticle={props.generalData.latestArticle[1][0]}
-        />
+        {props.generalData.latestArticle[0].length > 0 && (
+          <LatestArticle
+            className="general-page-item"
+            latestArticle={props.generalData.latestArticle[0][0]}
+          />
+        )}
+        {props.generalData.latestArticle[1].length > 0 && (
+          <LatestArticle
+            className="general-page-item"
+            latestArticle={props.generalData.latestArticle[1][0]}
+          />
+        )}
       </div>
     </div>
   );
