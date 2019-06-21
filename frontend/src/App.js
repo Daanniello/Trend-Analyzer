@@ -12,6 +12,7 @@ import GeneralPage from "./pages/GeneralPage";
 import TopicPage from "./pages/TopicPage";
 import CatergoryPage from "./pages/CategoryPage";
 import SettingPage from "./pages/SettingPage";
+import ArticlePage from "./pages/ArticlePage";
 
 import Modal from "@material-ui/core/Modal";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -27,7 +28,7 @@ class App extends Component {
     // The state of the app. Changes what the user sees and includes code needed to access certain pages.
     this.state = {
       currentPage: 0,
-      pages: [<div />, <div />, <div />, <div />],
+      pages: [<div />, <div />, <div />, <div />, <div />],
       lastUpdated: "1-1-2000 00:00:00",
       pinCode: "",
       errorMsg: "",
@@ -135,6 +136,7 @@ class App extends Component {
         "x-pincode": this.state.pinCode
       };
       let response = await request.post("/login", {});
+      console.log("asd");
       this.state.apiKey = response.data.apiKey;
 
       axios.defaults.headers = { "x-api-key": response.data.apiKey };
@@ -290,6 +292,8 @@ class App extends Component {
         pageColor="#FF8000"
         onPageChange={this.onPageChange}
       />,
+
+      <ArticlePage />,
       <SettingPage
         onTopicBlacklistChanged={this.onTopicBlacklistChanged}
         items={this.state.blacklistItems}

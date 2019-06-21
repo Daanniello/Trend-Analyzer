@@ -9,6 +9,7 @@ import PieChart from "@material-ui/icons/PieChart";
 import TableChart from "@material-ui/icons/TableChart";
 import ShowChart from "@material-ui/icons/ShowChart";
 import Settings from "@material-ui/icons/Settings";
+import ListAlt from "@material-ui/icons/ListAlt";
 
 const Navigation = props => {
   const items = [
@@ -23,6 +24,10 @@ const Navigation = props => {
     {
       text: "Categories",
       icon: <ShowChart />
+    },
+    {
+      text: "Articles",
+      icon: <ListAlt />
     },
     {
       text: "Settings",
