@@ -61,7 +61,10 @@ abstract class ArticleFetchEngine {
         if (result.length > 0) stopLoop = true;
 
         // Check if the article is from before 2017
-        if (moment.unix(rawArticle.timestamp).isBefore(moment2017)) {
+        if (
+          moment.unix(rawArticle.timestamp).isBefore(moment2017) ||
+          isNaN(rawArticle.timestamp)
+        ) {
           stopLoop = true;
         }
         // Stop if one of the ifs before this is true
