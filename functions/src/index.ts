@@ -6,7 +6,6 @@ import * as cors from "cors";
 
 dotenv.config();
 admin.initializeApp(functions.config().firebase);
-console.log(JSON.parse(process.env.SERVICE_ACCOUNT as string).project_id);
 
 /* Express */
 const app = express();

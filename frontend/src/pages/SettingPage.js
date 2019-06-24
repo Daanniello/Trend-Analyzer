@@ -114,7 +114,7 @@ class SettingPage extends React.Component {
             // If there is a new pincode, show it
             if (!!String(this.state.newPin).trim()) {
               return (
-                <Typography>
+                <Typography style={{ paddingTop: "8px" }}>
                   The new pincode is: <b>{this.state.newPin}</b>
                 </Typography>
               );
