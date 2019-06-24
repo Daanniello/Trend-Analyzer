@@ -13,6 +13,7 @@ const articles = ["article One", "Article Two"];
 
 function TableCardDetails(props) {
   const { onClose, selectedValue, ...other } = props;
+
   function handleClose() {
     onClose(selectedValue);
   }

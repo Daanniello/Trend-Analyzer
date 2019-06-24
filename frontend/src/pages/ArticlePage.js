@@ -20,7 +20,7 @@ class ArticlePage extends React.Component {
           </Typography>
         </div>
         <SearchBar />
-        <ArticleTable />
+        <ArticleTable articleData={this.props.articleData} />
       </div>
     );
   }
