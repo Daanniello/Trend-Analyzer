@@ -12,6 +12,7 @@ import GeneralPage from "./pages/GeneralPage";
 import TopicPage from "./pages/TopicPage";
 import CatergoryPage from "./pages/CategoryPage";
 import SettingPage from "./pages/SettingPage";
+import ArticlePage from "./pages/ArticlePage";
 
 import Modal from "@material-ui/core/Modal";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -27,7 +28,7 @@ class App extends Component {
     // The state of the app. Changes what the user sees and includes code needed to access certain pages.
     this.state = {
       currentPage: 0,
-      pages: [<div />, <div />, <div />, <div />],
+      pages: [<div />, <div />, <div />, <div />, <div />],
       lastUpdated: "1-1-2000 00:00:00",
       pinCode: "",
       errorMsg: "",
@@ -135,6 +136,7 @@ class App extends Component {
         "x-pincode": this.state.pinCode
       };
       let response = await request.post("/login", {});
+      console.log("asd");
       this.state.apiKey = response.data.apiKey;
 
       axios.defaults.headers = { "x-api-key": response.data.apiKey };
@@ -268,6 +270,45 @@ class App extends Component {
     this.state.tableData[0] = converter.ConvertArticlesToGeneral(); // GENERAL
     this.state.tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
     this.state.tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
+  };
+
+  setPages = () => {
+    this.state.pages = [
+      <GeneralPage
+        generalData={this.state.tableData[0]}
+        pageColor="#551F5C"
+        onPageChange={this.onPageChange}
+      />,
+      <TopicPage
+        topicData={this.state.tableData[1]}
+        pageColor="#9FD714"
+        onPageChange={this.onPageChange}
+      />,
+      <CatergoryPage
+        categoryData={this.state.tableData[2]}
+        pageColor="#FF8000"
+        onPageChange={this.onPageChange}
+      />,
+
+      <ArticlePage
+        articleData={this.state.filteredArticles}
+        pageColor="#D24DFF"
+        onPageChange={this.onPageChange}
+      />,
+      <SettingPage
+        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
+        items={this.state.blacklistItems}
+        pageColor="#9D000F"
+        onPageChange={this.onPageChange}
+        changeAllowedProviderHandler={(provider, boolean) =>
+          this.applyProviderFilter(provider, boolean)
+        }
+        applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
+        allowedProviders={this.state.allowedProviders}
+        emailOnly={this.state.emailOnly}
+        apiKey={this.state.apiKey}
+      />
+    ];
   };
 
   // Remove last pincode number input
