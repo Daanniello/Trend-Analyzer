@@ -55,12 +55,13 @@ class ArticleService extends DatabaseService<IArticle> {
           }
 
           if (docData.mailOccurrences.indexOf(mailLink) >= 0) {
-            throw new Error("This is an error I promise...");
+            throw new Error("STOP THE LOOP");
           }
 
           docData.mailOccurrences.push(mailLink);
 
           await docRef.set(docData, { merge: true });
+          console.log(`INCREMENTMAIL DOCUMENT FROM ${this.collection}`);
 
           return docData;
         })
@@ -68,8 +69,6 @@ class ArticleService extends DatabaseService<IArticle> {
     } catch (error) {
       throw error;
     }
-
-    console.log(`SETQUERY DOCUMENTS FROM ${this.collection}`);
 
     return docs;
   }
