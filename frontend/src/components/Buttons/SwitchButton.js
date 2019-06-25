@@ -12,18 +12,9 @@ class SwitchButton extends Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props.name);
-    console.log(this.props.allowedProviders);
-    if (this.props.allowedProviders.includes(this.props.name)) {
-      const state = this.state;
-      state.checked = true;
-      this.setState(state);
-    } else {
-      const state = this.state;
-      state.checked = false;
-      this.setState(state);
-    }
-    console.log(this.state.checked);
+    const state = this.state;
+    state.checked = this.props.allowedProviders.indexOf(this.props.name) >= 0;
+    this.setState(state);
   }
 
   render() {
@@ -35,8 +26,7 @@ class SwitchButton extends Component {
               checked={this.state.checked}
               onChange={() => {
                 this.setState({ checked: !this.state.checked });
-                console.log(`isChecked: ${!this.state.checked}`);
-                this.props.switchHandler(this.props.name, !this.state.checked);
+                this.props.switchHandler(this.props.name);
               }}
               style={{
                 float: "left",

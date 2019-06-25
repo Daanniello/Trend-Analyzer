@@ -55,26 +55,7 @@ class SettingPage extends React.Component {
           <Typography style={{ color: "#551F5C" }} variant="h4">
             Settings
           </Typography>
-          {/* <div className="settings-info">
-            <Typography variant="caption">
-              {" "}
-              Companies: Aedes, CorporatieNL
-            </Typography>
-            <Typography variant="caption"> Date: 2019</Typography>
-            <Typography variant="caption">
-              {" "}
-              Application version: 1.0.0
-            </Typography>
-          </div> */}
         </div>
-        {/* <div className="settings-info">
-          <Typography variant="caption">
-            {" "}
-            Companies: Aedes, CorporatieNL
-          </Typography>
-          <Typography variant="caption"> Date: 2019</Typography>
-          <Typography variant="caption"> Application version: 1.0.0</Typography>
-        </div> */}
         <BlacklistCard
           onTopicBlacklistChanged={this.props.onTopicBlacklistChanged}
           items={this.props.items}
@@ -85,23 +66,19 @@ class SettingPage extends React.Component {
           <SwitchButton
             name="CorporatieNL"
             color="rgb(157, 0, 15)"
-            switchHandler={(provider, boolean) =>
-              this.props.changeAllowedProviderHandler(provider, boolean)
-            }
+            switchHandler={provider => this.props.toggleProvider(provider)}
             allowedProviders={this.props.allowedProviders}
           />
           <SwitchButton
             name="Aedes"
             color="rgb(157, 0, 15)"
-            switchHandler={(provider, boolean) =>
-              this.props.changeAllowedProviderHandler(provider, boolean)
-            }
+            switchHandler={provider => this.props.toggleProvider(provider)}
             allowedProviders={this.props.allowedProviders}
           />
           <SwitchButtonStandard
             name="E-mails only"
             color="rgb(157, 0, 15)"
-            switchHandler={() => this.props.applyEmailOnlyFilter()}
+            switchHandler={() => this.props.toggleEmailOnly()}
             emailOnly={this.props.emailOnly}
           />
         </div>

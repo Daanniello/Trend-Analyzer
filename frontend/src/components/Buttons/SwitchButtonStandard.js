@@ -40,7 +40,6 @@ class SwitchButtonStandard extends Component {
               checked={this.state.checked}
               onChange={() => {
                 this.setState({ checked: !this.state.checked });
-                console.log(`isChecked: ${!this.state.checked}`);
                 this.props.switchHandler();
               }}
               value="checkedA"

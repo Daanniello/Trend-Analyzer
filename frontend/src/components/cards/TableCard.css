@@ -42,6 +42,10 @@
   float: left;
   margin-left: 20px !important;
   margin-right: auto !important;
+  width: calc(100% - 380px);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .table-row-seperate-header {
@@ -92,21 +96,4 @@
   width: 10px !important;
   height: 10px !important;
   padding: 6px 0 0 12px !important;
-}
-
-@media only screen and (max-width: 1500px) {
-  .table-row-seperate-header {
-    width: auto;
-  }
-}
-
-@media only screen and (max-width: 1000px) {
-  .table-row-title {
-    max-width: 100px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    width: 90px;
-    height: 20px;
-    white-space: nowrap;
-  }
 }

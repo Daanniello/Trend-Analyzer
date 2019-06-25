@@ -78,7 +78,7 @@ class EmailAnalyzer {
 
         const articleRef = hrefs.filter((href: string) => {
           if (!href) return false;
-          return href.includes("http://mailchi.mp/corporatienl/nieuwsbrief");
+          return href.includes("mailchi.mp/corporatienl/nieuwsbrief");
         })[0];
 
         if (!articleRef) continue;
