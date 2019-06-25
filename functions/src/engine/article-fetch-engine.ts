@@ -26,20 +26,13 @@ abstract class ArticleFetchEngine {
   }
 
   public async FetchNewArticles(pageNumber = 1): Promise<void> {
+    // Check database
     if (this.articleService == null) {
       console.log("NO DATABASE");
       return;
     }
 
     await this.setCheerioHTML(this.baseURL, this.currentPageNumber);
-
-    // this.currentPageNumber = pageNumber;
-    // let currentPageURL: string = this.nextPageURL(
-    //   this.baseURL,
-    //   this.currentPageNumber
-    // );
-    // let currentPageHTML: string = await this.getPageHTML(currentPageURL);
-    // this.setCheerioHTML(currentPageHTML);
 
     const moment2017 = moment("2017", "YYYY").format();
 
@@ -90,6 +83,7 @@ abstract class ArticleFetchEngine {
 
   public async FetchInitialArticles(): Promise<void> {}
 
+  // Set cheerio to the new HTML
   protected async setCheerioHTML(
     baseURL: string,
     pageNumber: number

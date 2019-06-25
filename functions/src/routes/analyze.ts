@@ -43,7 +43,7 @@ router.post("", async (req, res) => {
     });
   } else {
     res.send({
-      lastUpdated: lastupdate
+      lastUpdated: lastupdate.timestamp
     });
   }
 });
