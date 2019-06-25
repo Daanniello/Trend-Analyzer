@@ -40,7 +40,7 @@ class App extends Component {
       blacklistItems: [],
       updateDisabled: true,
       pageColor: "#551F5C",
-      allowedProviders: [],
+      allowedProviders: ["CorporatieNL", "Aedes"],
       emailOnly: false
     };
     document.addEventListener("keydown", this.keyHandler, true);
@@ -148,16 +148,8 @@ class App extends Component {
 
       await this.getArticles();
       await this.getBlacklistItems();
-      this.applyBlacklist();
 
-      this.applyProviderFilter("Aedes", true);
-      this.applyProviderFilter("CorporatieNL", true);
-
-      if (this.state.emailOnly) {
-        this.applyEmailOnlyFilter();
-      }
-      this.createPageFormats();
-      this.setPages();
+      this.applyFiltersAndUpdatePages();
 
       this.state.loggedIn = true;
     } catch (error) {
@@ -165,6 +157,22 @@ class App extends Component {
       this.shakeIt();
       this.state.pinCode = "";
     }
+    this.setState(this.state);
+  };
+
+  applyFiltersAndUpdatePages = () => {
+    this.state.filteredArticles = this.state.rawArticles;
+
+    this.applyBlacklist();
+
+    this.applyProviderFilter();
+
+    this.applyEmailOnlyFilter();
+
+    // TODO: create pages
+    this.createPageFormats();
+    this.setPages();
+
     this.setState(this.state);
   };
 
@@ -202,9 +210,8 @@ class App extends Component {
   };
 
   applyBlacklist = () => {
-    this.state.filteredArticles = JSON.parse(
-      JSON.stringify(this.state.rawArticles)
-    ).map(article => {
+    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
+    this.state.filteredArticles = articles.map(article => {
       article.topics = article.topics.filter(topic => {
         if (this.state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
           return false;
@@ -223,46 +230,36 @@ class App extends Component {
     });
   };
 
-  applyProviderFilter(provider, boolean) {
-    this.applyBlacklist();
-
-    if (boolean) {
-      this.state.allowedProviders = this.state.allowedProviders;
+  toggleProvider = provider => {
+    const providerIndex = this.state.allowedProviders.indexOf(provider);
+    if (providerIndex < 0) {
       this.state.allowedProviders.push(provider);
     } else {
-      this.state.allowedProviders = this.state.allowedProviders;
-      this.state.allowedProviders.splice(
-        this.state.allowedProviders.indexOf(provider),
-        1
-      );
+      this.state.allowedProviders.splice(providerIndex, 1);
     }
-    this.setState(this.state);
+    this.applyFiltersAndUpdatePages();
+  };
 
+  applyProviderFilter() {
     const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
     this.state.filteredArticles = articles.filter(article => {
       return this.state.allowedProviders.indexOf(article.provider) >= 0;
     });
-
-    this.createPageFormats();
-    this.setPages();
-    console.log(this.state.allowedProviders);
+    this.setState(this.state);
   }
 
+  toggleEmailOnly = () => {
+    this.state.emailOnly = !this.state.emailOnly;
+    this.applyFiltersAndUpdatePages();
+  };
+
   applyEmailOnlyFilter() {
+    if (!this.state.emailOnly) return;
     const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
     this.state.filteredArticles = articles.filter(article => {
       if (!article.mailOccurrences) return false;
       return article.mailOccurrences.length > 0;
     });
-
-    this.state.emailOnly = !this.state.emailOnly;
-
-    if (!this.state.emailOnly) {
-      this.applyBlacklist();
-    }
-
-    this.createPageFormats();
-    this.setPages();
   }
 
   createPageFormats = () => {
@@ -271,39 +268,6 @@ class App extends Component {
     this.state.tableData[0] = converter.ConvertArticlesToGeneral(); // GENERAL
     this.state.tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
     this.state.tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
-  };
-
-  setPages = () => {
-    this.state.pages = [
-      <GeneralPage
-        generalData={this.state.tableData[0]}
-        pageColor="#551F5C"
-        onPageChange={this.onPageChange}
-      />,
-      <TopicPage
-        topicData={this.state.tableData[1]}
-        pageColor="#9FD714"
-        onPageChange={this.onPageChange}
-      />,
-      <CatergoryPage
-        categoryData={this.state.tableData[2]}
-        pageColor="#FF8000"
-        onPageChange={this.onPageChange}
-      />,
-      <SettingPage
-        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
-        items={this.state.blacklistItems}
-        pageColor="#9D000F"
-        onPageChange={this.onPageChange}
-        changeAllowedProviderHandler={(provider, boolean) =>
-          this.applyProviderFilter(provider, boolean)
-        }
-        applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
-        allowedProviders={this.state.allowedProviders}
-        emailOnly={this.state.emailOnly}
-        apiKey={this.state.apiKey}
-      />
-    ];
   };
 
   // Remove last pincode number input
@@ -351,6 +315,41 @@ class App extends Component {
       this.state.updateDisabled = true;
     }
     this.setState(this.state);
+  };
+
+  setPages = () => {
+    this.state.pages = [
+      <GeneralPage
+        generalData={this.state.tableData[0]}
+        pageColor="#551F5C"
+        onPageChange={this.onPageChange}
+      />,
+      <TopicPage
+        topicData={this.state.tableData[1]}
+        pageColor="#9FD714"
+        onPageChange={this.onPageChange}
+      />,
+      <CatergoryPage
+        categoryData={this.state.tableData[2]}
+        pageColor="#FF8000"
+        onPageChange={this.onPageChange}
+      />,
+      <SettingPage
+        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
+        items={this.state.blacklistItems}
+        pageColor="#9D000F"
+        onPageChange={this.onPageChange}
+        // changeAllowedProviderHandler={(provider, boolean) =>
+        //   this.applyProviderFilter(provider, boolean)
+        // }
+        // applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
+        toggleProvider={provider => this.toggleProvider(provider)}
+        toggleEmailOnly={() => this.toggleEmailOnly()}
+        allowedProviders={this.state.allowedProviders}
+        emailOnly={this.state.emailOnly}
+        apiKey={this.state.apiKey}
+      />
+    ];
   };
 
   render() {
