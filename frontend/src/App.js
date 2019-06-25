@@ -70,7 +70,6 @@ class App extends Component {
       state.pinCode += value;
       if (state.pinCode.length === 4) {
         this.checkLogin(state);
-        // >>>>>>> develop
       }
     }
     this.setState(state);
@@ -272,45 +271,6 @@ class App extends Component {
     this.state.tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
   };
 
-  setPages = () => {
-    this.state.pages = [
-      <GeneralPage
-        generalData={this.state.tableData[0]}
-        pageColor="#551F5C"
-        onPageChange={this.onPageChange}
-      />,
-      <TopicPage
-        topicData={this.state.tableData[1]}
-        pageColor="#9FD714"
-        onPageChange={this.onPageChange}
-      />,
-      <CatergoryPage
-        categoryData={this.state.tableData[2]}
-        pageColor="#FF8000"
-        onPageChange={this.onPageChange}
-      />,
-
-      <ArticlePage
-        articleData={this.state.filteredArticles}
-        pageColor="#D24DFF"
-        onPageChange={this.onPageChange}
-      />,
-      <SettingPage
-        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
-        items={this.state.blacklistItems}
-        pageColor="#9D000F"
-        onPageChange={this.onPageChange}
-        changeAllowedProviderHandler={(provider, boolean) =>
-          this.applyProviderFilter(provider, boolean)
-        }
-        applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
-        allowedProviders={this.state.allowedProviders}
-        emailOnly={this.state.emailOnly}
-        apiKey={this.state.apiKey}
-      />
-    ];
-  };
-
   // Remove last pincode number input
   removePin = () => {
     if (this.state.pinCode.length >= 4) return;
@@ -342,13 +302,7 @@ class App extends Component {
   };
 
   setDisableButton = unix => {
-    if (
-      moment.unix(unix).isBefore(
-        moment()
-          .clone()
-          .add(-30, "m")
-      )
-    ) {
+    if (moment.unix(unix).isBefore(moment().add(-30, "m"))) {
       // Can update
       this.state.updateDisabled = false;
     } else {
@@ -375,15 +329,16 @@ class App extends Component {
         pageColor="#FF8000"
         onPageChange={this.onPageChange}
       />,
+      <ArticlePage
+        articleData={this.state.filteredArticles}
+        pageColor="#D24DFF"
+        onPageChange={this.onPageChange}
+      />,
       <SettingPage
         onTopicBlacklistChanged={this.onTopicBlacklistChanged}
         items={this.state.blacklistItems}
         pageColor="#9D000F"
         onPageChange={this.onPageChange}
-        // changeAllowedProviderHandler={(provider, boolean) =>
-        //   this.applyProviderFilter(provider, boolean)
-        // }
-        // applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
         toggleProvider={provider => this.toggleProvider(provider)}
         toggleEmailOnly={() => this.toggleEmailOnly()}
         allowedProviders={this.state.allowedProviders}
