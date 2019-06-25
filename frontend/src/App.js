@@ -293,7 +293,11 @@ class App extends Component {
         onPageChange={this.onPageChange}
       />,
 
-      <ArticlePage articleData={this.state.filteredArticles} />,
+      <ArticlePage
+        articleData={this.state.filteredArticles}
+        pageColor="#D24DFF"
+        onPageChange={this.onPageChange}
+      />,
       <SettingPage
         onTopicBlacklistChanged={this.onTopicBlacklistChanged}
         items={this.state.blacklistItems}

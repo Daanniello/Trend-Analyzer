@@ -26,20 +26,6 @@ class SwitchButton extends Component {
     console.log(this.state.checked);
   }
 
-  // handleChange = () => {
-  //   const state = this.state;
-
-  //   if (this.state.checked) {
-  //     state.checked = false;
-  //     this.props.switchHandler(this.props.name, false);
-  //   } else {
-  //     state.checked = true;
-  //     this.props.switchHandler(this.props.name, true);
-  //   }
-  //   console.log(this.state.checked);
-  //   this.setState(state);
-  // };
-
   render() {
     return (
       <FormGroup style={{}}>

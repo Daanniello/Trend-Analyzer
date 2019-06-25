@@ -6,11 +6,21 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 
 class ArticleTableRow extends Component {
   state = {
-    expand: false
+    expand: false,
+    mailCount: ""
   };
 
   constructor(props) {
     super(props);
+    let mailCount = props.mailCount;
+    if (props.mailCount === undefined || props.mailCount.length === 0) {
+      mailCount = "";
+    } else {
+      mailCount = props.mailCount.length;
+    }
+    this.state.mailCount = mailCount;
+    console.log(props.mailCount);
+    console.log(this.state.mailCount);
   }
 
   topicRows = () => {
@@ -54,7 +64,10 @@ class ArticleTableRow extends Component {
         />
         <div className="article-table-row-date"> {this.props.date}</div>
         <div className="article-table-row-title">
-          <a href="www.google.com"> {this.props.title}</a>{" "}
+          <a href={this.props.url} target="_blank">
+            {" "}
+            {this.props.title}
+          </a>{" "}
         </div>
 
         <div className="article-table-row-expander">
@@ -79,6 +92,7 @@ class ArticleTableRow extends Component {
             }}
           />
         </div>
+        <div className="article-table-row-mail">{this.state.mailCount}</div>
         <div
           className="article-table-row-ArticleTableRowInfo"
           style={{ display: this.state.expand === false ? "none" : "" }}

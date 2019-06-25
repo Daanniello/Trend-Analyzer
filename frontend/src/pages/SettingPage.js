@@ -84,7 +84,7 @@ class SettingPage extends React.Component {
           <Typography variant="h6">Filter options</Typography>
           <SwitchButton
             name="CorporatieNL"
-            color="#1EABD7"
+            color="rgb(157, 0, 15)"
             switchHandler={(provider, boolean) =>
               this.props.changeAllowedProviderHandler(provider, boolean)
             }
@@ -92,7 +92,7 @@ class SettingPage extends React.Component {
           />
           <SwitchButton
             name="Aedes"
-            color="#FF8000"
+            color="rgb(157, 0, 15)"
             switchHandler={(provider, boolean) =>
               this.props.changeAllowedProviderHandler(provider, boolean)
             }
@@ -100,13 +100,18 @@ class SettingPage extends React.Component {
           />
           <SwitchButtonStandard
             name="E-mails only"
-            color="#D24DFF"
+            color="rgb(157, 0, 15)"
             switchHandler={() => this.props.applyEmailOnlyFilter()}
             emailOnly={this.props.emailOnly}
           />
         </div>
         <div id="new-pincode">
-          <Button variant="contained" size="small" onClick={this.setPincode}>
+          <Button
+            style={{ float: "left" }}
+            variant="contained"
+            size="small"
+            onClick={this.setPincode}
+          >
             Create new pincode
           </Button>
 
@@ -114,7 +119,7 @@ class SettingPage extends React.Component {
             // If there is a new pincode, show it
             if (!!String(this.state.newPin).trim()) {
               return (
-                <Typography style={{ paddingTop: "8px" }}>
+                <Typography style={{ float: "left", padding: "6px" }}>
                   The new pincode is: <b>{this.state.newPin}</b>
                 </Typography>
               );

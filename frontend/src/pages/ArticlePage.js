@@ -9,6 +9,8 @@ class ArticlePage extends React.Component {
   state = {};
   constructor(props) {
     super(props);
+
+    props.onPageChange(props.pageColor);
   }
 
   render() {
@@ -20,7 +22,10 @@ class ArticlePage extends React.Component {
           </Typography>
         </div>
         <SearchBar />
-        <ArticleTable articleData={this.props.articleData} />
+        <ArticleTable
+          articleData={this.props.articleData}
+          headerColor="#D24DFF"
+        />
       </div>
     );
   }

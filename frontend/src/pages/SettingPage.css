@@ -29,3 +29,7 @@
   float: left;
   margin: 16px;
 }
+
+.MuiSwitch-colorSecondary-139.MuiSwitch-checked-137 + .MuiSwitch-bar-141 {
+  background-color: firebrick !important;
+}
