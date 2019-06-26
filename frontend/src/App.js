@@ -409,7 +409,7 @@ class App extends Component {
         <div
           style={{
             width: "100%",
-            height: "4px",
+            height: "2px",
             position: "absolute",
             zIndex: "1000"
           }}

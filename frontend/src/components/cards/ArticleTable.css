@@ -61,6 +61,7 @@
 .article-table-row-color {
   width: 4px;
   height: 40px;
+  margin-top: 1px;
   background-color: red;
   float: left;
 }
