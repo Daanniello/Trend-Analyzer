@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./NavigationFooter.css";
 
 import * as moment from "moment";

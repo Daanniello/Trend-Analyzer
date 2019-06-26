@@ -58,12 +58,13 @@ class App extends Component {
 
   // Sets the current page
   setPage = newPage => {
-    if (this.state.currentPage === newPage) return;
     const state = this.state;
+    if (state.currentPage === newPage) return;
     state.currentPage = newPage;
     this.setState(state);
   };
 
+  // Ads a pin number to the pincode
   addPin = async value => {
     const state = this.state;
     if (state.pinCode.length < 4) {
@@ -121,6 +122,7 @@ class App extends Component {
     }
   };
 
+  // Method that shakes the screen, indicator of an error
   shakeIt = async () => {
     const form = document.getElementById("login-form");
     form.classList.add("login-shake");
@@ -162,7 +164,9 @@ class App extends Component {
   };
 
   applyFiltersAndUpdatePages = () => {
-    this.state.filteredArticles = this.state.rawArticles;
+    const state = this.state;
+    state.filteredArticles = this.state.rawArticles;
+    this.setState(state);
 
     this.applyBlacklist();
 
@@ -197,7 +201,9 @@ class App extends Component {
     }
   };
 
+  // Use regex to check if the input is a valid input
   validateEmail(email) {
+    // eslint-disable-next-line
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
@@ -212,17 +218,16 @@ class App extends Component {
 
   applyBlacklist = () => {
     const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
-    this.state.filteredArticles = articles.map(article => {
+    const state = this.state;
+    state.filteredArticles = articles.map(article => {
       article.topics = article.topics.filter(topic => {
-        if (this.state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
+        if (state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
           return false;
         }
         return true;
       });
       article.categories = article.categories.filter(categorie => {
-        if (
-          this.state.blacklistItems.indexOf(categorie.name.toLowerCase()) >= 0
-        ) {
+        if (state.blacklistItems.indexOf(categorie.name.toLowerCase()) >= 0) {
           return false;
         }
         return true;
@@ -243,43 +248,89 @@ class App extends Component {
 
   applyProviderFilter() {
     const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
-    this.state.filteredArticles = articles.filter(article => {
-      return this.state.allowedProviders.indexOf(article.provider) >= 0;
+    const state = this.state;
+    state.filteredArticles = articles.filter(article => {
+      return state.allowedProviders.indexOf(article.provider) >= 0;
     });
-    this.setState(this.state);
+    this.setState(state);
   }
 
   toggleEmailOnly = () => {
-    this.state.emailOnly = !this.state.emailOnly;
+    const state = this.state;
+    state.emailOnly = !state.emailOnly;
+    this.setState(state);
     this.applyFiltersAndUpdatePages();
   };
 
   applyEmailOnlyFilter() {
     if (!this.state.emailOnly) return;
     const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
-    this.state.filteredArticles = articles.filter(article => {
-      if (!article.mailOccurrences) return false;
-      return article.mailOccurrences.length > 0;
-    });
+    const state = this.state;
+    this.setState(
+      (state.filteredArticles = articles.filter(article => {
+        if (!article.mailOccurrences) return false;
+        return article.mailOccurrences.length > 0;
+      }))
+    );
   }
 
   createPageFormats = () => {
     const converter = new ArticleDataConvert(this.state.filteredArticles);
+    const state = this.state;
+    state.tableData[0] = converter.ConvertArticlesToGeneral(); // GENERAL
+    state.tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
+    state.tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
+    this.setState(state);
+  };
 
-    this.state.tableData[0] = converter.ConvertArticlesToGeneral(); // GENERAL
-    this.state.tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
-    this.state.tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
+  setPages = () => {
+    const state = this.state;
+    state.pages = [
+      <GeneralPage
+        generalData={state.tableData[0]}
+        pageColor="#551F5C"
+        onPageChange={this.onPageChange}
+      />,
+      <TopicPage
+        topicData={state.tableData[1]}
+        pageColor="#9FD714"
+        onPageChange={this.onPageChange}
+      />,
+      <CatergoryPage
+        categoryData={state.tableData[2]}
+        pageColor="#FF8000"
+        onPageChange={this.onPageChange}
+      />,
+
+      <ArticlePage
+        articleData={state.filteredArticles}
+        pageColor="#D24DFF"
+        onPageChange={this.onPageChange}
+      />,
+      <SettingPage
+        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
+        items={state.blacklistItems}
+        pageColor="#9D000F"
+        onPageChange={this.onPageChange}
+        changeAllowedProviderHandler={(provider, boolean) =>
+          this.applyProviderFilter(provider, boolean)
+        }
+        applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
+        allowedProviders={state.allowedProviders}
+        emailOnly={state.emailOnly}
+        apiKey={state.apiKey}
+      />
+    ];
+    this.setState(state);
   };
 
   // Remove last pincode number input
   removePin = () => {
-    if (this.state.pinCode.length >= 4) return;
+    const state = this.state;
+    if (state.pinCode.length >= 4) return;
 
-    this.state.pinCode = this.state.pinCode.substring(
-      0,
-      this.state.pinCode.length - 1
-    );
-    this.setState(this.state);
+    state.pinCode = state.pinCode.substring(0, state.pinCode.length - 1);
+    this.setState(state);
   };
 
   getApiKey = () => {
@@ -296,36 +347,39 @@ class App extends Component {
       .unix(unix)
       .local()
       .format("DD-MM-YYYY HH:mm:ss");
-    this.state.lastUpdated = date;
+    const state = this.state;
+    state.lastUpdated = date;
     this.setDisableButton(unix);
-    this.setState(this.state);
+    this.setState(state);
   };
 
   setDisableButton = unix => {
+    const state = this.state;
     if (moment.unix(unix).isBefore(moment().add(-30, "m"))) {
       // Can update
-      this.state.updateDisabled = false;
+      state.updateDisabled = false;
     } else {
       // Can't update
-      this.state.updateDisabled = true;
+      state.updateDisabled = true;
     }
-    this.setState(this.state);
+    this.setState(state);
   };
 
   setPages = () => {
-    this.state.pages = [
+    const state = this.state;
+    state.pages = [
       <GeneralPage
-        generalData={this.state.tableData[0]}
+        generalData={state.tableData[0]}
         pageColor="#551F5C"
         onPageChange={this.onPageChange}
       />,
       <TopicPage
-        topicData={this.state.tableData[1]}
+        topicData={state.tableData[1]}
         pageColor="#9FD714"
         onPageChange={this.onPageChange}
       />,
       <CatergoryPage
-        categoryData={this.state.tableData[2]}
+        categoryData={state.tableData[2]}
         pageColor="#FF8000"
         onPageChange={this.onPageChange}
       />,
@@ -336,16 +390,17 @@ class App extends Component {
       />,
       <SettingPage
         onTopicBlacklistChanged={this.onTopicBlacklistChanged}
-        items={this.state.blacklistItems}
+        items={state.blacklistItems}
         pageColor="#9D000F"
         onPageChange={this.onPageChange}
         toggleProvider={provider => this.toggleProvider(provider)}
         toggleEmailOnly={() => this.toggleEmailOnly()}
-        allowedProviders={this.state.allowedProviders}
-        emailOnly={this.state.emailOnly}
-        apiKey={this.state.apiKey}
+        allowedProviders={state.allowedProviders}
+        emailOnly={state.emailOnly}
+        apiKey={state.apiKey}
       />
     ];
+    this.setState(state);
   };
 
   render() {
