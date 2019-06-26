@@ -39,6 +39,24 @@ class ArticleTableRow extends Component {
     return topicRows;
   };
 
+  mailRows = () => {
+    if (this.props.mailCount === undefined) {
+      return;
+    }
+    let mailUrl = [];
+
+    for (let i = 0; i < this.props.mailCount.length; i++) {
+      mailUrl.push(
+        <div className="article-table-row-ArticleTableRowInfo-data">
+          <a href={this.props.mailCount[i]} target="_blank">
+            {this.props.mailCount[i]}
+          </a>
+        </div>
+      );
+    }
+    return mailUrl;
+  };
+
   categoryRows = () => {
     let categoryRows = [];
 
@@ -98,7 +116,14 @@ class ArticleTableRow extends Component {
           style={{ display: this.state.expand === false ? "none" : "" }}
         >
           <div className="article-table-row-ArticleTableRowInfo-header">
-            <div style={{ height: "auto", width: "auto", float: "left" }}>
+            <div
+              style={{
+                height: "auto",
+                width: "auto",
+                float: "left",
+                marginRight: "32px"
+              }}
+            >
               <div className="article-table-row-ArticleTableRowInfo-topics">
                 Categories
               </div>
@@ -109,6 +134,12 @@ class ArticleTableRow extends Component {
                 Topics
               </div>
               {this.topicRows()}
+            </div>
+            <div style={{ height: "auto", width: "auto", float: "left" }}>
+              <div className="article-table-row-ArticleTableRowInfo-maillinks">
+                Mail Url:
+              </div>
+              {this.mailRows()}
             </div>
           </div>
         </div>

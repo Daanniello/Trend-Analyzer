@@ -351,6 +351,95 @@ class App extends Component {
   render() {
     return (
       <div id="app">
+        <div
+          style={{
+            width: "100%",
+            height: "4px",
+            position: "absolute",
+            zIndex: "1000"
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#9D000F",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#1eabd8",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#FF8000",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#C19000",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#cad212",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#D24DFF",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#1EABD7",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#D80000",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#003478",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: "#8A8B8E",
+              width: "10%",
+              height: "100%",
+              float: "left"
+            }}
+          />
+        </div>
         <Navigation
           getApiKey={this.getApiKey}
           setPage={this.setPage}
