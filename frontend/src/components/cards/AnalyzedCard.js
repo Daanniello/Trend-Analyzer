@@ -68,8 +68,8 @@ class AnalyzedCard extends React.Component {
             {
               label: "Providers",
               backgroundColor: [
-                "#1EABD7",
                 "#FF8000",
+                "#1EABD7",
                 "#C19000",
                 "#cad212",
                 "#D24DFF",
