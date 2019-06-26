@@ -71,7 +71,6 @@ class App extends Component {
       state.pinCode += value;
       if (state.pinCode.length === 4) {
         this.checkLogin(state);
-        // >>>>>>> develop
       }
     }
     this.setState(state);
@@ -356,13 +355,7 @@ class App extends Component {
 
   setDisableButton = unix => {
     const state = this.state;
-    if (
-      moment.unix(unix).isBefore(
-        moment()
-          .clone()
-          .add(-30, "m")
-      )
-    ) {
+    if (moment.unix(unix).isBefore(moment().add(-30, "m"))) {
       // Can update
       state.updateDisabled = false;
     } else {
@@ -388,6 +381,11 @@ class App extends Component {
       <CatergoryPage
         categoryData={state.tableData[2]}
         pageColor="#FF8000"
+        onPageChange={this.onPageChange}
+      />,
+      <ArticlePage
+        articleData={this.state.filteredArticles}
+        pageColor="#D24DFF"
         onPageChange={this.onPageChange}
       />,
       <SettingPage
