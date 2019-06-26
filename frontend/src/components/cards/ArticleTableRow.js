@@ -19,8 +19,6 @@ class ArticleTableRow extends Component {
       mailCount = props.mailCount.length;
     }
     this.state.mailCount = mailCount;
-    console.log(props.mailCount);
-    console.log(this.state.mailCount);
   }
 
   topicRows = () => {
@@ -124,8 +122,17 @@ class ArticleTableRow extends Component {
                 marginRight: "32px"
               }}
             >
+              <div style={{ height: "auto", width: "100%" }}>
+                {this.mailRows() && this.mailRows().length > 0 && (
+                  <div className="article-table-row-ArticleTableRowInfo-maillinks">
+                    Mail Url's
+                  </div>
+                )}
+
+                {this.mailRows()}
+              </div>
               <div className="article-table-row-ArticleTableRowInfo-topics">
-                Categories
+                {this.categoryRows().length > 0 ? "Categories" : ""}
               </div>
               {this.categoryRows()}
             </div>
@@ -134,15 +141,9 @@ class ArticleTableRow extends Component {
                 className="article-table-row-ArticleTableRowInfo-topics"
                 style={{ marginRight: "32px" }}
               >
-                Topics
+                {this.topicRows().length > 0 ? "Topics" : ""}
               </div>
               {this.topicRows()}
-            </div>
-            <div style={{ height: "auto", width: "auto", float: "left" }}>
-              <div className="article-table-row-ArticleTableRowInfo-maillinks">
-                Mail Url:
-              </div>
-              {this.mailRows()}
             </div>
           </div>
         </div>

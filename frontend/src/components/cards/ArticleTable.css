@@ -36,6 +36,11 @@
   float: left;
 }
 
+#articletable {
+  width: 100%;
+  height: calc(100% - 50px);
+}
+
 .article-table-header-expand {
   width: 100px;
   height: calc(100% - 8px);
