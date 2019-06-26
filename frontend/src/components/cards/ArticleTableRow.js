@@ -130,7 +130,10 @@ class ArticleTableRow extends Component {
               {this.categoryRows()}
             </div>
             <div style={{ height: "auto", width: "auto", float: "left" }}>
-              <div className="article-table-row-ArticleTableRowInfo-topics">
+              <div
+                className="article-table-row-ArticleTableRowInfo-topics"
+                style={{ marginRight: "32px" }}
+              >
                 Topics
               </div>
               {this.topicRows()}
