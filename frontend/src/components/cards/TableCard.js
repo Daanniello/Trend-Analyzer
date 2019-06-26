@@ -182,7 +182,7 @@ class TableCard extends React.Component {
                       this.state.sortCondition === "year" ? "purple" : "white"
                   }}
                 >
-                  Yearly
+                  Year
                 </Typography>
                 <Typography
                   onClick={() => this.sortData("month")}
@@ -192,7 +192,7 @@ class TableCard extends React.Component {
                       this.state.sortCondition === "month" ? "purple" : "white"
                   }}
                 >
-                  Monthly
+                  Month
                 </Typography>
                 <Typography
                   onClick={() => this.sortData("week")}
@@ -202,7 +202,7 @@ class TableCard extends React.Component {
                       this.state.sortCondition === "week" ? "purple" : "white"
                   }}
                 >
-                  Weekly
+                  Week
                 </Typography>
                 <Typography
                   className="table-row-details"

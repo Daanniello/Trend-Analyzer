@@ -17,7 +17,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 
 var Chart = require("chart.js");
 
-const CUSTOM_DAY_FORMAT = "DDD-YY";
+const CUSTOM_DAY_FORMAT = "DD-MM-YY";
 const CUSTOM_WEEK_FORMAT = "Wo-YY";
 const CUSTOM_MONTH_FORMAT = "MMM-YY";
 const CUSTOM_YEAR_FORMAT = "YYYY";
