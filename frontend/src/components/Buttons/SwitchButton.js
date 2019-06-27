@@ -12,9 +12,9 @@ class SwitchButton extends Component {
   constructor(props) {
     super(props);
 
-    const state = this.state;
-    state.checked = this.props.allowedProviders.indexOf(this.props.name) >= 0;
-    this.setState(state);
+    this.state = {
+      checked: this.props.allowedProviders.indexOf(this.props.name) >= 0
+    };
   }
 
   render() {
