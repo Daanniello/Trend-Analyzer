@@ -17,7 +17,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 
 var Chart = require("chart.js");
 
-const CUSTOM_DAY_FORMAT = "DDD-YY";
+const CUSTOM_DAY_FORMAT = "DD-MM-YY";
 const CUSTOM_WEEK_FORMAT = "Wo-YY";
 const CUSTOM_MONTH_FORMAT = "MMM-YY";
 const CUSTOM_YEAR_FORMAT = "YYYY";
@@ -82,28 +82,13 @@ class GraphCard extends Component {
       state.customRangeType = "years";
 
     this.setState(state);
-
-    console.log(this.state.customRange);
   };
 
   //Close custom dialog event
   handleClose = () => {
     const state = this.state;
-    state.open = false;
-    this.setState(state);
     this.labels_custom();
-  };
-
-  //triggers on date change
-  setBeginDate = beginDate => {
-    const state = this.state;
-    state.beginDate = beginDate;
-    this.setState(state);
-  };
-
-  setEndDate = endDate => {
-    const state = this.state;
-    state.endDate = endDate;
+    state.open = false;
     this.setState(state);
   };
 
@@ -178,8 +163,14 @@ class GraphCard extends Component {
     };
 
     this.labels_custom = () => {
-      var begin = moment(this.state.beginDate.replace("-", ""), "YYYYMMDD");
-      var end = moment(this.state.endDate.replace("-", ""), "YYYYMMDD");
+      var begin = moment(
+        document.getElementById("dateStart Date").value,
+        "YYYY-MM-DD"
+      );
+      var end = moment(
+        document.getElementById("dateEnd Date").value,
+        "YYYY-MM-DD"
+      );
 
       if (
         end.diff(begin, "day") <= 0 ||
@@ -239,7 +230,6 @@ class GraphCard extends Component {
             break;
         }
       }
-      console.log(customFormat, customType, customCount);
       const now = begin
         .subtract(customCount, customFormat)
         .subtract(1, customType);
@@ -248,7 +238,6 @@ class GraphCard extends Component {
       for (let index = 0; index <= customCount; index++) {
         weekly[index] = now.add(1, customType).format(customFormat);
       }
-      console.log(weekly);
 
       const state = this.state;
       state.labels = weekly;
@@ -384,8 +373,8 @@ class GraphCard extends Component {
             Custom Date
           </DialogTitle>
           <DialogContent>
-            <DialogPicker title="Start Date" onChange={this.setBeginDate} />
-            <DialogPicker title="End Date" onChange={this.setEndDate} />
+            <DialogPicker title="Start Date" />
+            <DialogPicker title="End Date" />
             <form autoComplete="off">
               <FormControl>
                 <InputLabel htmlFor="age-simple">Format</InputLabel>
