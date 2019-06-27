@@ -1,27 +1,26 @@
 import React from "react";
 
 import TextField from "@material-ui/core/TextField";
-
-function OnChange(props, value) {
-  let date = "";
-  if (props.title === "Start Date") {
-    date = document.getElementById("dateStart Date").value;
-  }
-  if (props.title === "End Date") {
-    date = document.getElementById("dateEnd Date").value;
-  }
-
-  props.onChange(date);
-}
+import * as moment from "moment";
 
 function DatePickers(props) {
+  function setDefaultDate() {
+    const date = moment().startOf("day");
+    if (props.title === "Start Date") {
+      date.subtract(3, "month");
+    }
+
+    const formattedDate = date.format("YYYY-MM-DD");
+    return formattedDate;
+  }
+
   return (
     <form>
       <TextField
         id={"date" + props.title}
         label={props.title}
         type="date"
-        onChange={() => OnChange(props)}
+        defaultValue={setDefaultDate()}
         InputLabelProps={{
           shrink: true
         }}
