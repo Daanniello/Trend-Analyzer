@@ -385,7 +385,11 @@ class GraphCard extends Component {
           </DialogTitle>
           <DialogContent>
             <DialogPicker title="Start Date" onChange={this.setBeginDate} />
-            <DialogPicker title="End Date" onChange={this.setEndDate} />
+            <DialogPicker
+              title="End Date"
+              onChange={this.setEndDate}
+              value="03-03-2019"
+            />
             <form autoComplete="off">
               <FormControl>
                 <InputLabel htmlFor="age-simple">Format</InputLabel>
