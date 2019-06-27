@@ -5,6 +5,7 @@ import MailOutline from "@material-ui/icons/MailOutline";
 import * as moment from "moment";
 
 import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 class ArticleTable extends Component {
   state = {};
@@ -59,20 +60,19 @@ class ArticleTable extends Component {
             <MailOutline />
           </div>
         </div>
-        <div
-          style={{
-            width: "100%",
-            height: "calc(100% - 50px)"
-          }}
-        >
-          <List
-            height={548}
-            itemSize={40.9}
-            itemCount={this.props.articleData.length}
-            style={{ width: "100%" }}
-          >
-            {this.Row}
-          </List>
+        <div id="articletable">
+          <AutoSizer>
+            {({ height, width }) => (
+              <List
+                height={height}
+                itemSize={40.9}
+                itemCount={this.props.articleData.length}
+                width={width}
+              >
+                {this.Row}
+              </List>
+            )}
+          </AutoSizer>
         </div>
       </div>
     );

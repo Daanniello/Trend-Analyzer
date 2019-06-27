@@ -3,7 +3,8 @@ enum Collection {
   Articles = "articles",
   Credentials = "credentials",
   Updates = "updates",
-  Blacklists = "blacklists"
+  Blacklists = "blacklists",
+  CustomTrends = "customtrends"
 }
 
 export default Collection;

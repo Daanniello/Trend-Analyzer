@@ -7,6 +7,7 @@ import { FixedSizeList as List } from "react-window";
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SearchBar from "../fields/SearchBar";
+import TableCardTrendPopup from "./TableCardTrendPopup";
 
 const styles = {};
 
@@ -40,7 +41,6 @@ class TableCard extends React.Component {
 
   constructor(props) {
     super(props);
-    // TODO: HIERZO :!_+?D
 
     this.state.allData = this.props.data.filter(d => {
       d.checked = false;
@@ -81,10 +81,12 @@ class TableCard extends React.Component {
         return false;
       })[0];
       state.inUseColors.push(availableColor);
+      state.items.push(id);
       t.color = availableColor;
       this.props.addTopic(t);
     } else {
       state.inUseColors.splice(state.inUseColors.indexOf(t.color), 1);
+      state.items.splice(state.items.indexOf(id), 1);
       t.color = COLORS.default;
       this.props.removeTopic(t);
     }
@@ -147,10 +149,17 @@ class TableCard extends React.Component {
   render() {
     return (
       <div className="table-card-container">
+        <TableCardTrendPopup
+          pageColor={this.props.color}
+          items={this.state.items}
+          allData={this.state.allData}
+        />
         <SearchBar
           onChange={this.handleInputChange}
           description={this.props.tableTitle}
+          style={{ float: "left", width: "500px" }}
         />
+
         <Typography variant="h2" className="table-card">
           <div
             className="table-header"
@@ -182,7 +191,7 @@ class TableCard extends React.Component {
                       this.state.sortCondition === "year" ? "purple" : "white"
                   }}
                 >
-                  Yearly
+                  Year
                 </Typography>
                 <Typography
                   onClick={() => this.sortData("month")}
@@ -192,7 +201,7 @@ class TableCard extends React.Component {
                       this.state.sortCondition === "month" ? "purple" : "white"
                   }}
                 >
-                  Monthly
+                  Month
                 </Typography>
                 <Typography
                   onClick={() => this.sortData("week")}
@@ -202,7 +211,7 @@ class TableCard extends React.Component {
                       this.state.sortCondition === "week" ? "purple" : "white"
                   }}
                 >
-                  Weekly
+                  Week
                 </Typography>
                 <Typography
                   className="table-row-details"
