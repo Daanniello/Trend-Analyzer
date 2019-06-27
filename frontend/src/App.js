@@ -176,7 +176,7 @@ class App extends Component {
     const articles = JSON.parse(JSON.stringify(state.rawArticles));
     state.filteredArticles = articles.filter(article => {
       // Apply emailOnly filter
-      if (!this.isEmailArticle(article.emailOccurences)) return false;
+      if (!this.isEmailArticle(article.mailOccurrences)) return false;
 
       // Apply keyword filter
       if (!this.containsKeyword(article.title)) return false;
@@ -223,10 +223,10 @@ class App extends Component {
     return false;
   };
 
-  isEmailArticle = emailOccurences => {
-    if (!this.emailOnly) return true;
-    if (!emailOccurences) return false;
-    return emailOccurences.length > 0;
+  isEmailArticle = mailOccurrences => {
+    if (!this.state.emailOnly) return true;
+    if (!mailOccurrences) return false;
+    return mailOccurrences.length > 0;
   };
 
   isAllowedProvider = provider => {
