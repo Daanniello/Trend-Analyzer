@@ -154,7 +154,7 @@ class App extends Component {
 
       this.setDisableButton(response.data.lastUpdated);
 
-      await this.getArticles();
+      await this.getArticles(response.data.lastUpdated);
       await this.getBlacklistItems();
 
       this.applyFiltersAndUpdatePages();
@@ -260,8 +260,37 @@ class App extends Component {
     return re.test(String(email).toLowerCase());
   }
 
-  getArticles = async () => {
+  getArticles = async lastUpdate => {
+    const storedUpdate = localStorage.getItem("updatedAt");
+
+    if (!storedUpdate) {
+      await this.updateRawArticles();
+      return;
+    }
+
+    const lastMoment = moment.unix(lastUpdate);
+    const storedMoment = moment.unix(storedUpdate);
+    if (lastMoment.isAfter(storedMoment)) {
+      await this.updateRawArticles();
+      return;
+    }
+
+    this.state.rawArticles = JSON.parse(localStorage.getItem("rawArticles")); // (await request.get("/articles")).data;
+
+    if (!this.state.rawArticles) {
+      await this.updateRawArticles();
+    }
+  };
+
+  updateRawArticles = async () => {
     this.state.rawArticles = (await request.get("/articles")).data;
+    localStorage.setItem(
+      "updatedAt",
+      moment()
+        .unix()
+        .toString()
+    );
+    localStorage.setItem("rawArticles", JSON.stringify(this.state.rawArticles));
   };
 
   getBlacklistItems = async () => {

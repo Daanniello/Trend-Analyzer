@@ -5,6 +5,7 @@ axios.defaults.baseURL =
 
 class RequestService {
   async get(uri) {
+    console.log(`GET ${uri}`);
     return await axios.get(uri);
   }
 
