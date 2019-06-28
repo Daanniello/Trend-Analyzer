@@ -8,7 +8,7 @@ class MailService {
 
     console.log("MailService mail: " + dest);
     /**
-     * Send an email with gmail (can currently only be changed in code)
+     * Send an email with gmail (host is gmail, change gmail to other host if needed)
      */
     let transporter = nodemailer.createTransport({
       service: "gmail",

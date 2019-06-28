@@ -118,9 +118,6 @@ class AnalyzedCard extends React.Component {
   render() {
     return (
       <div className="analyzed-card">
-        {/* <div className="article-count">
-          <Typography>Yeet</Typography>
-        </div> */}
         <canvas id="doughnut-chart" />
       </div>
     );
