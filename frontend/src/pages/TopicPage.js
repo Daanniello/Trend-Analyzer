@@ -14,6 +14,8 @@ class TopicPage extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log(this.props.customTrendsTopics);
+
     props.onPageChange(props.pageColor);
 
     this.addTopic = topic => {
@@ -44,10 +46,12 @@ class TopicPage extends React.Component {
         </div>
         <TableCard
           tableTitle="Topics"
+          type="Topic"
           data={this.props.topicData}
           addTopic={this.addTopic}
           removeTopic={this.removeTopic}
           pageColor={this.props.pageColor}
+          customTrends={this.props.customTrendsTopics}
         />
         <GraphCard
           topics={this.state.topics}

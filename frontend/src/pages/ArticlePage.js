@@ -49,7 +49,11 @@ class ArticlePage extends React.Component {
             Articles
           </Typography>
         </div>
-        <SearchBar onChange={this.handleInputChange} description="Articles" />
+        <SearchBar
+          onChange={this.handleInputChange}
+          placeholder="Search"
+          description="Articles"
+        />
         <ArticleTable articleData={this.state.showData} headerColor="#D24DFF" />
       </div>
     );

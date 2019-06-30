@@ -48,7 +48,7 @@ class BlacklistCard extends React.Component {
           Blacklist
         </Typography>
         <div className="inputfield">
-          <SimpleTextField id="new-item-field" />
+          <SimpleTextField id="new-item-field" placeholder="Add to blacklist" />
           <div style={{ paddingTop: "8px" }}>
             <AddButton blacklist={this} />
           </div>

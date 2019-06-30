@@ -24,7 +24,7 @@ const SearchBar = props => {
         type="search"
         margin="normal"
         variant="outlined"
-        placeholder="Search"
+        placeholder={props.placeholder}
         InputProps={{
           startAdornment: (
             <InputAdornment>

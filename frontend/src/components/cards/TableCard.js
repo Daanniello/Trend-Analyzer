@@ -4,10 +4,15 @@ import TableCardRow from "./TableCardRow";
 
 import { FixedSizeList as List } from "react-window";
 
+import moment from "moment";
+
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SearchBar from "../fields/SearchBar";
 import TableCardTrendPopup from "./TableCardTrendPopup";
+import RequestService from "../../services/request-service";
+
+const request = new RequestService();
 
 const styles = {};
 
@@ -36,7 +41,8 @@ class TableCard extends React.Component {
     showData: [],
     sortCondition: "all",
     random: Math.random() * 1000,
-    items: []
+    items: [],
+    combineDisabled: true
   };
 
   constructor(props) {
@@ -48,8 +54,105 @@ class TableCard extends React.Component {
       return d;
     });
 
-    this.state.showData = this.state.allData;
+    this.insertCustomTrends();
+
+    const data = this.state.allData.sort((a, b) => {
+      if (a.totals.allTime > b.totals.allTime) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    this.state.showData = data;
+    this.sortData("month");
+    console.log(this.state.showData);
   }
+
+  insertCustomTrendsFrontEnd = trend => {
+    console.log(trend);
+    const customTrend = {
+      name: trend.name,
+      checked: false,
+      color: "red",
+      articles: [],
+      totals: {
+        allTime: 0,
+        last365: 0,
+        last30: 0,
+        last7: 0
+      }
+    };
+
+    this.state.allData.map(topic => {
+      if (trend.trends.indexOf(topic.name) < 0) return;
+      customTrend.articles = customTrend.articles.concat(topic.articles);
+      customTrend.totals.allTime += topic.totals.allTime;
+      customTrend.totals.last365 += topic.totals.last365;
+      customTrend.totals.last30 += topic.totals.last30;
+      customTrend.totals.last7 += topic.totals.last7;
+    });
+    customTrend.articles = customTrend.articles.sort((a, b) => {
+      const aMoment = moment.unix(a.timestamp);
+      const bMoment = moment.unix(b.timestamp);
+      const isAfter = aMoment.isAfter(bMoment);
+      if (isAfter) {
+        return -1;
+      }
+      return 1;
+    });
+    const state = this.state;
+    state.allData = this.state.allData.concat(customTrend);
+    this.setState(state);
+    this.updateList();
+  };
+
+  insertCustomTrends = async () => {
+    let trends = this.props.customTrends;
+    if (!trends) return;
+    // trends.push({
+    //   name: "SOMETREND",
+    //   trends: ["Law", "Renting", "Netherlands"],
+    //   type: "Topic"
+    // });
+
+    const customTrends = [];
+    for (const trend of trends) {
+      const customTrend = {
+        name: trend.name,
+        checked: false,
+        color: "red",
+        articles: [],
+        totals: {
+          allTime: 0,
+          last365: 0,
+          last30: 0,
+          last7: 0
+        }
+      };
+
+      this.state.allData.map(topic => {
+        if (trend.trends.indexOf(topic.name) < 0) return;
+        customTrend.articles = customTrend.articles.concat(topic.articles);
+        customTrend.totals.allTime += topic.totals.allTime;
+        customTrend.totals.last365 += topic.totals.last365;
+        customTrend.totals.last30 += topic.totals.last30;
+        customTrend.totals.last7 += topic.totals.last7;
+      });
+      customTrend.articles = customTrend.articles.sort((a, b) => {
+        const aMoment = moment.unix(a.timestamp);
+        const bMoment = moment.unix(b.timestamp);
+        const isAfter = aMoment.isAfter(bMoment);
+        if (isAfter) {
+          return -1;
+        }
+        return 1;
+      });
+      customTrends.push(customTrend);
+    }
+
+    this.state.allData = this.state.allData.concat(customTrends);
+  };
 
   handleInputChange = e => {
     const state = this.state;
@@ -92,6 +195,11 @@ class TableCard extends React.Component {
     }
     state.allData[id] = t;
     state.showData = this.getFilteredDataFromSearch();
+    if (state.items.length > 1) {
+      state.combineDisabled = false;
+    } else {
+      state.combineDisabled = true;
+    }
     this.setState(state);
     this.updateList();
   };
@@ -153,10 +261,16 @@ class TableCard extends React.Component {
           pageColor={this.props.color}
           items={this.state.items}
           allData={this.state.allData}
+          disabled={this.state.combineDisabled}
+          insertTrendDirectly={trends =>
+            this.insertCustomTrendsFrontEnd(trends)
+          }
+          type={this.props.type}
         />
         <SearchBar
           onChange={this.handleInputChange}
           description={this.props.tableTitle}
+          placeholder="Search"
           style={{ float: "left", width: "500px" }}
         />
 

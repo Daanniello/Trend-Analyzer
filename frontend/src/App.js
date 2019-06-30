@@ -36,6 +36,8 @@ class App extends Component {
       loggedIn: false,
       displayEmailInput: false,
       rawArticles: [],
+      customTrendsTopics: [],
+      customTrendsCategories: [],
       filteredArticles: [],
       tableData: [],
       blacklistItems: [],
@@ -151,6 +153,7 @@ class App extends Component {
 
       await this.getArticles();
       await this.getBlacklistItems();
+      await this.getCustomTrends();
 
       this.applyFiltersAndUpdatePages();
 
@@ -210,6 +213,18 @@ class App extends Component {
 
   getArticles = async () => {
     this.state.rawArticles = (await request.get("/articles")).data;
+  };
+
+  getCustomTrends = async () => {
+    let customTrends = await request.get("/customtrends");
+
+    this.state.customTrendsTopics = customTrends.data.filter(trend => {
+      return trend.type === "Topic";
+    });
+
+    this.state.customTrendsCategories = customTrends.data.filter(trend => {
+      return trend.type === "Category";
+    });
   };
 
   getBlacklistItems = async () => {
@@ -295,11 +310,13 @@ class App extends Component {
         topicData={state.tableData[1]}
         pageColor="#9FD714"
         onPageChange={this.onPageChange}
+        customTrendsTopics={this.state.customTrendsTopics}
       />,
       <CatergoryPage
         categoryData={state.tableData[2]}
         pageColor="#FF8000"
         onPageChange={this.onPageChange}
+        customTrendsTopics={this.state.customTrendsCategories}
       />,
 
       <ArticlePage
@@ -377,11 +394,13 @@ class App extends Component {
         topicData={state.tableData[1]}
         pageColor="#9FD714"
         onPageChange={this.onPageChange}
+        customTrendsTopics={this.state.customTrendsTopics}
       />,
       <CatergoryPage
         categoryData={state.tableData[2]}
         pageColor="#FF8000"
         onPageChange={this.onPageChange}
+        customTrendsTopics={this.state.customTrendsCategories}
       />,
       <ArticlePage
         articleData={this.state.filteredArticles}
