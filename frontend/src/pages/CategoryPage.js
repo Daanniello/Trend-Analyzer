@@ -50,6 +50,7 @@ class CategoryPage extends React.Component {
           removeTopic={this.removeTopic}
           pageColor={this.props.pageColor}
           customTrends={this.props.customTrendsCategories}
+          insertCustomTrendsFrontEnd={(trend) => this.props.insertCustomTrendsFrontEnd(trend)}
         />
         <GraphCard
           topics={this.state.topics}

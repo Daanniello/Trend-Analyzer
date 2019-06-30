@@ -36,6 +36,7 @@ class App extends Component {
       loggedIn: false,
       displayEmailInput: false,
       rawArticles: [],
+      customTrends: [],
       customTrendsTopics: [],
       customTrendsCategories: [],
       filteredArticles: [],
@@ -132,6 +133,22 @@ class App extends Component {
     form.classList.remove("login-shake");
   };
 
+  insertCustomTrendsFrontEnd = trend => {
+    console.log(trend);
+    console.log(this.state.customTrends);
+    const customTrendsTemp = this.state.customTrends;
+    customTrendsTemp.push(trend);
+    console.log(customTrendsTemp);
+    const state = this.state;
+    state.customTrends = customTrendsTemp;
+    this.setState(state);
+    this.getCustomTrendsTopic();
+    this.getCustomTrendsCategory();
+    this.applyFiltersAndUpdatePages();
+
+
+  };
+
   // Checks wheter login should succeed or not
   checkLogin = async () => {
     try {
@@ -218,14 +235,33 @@ class App extends Component {
   getCustomTrends = async () => {
     let customTrends = await request.get("/customtrends");
 
-    this.state.customTrendsTopics = customTrends.data.filter(trend => {
+    const state = this.state;
+
+    state.customTrends = customTrends.data;
+    this.setState(state);
+    console.log(this.state.customTrends);
+    this.getCustomTrendsTopic();
+    this.getCustomTrendsCategory();
+
+  };
+
+  getCustomTrendsTopic = () => {
+    const state = this.state;
+    state.customTrendsTopics = this.state.customTrends.filter(trend => {
       return trend.type === "Topic";
     });
+    this.setState(state);
+  }
 
-    this.state.customTrendsCategories = customTrends.data.filter(trend => {
+  getCustomTrendsCategory = () => {
+    const state = this.state;
+    state.customTrendsCategories = this.state.customTrends.filter(trend => {
       return trend.type === "Category";
+
     });
-  };
+    this.setState(state);
+
+  }
 
   getBlacklistItems = async () => {
     this.state.blacklistItems = (await request.get("/blacklist")).data.items;
@@ -298,48 +334,50 @@ class App extends Component {
     this.setState(state);
   };
 
-  setPages = () => {
-    const state = this.state;
-    state.pages = [
-      <GeneralPage
-        generalData={state.tableData[0]}
-        pageColor="#551F5C"
-        onPageChange={this.onPageChange}
-      />,
-      <TopicPage
-        topicData={state.tableData[1]}
-        pageColor="#9FD714"
-        onPageChange={this.onPageChange}
-        customTrendsTopics={this.state.customTrendsTopics}
-      />,
-      <CatergoryPage
-        categoryData={state.tableData[2]}
-        pageColor="#FF8000"
-        onPageChange={this.onPageChange}
-        customTrendsTopics={this.state.customTrendsCategories}
-      />,
+  // setPages = () => {
+  //   const state = this.state;
+  //   state.pages = [
+  //     <GeneralPage
+  //       generalData={state.tableData[0]}
+  //       pageColor="#551F5C"
+  //       onPageChange={this.onPageChange}
+  //     />,
+  //     <TopicPage
+  //       topicData={state.tableData[1]}
+  //       pageColor="#9FD714"
+  //       onPageChange={this.onPageChange}
+  //       customTrendsTopics={this.state.customTrendsTopics}
+  //       insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
+  //     />,
+  //     <CatergoryPage
+  //       categoryData={state.tableData[2]}
+  //       pageColor="#FF8000"
+  //       onPageChange={this.onPageChange}
+  //       customTrendsTopics={this.state.customTrendsCategories}
+  //       insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
+  //     />,
 
-      <ArticlePage
-        articleData={state.filteredArticles}
-        pageColor="#D24DFF"
-        onPageChange={this.onPageChange}
-      />,
-      <SettingPage
-        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
-        items={state.blacklistItems}
-        pageColor="#9D000F"
-        onPageChange={this.onPageChange}
-        changeAllowedProviderHandler={(provider, boolean) =>
-          this.applyProviderFilter(provider, boolean)
-        }
-        applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
-        allowedProviders={state.allowedProviders}
-        emailOnly={state.emailOnly}
-        apiKey={state.apiKey}
-      />
-    ];
-    this.setState(state);
-  };
+  //     <ArticlePage
+  //       articleData={state.filteredArticles}
+  //       pageColor="#D24DFF"
+  //       onPageChange={this.onPageChange}
+  //     />,
+  //     <SettingPage
+  //       onTopicBlacklistChanged={this.onTopicBlacklistChanged}
+  //       items={state.blacklistItems}
+  //       pageColor="#9D000F"
+  //       onPageChange={this.onPageChange}
+  //       changeAllowedProviderHandler={(provider, boolean) =>
+  //         this.applyProviderFilter(provider, boolean)
+  //       }
+  //       applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
+  //       allowedProviders={state.allowedProviders}
+  //       emailOnly={state.emailOnly}
+  //       apiKey={state.apiKey}
+  //     />
+  //   ];
+  //   this.setState(state);
+  // };
 
   // Remove last pincode number input
   removePin = () => {
@@ -395,12 +433,14 @@ class App extends Component {
         pageColor="#9FD714"
         onPageChange={this.onPageChange}
         customTrendsTopics={this.state.customTrendsTopics}
+        insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
       />,
       <CatergoryPage
         categoryData={state.tableData[2]}
         pageColor="#FF8000"
         onPageChange={this.onPageChange}
-        customTrendsTopics={this.state.customTrendsCategories}
+        customTrendsCategories={this.state.customTrendsCategories}
+        insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
       />,
       <ArticlePage
         articleData={this.state.filteredArticles}
@@ -419,6 +459,9 @@ class App extends Component {
         apiKey={state.apiKey}
       />
     ];
+    console.log(this.state.customTrends);
+    console.log(this.state.customTrendsCategories);
+    console.log(this.state.customTrendsTopics);
     this.setState(state);
   };
 
@@ -529,20 +572,20 @@ class App extends Component {
             {this.state.pages[this.state.currentPage]}
           </div>
         ) : (
-          <Modal open={true}>
-            <DialogContent>
-              <LoginForm
-                addPin={this.addPin}
-                removePin={this.removePin}
-                pinCode={this.state.pinCode}
-                errorMsg={this.state.errorMsg}
-                displayEmailInputState={this.state.displayEmailInput}
-                displayEmailInput={this.toggleDisplayEmailInput}
-                sendMail={this.sendMail}
-              />
-            </DialogContent>
-          </Modal>
-        )}
+            <Modal open={true}>
+              <DialogContent>
+                <LoginForm
+                  addPin={this.addPin}
+                  removePin={this.removePin}
+                  pinCode={this.state.pinCode}
+                  errorMsg={this.state.errorMsg}
+                  displayEmailInputState={this.state.displayEmailInput}
+                  displayEmailInput={this.toggleDisplayEmailInput}
+                  sendMail={this.sendMail}
+                />
+              </DialogContent>
+            </Modal>
+          )}
       </div>
     );
   }

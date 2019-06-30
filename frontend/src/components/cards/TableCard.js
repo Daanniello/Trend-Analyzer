@@ -101,13 +101,13 @@ class TableCard extends React.Component {
       }
       return 1;
     });
-    const state = this.state;
-    state.allData = this.state.allData.concat(customTrend);
-    this.setState(state);
-    this.updateList();
+
+    this.props.insertCustomTrendsFrontEnd(trend)
+
   };
 
   insertCustomTrends = async () => {
+    console.log(this.props.customTrends);
     let trends = this.props.customTrends;
     if (!trends) return;
     // trends.push({
@@ -262,8 +262,9 @@ class TableCard extends React.Component {
           items={this.state.items}
           allData={this.state.allData}
           disabled={this.state.combineDisabled}
-          insertTrendDirectly={trends =>
-            this.insertCustomTrendsFrontEnd(trends)
+          insertTrendDirectly={
+            trends =>
+              this.insertCustomTrendsFrontEnd(trends)
           }
           type={this.props.type}
         />

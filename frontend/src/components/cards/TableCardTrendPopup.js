@@ -46,9 +46,9 @@ function TableCardTrendPopupMain(props) {
 
   function SelectedItems() {
     let selectedItems = [];
-
+    console.log(props.items)
     for (let i = 0; i < props.items.length; i++) {
-      selectedItems.push(<Typography>{props.allData[i].name}</Typography>);
+      selectedItems.push(<Typography>{props.allData[props.items[i]].name}</Typography>);
     }
 
     return selectedItems;
