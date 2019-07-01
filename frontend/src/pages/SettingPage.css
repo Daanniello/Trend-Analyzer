@@ -12,17 +12,24 @@
 
 .settings-switches {
   float: left;
-
-  padding: 8px 8px 8px 8px;
+  width: calc(50% - 32px);
+  margin-top: 16px;
+  padding: 16px;
 }
 
 #new-pincode {
   width: auto;
   height: auto;
   float: left;
-  margin: 16px;
+  margin: 10px 16px 16px 16px;
 }
 
 .MuiSwitch-colorSecondary-139.MuiSwitch-checked-137 + .MuiSwitch-bar-141 {
   background-color: firebrick !important;
+}
+
+@media only screen and (max-width: 1000px) {
+  .settings-switches {
+    width: 100%;
+  }
 }

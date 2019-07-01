@@ -21,6 +21,7 @@ const ButtonStyle = {
 
 const TableStyle = {
   width: "100%",
+  float: "left",
   marginTop: "16px",
   boxShadow:
     "0px 1px 5px rgba(0, 0, 0, 0.2), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.14)"
@@ -113,21 +114,25 @@ class SettingsList extends React.Component {
         <Typography style={TitleStyle} variant="h5">
           {this.props.title}
         </Typography>
-        <TextField
-          id={`input-field-${this.props.title}`}
-          label={`Add to ${this.props.title}`}
-          margin="none"
-          variant="outlined"
-        />
-        <Fab
-          size="small"
-          style={ButtonStyle}
-          onClick={() => this.addItem()}
-          aria-label="Add"
-          color="default"
-        >
-          <AddIcon />
-        </Fab>
+        {this.props.title !== "Custom Trends" && (
+          <div>
+            <TextField
+              id={`input-field-${this.props.title}`}
+              label={`Add to ${this.props.title}`}
+              margin="none"
+              variant="outlined"
+            />
+            <Fab
+              size="small"
+              style={ButtonStyle}
+              onClick={() => this.addItem()}
+              aria-label="Add"
+              color="default"
+            >
+              <AddIcon />
+            </Fab>
+          </div>
+        )}
         <div style={TableStyle}>
           <div style={TableHeaderStyle}>
             <Typography style={{ color: "white" }} variant="h6">

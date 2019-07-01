@@ -86,13 +86,44 @@ class App extends Component {
     this.setState(state);
   };
 
+  onCustomTrendsChanged = items => {
+    console.log(items);
+    let changedItems = "";
+    console.log(this.state.customTrends);
+    changedItems = this.state.customTrends.filter(item => {
+      if (items.includes(item.name)) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+
+    let changedItem = changedItems[changedItems.length - 1];
+    console.log(changedItem);
+
+    const state = this.state;
+    state.customTrends.splice(
+      state.customTrends.findIndex(item => {
+        return item.name === changedItem.name;
+      }),
+      1
+    );
+    this.setState(state);
+    console.log(this.state.customTrends);
+
+    this.getCustomTrendsCategory();
+    this.getCustomTrendsTopic();
+    this.applyFiltersAndUpdatePages();
+    console.log(this.state.customTrends);
+    request.delete("/customtrends", changedItem);
+  };
+
   onTopicBlacklistChanged = items => {
     request.post("/blacklist", { items: items });
 
     const state = this.state;
     state.blacklistItems = items;
     this.setState(state);
-    this.applyFiltersAndUpdatePages();
   };
 
   onKeywordsChanged = items => {
@@ -455,6 +486,8 @@ class App extends Component {
         allowedProviders={state.allowedProviders}
         emailOnly={state.emailOnly}
         apiKey={state.apiKey}
+        customTrends={this.state.customTrends}
+        onCustomTrendsChanged={items => this.onCustomTrendsChanged(items)}
       />
     ];
     console.log(this.state.customTrends);
@@ -464,7 +497,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div id="app">
         <div

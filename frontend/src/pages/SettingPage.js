@@ -48,7 +48,18 @@ class SettingPage extends React.Component {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  createCustomTrendsNameList = () => {
+    const trendNames = [];
+    for (let i = 0; i < this.props.customTrends.length; i++) {
+      trendNames.push(this.props.customTrends[i].name);
+    }
+    return trendNames;
+  };
+
   render() {
+    console.log();
+    console.log(this.props.keywords);
+    console.log(this.props.blacklistItems);
     return (
       <div>
         <div className="setting-header">
@@ -66,6 +77,12 @@ class SettingPage extends React.Component {
           title="Blacklist"
           items={this.props.blacklistItems}
           onItemsChanged={this.props.onTopicBlacklistChanged}
+          pageColor={this.props.pageColor}
+        />
+        <SettingsList
+          title="Custom Trends"
+          items={this.createCustomTrendsNameList()}
+          onItemsChanged={this.props.onCustomTrendsChanged}
           pageColor={this.props.pageColor}
         />
         <div className="settings-switches">

@@ -11,6 +11,10 @@ class RequestService {
   async post(uri, body) {
     return await axios.post(uri, body);
   }
+
+  async delete(uri, body) {
+    return await axios.delete(uri, { data: body });
+  }
 }
 
 export default RequestService;

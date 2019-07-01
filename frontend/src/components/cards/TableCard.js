@@ -45,9 +45,6 @@ class TableCard extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(
-      "YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET"
-    );
 
     this.refreshData();
 
@@ -86,7 +83,6 @@ class TableCard extends React.Component {
   }
 
   insertCustomTrendsFrontEnd = trend => {
-    console.log(this.props);
     const customTrend = {
       name: trend.name,
       checked: false,
@@ -99,7 +95,6 @@ class TableCard extends React.Component {
         last7: 0
       }
     };
-    console.log(this.props);
 
     this.state.allData.map(topic => {
       if (trend.trends.indexOf(topic.name) < 0) return;
@@ -121,6 +116,9 @@ class TableCard extends React.Component {
 
     console.log(this.props);
     const state = this.state;
+    state.inUseColors = [];
+    state.items = [];
+    state.combineDisabled = true;
     state.canUpdate = true;
     this.setState(state);
     this.props.insertCustomTrendsFrontEnd(trend);
@@ -128,14 +126,8 @@ class TableCard extends React.Component {
   };
 
   insertCustomTrends = async () => {
-    console.log(this.props.customTrends);
     let trends = this.props.customTrends;
     if (!trends) return;
-    // trends.push({
-    //   name: "SOMETREND",
-    //   trends: ["Law", "Renting", "Netherlands"],
-    //   type: "Topic"
-    // });
 
     const customTrends = [];
     for (const trend of trends) {

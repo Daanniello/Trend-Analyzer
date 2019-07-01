@@ -24,6 +24,20 @@ router.post("", async (req, res) => {
   }
 });
 
+router.delete("", async (req, res) => {
+  const trend = req.body as ICustomTrend;
+  if (!trend) return res.sendStatus(400);
+
+  try {
+    const service = new CustomTrendService();
+    await service.delete(trend.name);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
 router.get("", async (req, res) => {
   try {
     const service = new CustomTrendService();

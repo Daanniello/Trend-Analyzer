@@ -34,9 +34,13 @@ class TopicPage extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    console.log("updated");
-  }
+  insertCustomTrendsFrontEnd = trend => {
+    this.props.insertCustomTrendsFrontEnd(trend);
+    console.log(this.state.topics);
+    const state = this.state;
+    state.topics = [];
+    this.setState(state);
+  };
 
   render() {
     return (
@@ -55,7 +59,7 @@ class TopicPage extends React.Component {
           pageColor={this.props.pageColor}
           customTrends={this.props.customTrendsTopics}
           insertCustomTrendsFrontEnd={trend =>
-            this.props.insertCustomTrendsFrontEnd(trend)
+            this.insertCustomTrendsFrontEnd(trend)
           }
         />
         <GraphCard
