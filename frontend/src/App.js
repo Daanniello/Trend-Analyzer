@@ -224,7 +224,8 @@ class App extends Component {
     });
 
     state.tableData = this.createPageFormats();
-    state.pages = this.setPages(state);
+    //state.pages = this.setPages(state);
+    this.setPages();
 
     this.setState(state);
   };
@@ -463,6 +464,7 @@ class App extends Component {
   };
 
   render() {
+    console.log(this.state);
     return (
       <div id="app">
         <div
