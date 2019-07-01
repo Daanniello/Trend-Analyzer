@@ -134,8 +134,7 @@ class App extends Component {
   };
 
   insertCustomTrendsFrontEnd = trend => {
-    console.log(trend);
-    console.log(this.state.customTrends);
+    console.log();
     const customTrendsTemp = this.state.customTrends;
     customTrendsTemp.push(trend);
     console.log(customTrendsTemp);
@@ -145,8 +144,6 @@ class App extends Component {
     this.getCustomTrendsTopic();
     this.getCustomTrendsCategory();
     this.applyFiltersAndUpdatePages();
-
-
   };
 
   // Checks wheter login should succeed or not
@@ -242,7 +239,6 @@ class App extends Component {
     console.log(this.state.customTrends);
     this.getCustomTrendsTopic();
     this.getCustomTrendsCategory();
-
   };
 
   getCustomTrendsTopic = () => {
@@ -251,17 +247,15 @@ class App extends Component {
       return trend.type === "Topic";
     });
     this.setState(state);
-  }
+  };
 
   getCustomTrendsCategory = () => {
     const state = this.state;
     state.customTrendsCategories = this.state.customTrends.filter(trend => {
       return trend.type === "Category";
-
     });
     this.setState(state);
-
-  }
+  };
 
   getBlacklistItems = async () => {
     this.state.blacklistItems = (await request.get("/blacklist")).data.items;
@@ -433,14 +427,18 @@ class App extends Component {
         pageColor="#9FD714"
         onPageChange={this.onPageChange}
         customTrendsTopics={this.state.customTrendsTopics}
-        insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
+        insertCustomTrendsFrontEnd={trend =>
+          this.insertCustomTrendsFrontEnd(trend)
+        }
       />,
       <CatergoryPage
         categoryData={state.tableData[2]}
         pageColor="#FF8000"
         onPageChange={this.onPageChange}
         customTrendsCategories={this.state.customTrendsCategories}
-        insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
+        insertCustomTrendsFrontEnd={trend =>
+          this.insertCustomTrendsFrontEnd(trend)
+        }
       />,
       <ArticlePage
         articleData={this.state.filteredArticles}
@@ -572,20 +570,20 @@ class App extends Component {
             {this.state.pages[this.state.currentPage]}
           </div>
         ) : (
-            <Modal open={true}>
-              <DialogContent>
-                <LoginForm
-                  addPin={this.addPin}
-                  removePin={this.removePin}
-                  pinCode={this.state.pinCode}
-                  errorMsg={this.state.errorMsg}
-                  displayEmailInputState={this.state.displayEmailInput}
-                  displayEmailInput={this.toggleDisplayEmailInput}
-                  sendMail={this.sendMail}
-                />
-              </DialogContent>
-            </Modal>
-          )}
+          <Modal open={true}>
+            <DialogContent>
+              <LoginForm
+                addPin={this.addPin}
+                removePin={this.removePin}
+                pinCode={this.state.pinCode}
+                errorMsg={this.state.errorMsg}
+                displayEmailInputState={this.state.displayEmailInput}
+                displayEmailInput={this.toggleDisplayEmailInput}
+                sendMail={this.sendMail}
+              />
+            </DialogContent>
+          </Modal>
+        )}
       </div>
     );
   }

@@ -10,9 +10,6 @@ import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SearchBar from "../fields/SearchBar";
 import TableCardTrendPopup from "./TableCardTrendPopup";
-import RequestService from "../../services/request-service";
-
-const request = new RequestService();
 
 const styles = {};
 
@@ -42,17 +39,17 @@ class TableCard extends React.Component {
     sortCondition: "all",
     random: Math.random() * 1000,
     items: [],
-    combineDisabled: true
+    combineDisabled: true,
+    canUpdate: false
   };
 
   constructor(props) {
     super(props);
+    console.log(
+      "YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET"
+    );
 
-    this.state.allData = this.props.data.filter(d => {
-      d.checked = false;
-      d.color = COLORS.default;
-      return d;
-    });
+    this.refreshData();
 
     this.insertCustomTrends();
 
@@ -69,8 +66,27 @@ class TableCard extends React.Component {
     console.log(this.state.showData);
   }
 
+  refreshData = () => {
+    this.state.allData = this.props.data.filter(d => {
+      d.checked = false;
+      d.color = COLORS.default;
+      return d;
+    });
+  };
+
+  componentDidUpdate() {
+    if (this.state.canUpdate) {
+      const state = this.state;
+      state.canUpdate = false;
+      this.setState(state);
+      this.refreshData();
+      this.insertCustomTrends();
+      this.sortData("month");
+    }
+  }
+
   insertCustomTrendsFrontEnd = trend => {
-    console.log(trend);
+    console.log(this.props);
     const customTrend = {
       name: trend.name,
       checked: false,
@@ -83,6 +99,7 @@ class TableCard extends React.Component {
         last7: 0
       }
     };
+    console.log(this.props);
 
     this.state.allData.map(topic => {
       if (trend.trends.indexOf(topic.name) < 0) return;
@@ -102,8 +119,12 @@ class TableCard extends React.Component {
       return 1;
     });
 
-    this.props.insertCustomTrendsFrontEnd(trend)
-
+    console.log(this.props);
+    const state = this.state;
+    state.canUpdate = true;
+    this.setState(state);
+    this.props.insertCustomTrendsFrontEnd(trend);
+    console.log(this.props);
   };
 
   insertCustomTrends = async () => {
@@ -262,9 +283,8 @@ class TableCard extends React.Component {
           items={this.state.items}
           allData={this.state.allData}
           disabled={this.state.combineDisabled}
-          insertTrendDirectly={
-            trends =>
-              this.insertCustomTrendsFrontEnd(trends)
+          insertTrendDirectly={trends =>
+            this.insertCustomTrendsFrontEnd(trends)
           }
           type={this.props.type}
         />

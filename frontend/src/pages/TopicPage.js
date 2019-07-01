@@ -14,8 +14,6 @@ class TopicPage extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props.customTrendsTopics);
-
     props.onPageChange(props.pageColor);
 
     this.addTopic = topic => {
@@ -36,6 +34,10 @@ class TopicPage extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    console.log("updated");
+  }
+
   render() {
     return (
       <div className="container">
@@ -52,7 +54,9 @@ class TopicPage extends React.Component {
           removeTopic={this.removeTopic}
           pageColor={this.props.pageColor}
           customTrends={this.props.customTrendsTopics}
-          insertCustomTrendsFrontEnd={(trend) => this.props.insertCustomTrendsFrontEnd(trend)}
+          insertCustomTrendsFrontEnd={trend =>
+            this.props.insertCustomTrendsFrontEnd(trend)
+          }
         />
         <GraphCard
           topics={this.state.topics}
