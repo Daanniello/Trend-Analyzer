@@ -44,10 +44,13 @@ class CategoryPage extends React.Component {
         </div>
         <TableCard
           tableTitle="Categories"
+          type="Category"
           data={this.props.categoryData}
           addTopic={this.addTopic}
           removeTopic={this.removeTopic}
           pageColor={this.props.pageColor}
+          customTrends={this.props.customTrendsCategories}
+          insertCustomTrendsFrontEnd={(trend) => this.props.insertCustomTrendsFrontEnd(trend)}
         />
         <GraphCard
           topics={this.state.topics}

@@ -11,5 +11,6 @@ router.use("/articles", require("./articles"));
 router.use("/mail", require("./mail"));
 router.use("/reset", require("./reset"));
 router.use("/pincode", require("./pincode"));
+router.use("/customtrends", require("./customtrends"));
 
 module.exports = router;

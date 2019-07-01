@@ -2,14 +2,12 @@ import React from "react";
 
 import TextField from "@material-ui/core/TextField";
 
-function SimpleTextfield() {
-  const handleChange = name => event => {};
-
+function SimpleTextfield(props) {
   return (
     <TextField
       id="outlined-name"
-      label="Add to blacklist"
-      onChange={handleChange("name")}
+      label={props.placeholder}
+      onChange={props.onInput}
       margin="none"
       variant="outlined"
       style={{ float: "left", marginRight: "16px" }}

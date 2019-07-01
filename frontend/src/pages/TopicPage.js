@@ -34,6 +34,10 @@ class TopicPage extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    console.log("updated");
+  }
+
   render() {
     return (
       <div className="container">
@@ -44,10 +48,15 @@ class TopicPage extends React.Component {
         </div>
         <TableCard
           tableTitle="Topics"
+          type="Topic"
           data={this.props.topicData}
           addTopic={this.addTopic}
           removeTopic={this.removeTopic}
           pageColor={this.props.pageColor}
+          customTrends={this.props.customTrendsTopics}
+          insertCustomTrendsFrontEnd={trend =>
+            this.props.insertCustomTrendsFrontEnd(trend)
+          }
         />
         <GraphCard
           topics={this.state.topics}

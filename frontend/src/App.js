@@ -36,6 +36,9 @@ class App extends Component {
       loggedIn: false,
       displayEmailInput: false,
       rawArticles: [],
+      customTrends: [],
+      customTrendsTopics: [],
+      customTrendsCategories: [],
       filteredArticles: [],
       tableData: [],
       blacklistItems: [],
@@ -135,6 +138,19 @@ class App extends Component {
     form.classList.remove("login-shake");
   };
 
+  insertCustomTrendsFrontEnd = trend => {
+    console.log();
+    const customTrendsTemp = this.state.customTrends;
+    customTrendsTemp.push(trend);
+    console.log(customTrendsTemp);
+    const state = this.state;
+    state.customTrends = customTrendsTemp;
+    this.setState(state);
+    this.getCustomTrendsTopic();
+    this.getCustomTrendsCategory();
+    this.applyFiltersAndUpdatePages();
+  };
+
   // Checks wheter login should succeed or not
   checkLogin = async () => {
     try {
@@ -156,6 +172,7 @@ class App extends Component {
 
       await this.getArticles(response.data.lastUpdated);
       await this.getBlacklistItems();
+      await this.getCustomTrends();
 
       this.applyFiltersAndUpdatePages();
 
@@ -293,6 +310,34 @@ class App extends Component {
     localStorage.setItem("rawArticles", JSON.stringify(this.state.rawArticles));
   };
 
+  getCustomTrends = async () => {
+    let customTrends = await request.get("/customtrends");
+
+    const state = this.state;
+
+    state.customTrends = customTrends.data;
+    this.setState(state);
+    console.log(this.state.customTrends);
+    this.getCustomTrendsTopic();
+    this.getCustomTrendsCategory();
+  };
+
+  getCustomTrendsTopic = () => {
+    const state = this.state;
+    state.customTrendsTopics = this.state.customTrends.filter(trend => {
+      return trend.type === "Topic";
+    });
+    this.setState(state);
+  };
+
+  getCustomTrendsCategory = () => {
+    const state = this.state;
+    state.customTrendsCategories = this.state.customTrends.filter(trend => {
+      return trend.type === "Category";
+    });
+    this.setState(state);
+  };
+
   getBlacklistItems = async () => {
     this.state.blacklistItems = (await request.get("/blacklist")).data.items;
   };
@@ -321,48 +366,6 @@ class App extends Component {
     tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
     tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
     return tableData;
-  };
-
-  setPages = state => {
-    const pages = [
-      <GeneralPage
-        generalData={state.tableData[0]}
-        pageColor="#551F5C"
-        onPageChange={this.onPageChange}
-      />,
-      <TopicPage
-        topicData={state.tableData[1]}
-        pageColor="#9FD714"
-        onPageChange={this.onPageChange}
-      />,
-      <CatergoryPage
-        categoryData={state.tableData[2]}
-        pageColor="#FF8000"
-        onPageChange={this.onPageChange}
-      />,
-
-      <ArticlePage
-        articleData={state.filteredArticles}
-        pageColor="#D24DFF"
-        onPageChange={this.onPageChange}
-      />,
-      <SettingPage
-        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
-        onKeywordsChanged={this.onKeywordsChanged}
-        blacklistItems={state.blacklistItems}
-        keywords={state.keywords}
-        pageColor="#9D000F"
-        onPageChange={this.onPageChange}
-        toggleProvider={(provider, boolean) =>
-          this.toggleProvider(provider, boolean)
-        }
-        toggleEmailOnly={() => this.toggleEmailOnly()}
-        allowedProviders={state.allowedProviders}
-        emailOnly={state.emailOnly}
-        apiKey={state.apiKey}
-      />
-    ];
-    return pages;
   };
 
   // Remove last pincode number input
@@ -403,6 +406,59 @@ class App extends Component {
       // Can't update
       state.updateDisabled = true;
     }
+    this.setState(state);
+  };
+
+  setPages = () => {
+    const state = this.state;
+    state.pages = [
+      <GeneralPage
+        generalData={state.tableData[0]}
+        pageColor="#551F5C"
+        onPageChange={this.onPageChange}
+      />,
+      <TopicPage
+        topicData={state.tableData[1]}
+        pageColor="#9FD714"
+        onPageChange={this.onPageChange}
+        customTrendsTopics={this.state.customTrendsTopics}
+        insertCustomTrendsFrontEnd={trend =>
+          this.insertCustomTrendsFrontEnd(trend)
+        }
+      />,
+      <CatergoryPage
+        categoryData={state.tableData[2]}
+        pageColor="#FF8000"
+        onPageChange={this.onPageChange}
+        customTrendsCategories={this.state.customTrendsCategories}
+        insertCustomTrendsFrontEnd={trend =>
+          this.insertCustomTrendsFrontEnd(trend)
+        }
+      />,
+      <ArticlePage
+        articleData={this.state.filteredArticles}
+        pageColor="#D24DFF"
+        onPageChange={this.onPageChange}
+      />,
+      <SettingPage
+        onTopicBlacklistChanged={this.onTopicBlacklistChanged}
+        onKeywordsChanged={this.onKeywordsChanged}
+        blacklistItems={state.blacklistItems}
+        keywords={state.keywords}
+        pageColor="#9D000F"
+        onPageChange={this.onPageChange}
+        toggleProvider={(provider, boolean) =>
+          this.toggleProvider(provider, boolean)
+        }
+        toggleEmailOnly={() => this.toggleEmailOnly()}
+        allowedProviders={state.allowedProviders}
+        emailOnly={state.emailOnly}
+        apiKey={state.apiKey}
+      />
+    ];
+    console.log(this.state.customTrends);
+    console.log(this.state.customTrendsCategories);
+    console.log(this.state.customTrendsTopics);
     this.setState(state);
   };
 
