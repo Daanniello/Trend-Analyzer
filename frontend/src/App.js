@@ -45,7 +45,8 @@ class App extends Component {
       updateDisabled: true,
       pageColor: "#551F5C",
       allowedProviders: ["CorporatieNL", "Aedes"],
-      emailOnly: false
+      emailOnly: false,
+      keywords: []
     };
     document.addEventListener("keydown", this.keyHandler, true);
   }
@@ -88,13 +89,17 @@ class App extends Component {
   onTopicBlacklistChanged = items => {
     request.post("/blacklist", { items: items });
 
-    this.blacklistItems = items;
-    this.applyBlacklist();
-    this.createPageFormats();
-    this.setPages();
-    this.setState(this.state);
+    const state = this.state;
+    state.blacklistItems = items;
+    this.setState(state);
+    this.applyFiltersAndUpdatePages();
+  };
 
-    return items;
+  onKeywordsChanged = items => {
+    const state = this.state;
+    state.keywords = items;
+    this.setState(state);
+    this.applyFiltersAndUpdatePages();
   };
 
   // Show email email input and send button, disable keyboard pincode number input
@@ -153,7 +158,7 @@ class App extends Component {
         "x-pincode": this.state.pinCode
       };
       let response = await request.post("/login", {});
-      console.log("asd");
+
       this.state.apiKey = response.data.apiKey;
 
       axios.defaults.headers = { "x-api-key": response.data.apiKey };
@@ -165,7 +170,7 @@ class App extends Component {
 
       this.setDisableButton(response.data.lastUpdated);
 
-      await this.getArticles();
+      await this.getArticles(response.data.lastUpdated);
       await this.getBlacklistItems();
       await this.getCustomTrends();
 
@@ -173,6 +178,7 @@ class App extends Component {
 
       this.state.loggedIn = true;
     } catch (error) {
+      console.log(error);
       this.state.errorMsg = error;
       this.shakeIt();
       this.state.pinCode = "";
@@ -182,20 +188,66 @@ class App extends Component {
 
   applyFiltersAndUpdatePages = () => {
     const state = this.state;
-    state.filteredArticles = this.state.rawArticles;
+
+    // Loop that applies filters
+    const articles = JSON.parse(JSON.stringify(state.rawArticles));
+    state.filteredArticles = articles.filter(article => {
+      // Apply emailOnly filter
+      if (!this.isEmailArticle(article.mailOccurrences)) return false;
+
+      // Apply keyword filter
+      if (!this.containsKeyword(article.title)) return false;
+
+      // Apply provider filter
+      if (!this.isAllowedProvider(article.provider)) return false;
+
+      // Check if the blacklist filter is even necessary
+      if (!state.blacklistItems.length > 0) return true;
+
+      // Filter the blacklist over the topics
+      article.topics = article.topics.filter(topic => {
+        if (state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
+          return false;
+        }
+        return true;
+      });
+
+      // Filter the blacklist over the categories
+      article.categories = article.categories.filter(categorie => {
+        if (state.blacklistItems.indexOf(categorie.name.toLowerCase()) >= 0) {
+          return false;
+        }
+        return true;
+      });
+
+      return article;
+    });
+
+    state.tableData = this.createPageFormats();
+    state.pages = this.setPages(state);
+
     this.setState(state);
+  };
 
-    this.applyBlacklist();
+  containsKeyword = title => {
+    const keywords = this.state.keywords;
+    if (keywords.length <= 0) return true;
+    for (const keyword of keywords) {
+      if (title.toLowerCase().includes(keyword.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  };
 
-    this.applyProviderFilter();
+  isEmailArticle = mailOccurrences => {
+    if (!this.state.emailOnly) return true;
+    if (!mailOccurrences) return false;
+    return mailOccurrences.length > 0;
+  };
 
-    this.applyEmailOnlyFilter();
-
-    // TODO: create pages
-    this.createPageFormats();
-    this.setPages();
-
-    this.setState(this.state);
+  isAllowedProvider = provider => {
+    return this.state.allowedProviders.indexOf(provider) >= 0;
   };
 
   // Send the mail via the backend, shake login when an error occures
@@ -225,8 +277,37 @@ class App extends Component {
     return re.test(String(email).toLowerCase());
   }
 
-  getArticles = async () => {
+  getArticles = async lastUpdate => {
+    const storedUpdate = localStorage.getItem("updatedAt");
+
+    if (!storedUpdate) {
+      await this.updateRawArticles();
+      return;
+    }
+
+    const lastMoment = moment.unix(lastUpdate);
+    const storedMoment = moment.unix(storedUpdate);
+    if (lastMoment.isAfter(storedMoment)) {
+      await this.updateRawArticles();
+      return;
+    }
+
+    this.state.rawArticles = JSON.parse(localStorage.getItem("rawArticles")); // (await request.get("/articles")).data;
+
+    if (!this.state.rawArticles) {
+      await this.updateRawArticles();
+    }
+  };
+
+  updateRawArticles = async () => {
     this.state.rawArticles = (await request.get("/articles")).data;
+    localStorage.setItem(
+      "updatedAt",
+      moment()
+        .unix()
+        .toString()
+    );
+    localStorage.setItem("rawArticles", JSON.stringify(this.state.rawArticles));
   };
 
   getCustomTrends = async () => {
@@ -261,24 +342,11 @@ class App extends Component {
     this.state.blacklistItems = (await request.get("/blacklist")).data.items;
   };
 
-  applyBlacklist = () => {
-    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
+  toggleEmailOnly = () => {
     const state = this.state;
-    state.filteredArticles = articles.map(article => {
-      article.topics = article.topics.filter(topic => {
-        if (state.blacklistItems.indexOf(topic.name.toLowerCase()) >= 0) {
-          return false;
-        }
-        return true;
-      });
-      article.categories = article.categories.filter(categorie => {
-        if (state.blacklistItems.indexOf(categorie.name.toLowerCase()) >= 0) {
-          return false;
-        }
-        return true;
-      });
-      return article;
-    });
+    state.emailOnly = !state.emailOnly;
+    this.setState(state);
+    this.applyFiltersAndUpdatePages();
   };
 
   toggleProvider = provider => {
@@ -291,87 +359,14 @@ class App extends Component {
     this.applyFiltersAndUpdatePages();
   };
 
-  applyProviderFilter() {
-    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
-    const state = this.state;
-    state.filteredArticles = articles.filter(article => {
-      return state.allowedProviders.indexOf(article.provider) >= 0;
-    });
-    this.setState(state);
-  }
-
-  toggleEmailOnly = () => {
-    const state = this.state;
-    state.emailOnly = !state.emailOnly;
-    this.setState(state);
-    this.applyFiltersAndUpdatePages();
-  };
-
-  applyEmailOnlyFilter() {
-    if (!this.state.emailOnly) return;
-    const articles = JSON.parse(JSON.stringify(this.state.filteredArticles));
-    const state = this.state;
-    this.setState(
-      (state.filteredArticles = articles.filter(article => {
-        if (!article.mailOccurrences) return false;
-        return article.mailOccurrences.length > 0;
-      }))
-    );
-  }
-
   createPageFormats = () => {
     const converter = new ArticleDataConvert(this.state.filteredArticles);
-    const state = this.state;
-    state.tableData[0] = converter.ConvertArticlesToGeneral(); // GENERAL
-    state.tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
-    state.tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
-    this.setState(state);
+    const tableData = [];
+    tableData[0] = converter.ConvertArticlesToGeneral(); // GENERAL
+    tableData[1] = converter.ConvertArticlesToTopics(); // TOPICS
+    tableData[2] = converter.ConvertArticlesToCategories(); // CATEGORIES
+    return tableData;
   };
-
-  // setPages = () => {
-  //   const state = this.state;
-  //   state.pages = [
-  //     <GeneralPage
-  //       generalData={state.tableData[0]}
-  //       pageColor="#551F5C"
-  //       onPageChange={this.onPageChange}
-  //     />,
-  //     <TopicPage
-  //       topicData={state.tableData[1]}
-  //       pageColor="#9FD714"
-  //       onPageChange={this.onPageChange}
-  //       customTrendsTopics={this.state.customTrendsTopics}
-  //       insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
-  //     />,
-  //     <CatergoryPage
-  //       categoryData={state.tableData[2]}
-  //       pageColor="#FF8000"
-  //       onPageChange={this.onPageChange}
-  //       customTrendsTopics={this.state.customTrendsCategories}
-  //       insertCustomTrendsFrontEnd={(trend) => this.insertCustomTrendsFrontEnd(trend)}
-  //     />,
-
-  //     <ArticlePage
-  //       articleData={state.filteredArticles}
-  //       pageColor="#D24DFF"
-  //       onPageChange={this.onPageChange}
-  //     />,
-  //     <SettingPage
-  //       onTopicBlacklistChanged={this.onTopicBlacklistChanged}
-  //       items={state.blacklistItems}
-  //       pageColor="#9D000F"
-  //       onPageChange={this.onPageChange}
-  //       changeAllowedProviderHandler={(provider, boolean) =>
-  //         this.applyProviderFilter(provider, boolean)
-  //       }
-  //       applyEmailOnlyFilter={() => this.applyEmailOnlyFilter()}
-  //       allowedProviders={state.allowedProviders}
-  //       emailOnly={state.emailOnly}
-  //       apiKey={state.apiKey}
-  //     />
-  //   ];
-  //   this.setState(state);
-  // };
 
   // Remove last pincode number input
   removePin = () => {
@@ -447,10 +442,14 @@ class App extends Component {
       />,
       <SettingPage
         onTopicBlacklistChanged={this.onTopicBlacklistChanged}
-        items={state.blacklistItems}
+        onKeywordsChanged={this.onKeywordsChanged}
+        blacklistItems={state.blacklistItems}
+        keywords={state.keywords}
         pageColor="#9D000F"
         onPageChange={this.onPageChange}
-        toggleProvider={provider => this.toggleProvider(provider)}
+        toggleProvider={(provider, boolean) =>
+          this.toggleProvider(provider, boolean)
+        }
         toggleEmailOnly={() => this.toggleEmailOnly()}
         allowedProviders={state.allowedProviders}
         emailOnly={state.emailOnly}

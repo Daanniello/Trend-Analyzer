@@ -9,7 +9,6 @@ import LatestArticle from "../components/cards/LatestArticle";
 
 const GeneralPage = props => {
   props.onPageChange(props.pageColor);
-  console.log(props.generalData);
   return (
     <div id="general-page-grid">
       <div className="general-page-item" id="general-page-header">

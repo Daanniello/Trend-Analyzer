@@ -1,7 +1,6 @@
 import React from "react";
 import "./SettingPage.css";
 
-import BlacklistCard from "../components/cards/BlacklistCard";
 import Typography from "@material-ui/core/Typography";
 import SwitchButton from "../components/Buttons/SwitchButton";
 import SwitchButtonStandard from "../components/Buttons/SwitchButtonStandard";
@@ -9,6 +8,7 @@ import SwitchButtonStandard from "../components/Buttons/SwitchButtonStandard";
 import Button from "@material-ui/core/Button";
 import * as axios from "axios";
 import RequestService from "../services/request-service";
+import SettingsList from "../components/cards/SettingsList";
 
 const request = new RequestService();
 
@@ -50,15 +50,22 @@ class SettingPage extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
         <div className="setting-header">
           <Typography style={{ color: "#551F5C" }} variant="h4">
             Settings
           </Typography>
         </div>
-        <BlacklistCard
-          onTopicBlacklistChanged={this.props.onTopicBlacklistChanged}
-          items={this.props.items}
+        <SettingsList
+          title="Keywords"
+          items={this.props.keywords}
+          onItemsChanged={this.props.onKeywordsChanged}
+          pageColor={this.props.pageColor}
+        />
+        <SettingsList
+          title="Blacklist"
+          items={this.props.blacklistItems}
+          onItemsChanged={this.props.onTopicBlacklistChanged}
           pageColor={this.props.pageColor}
         />
         <div className="settings-switches">

@@ -1,0 +1,66 @@
+* [33mbdc8dda[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/StoreArticles[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mdevelop[m[33m)[m Implemented keywords filter & did some loop optimalization
+[31m|[m * [33mfe27a86[m[33m ([m[1;31morigin/DesignDebug[m[33m)[m CustomTrend database collection and service
+[31m|[m[31m/[m  
+* [33m2fa574c[m[33m ([m[1;31morigin/ArticlePage[m[33m)[m Merge branch 'develop' into ArticlePage
+* [33m528f919[m[33m ([m[1;32mfeature/SettingsPageFilters[m[33m)[m Fixed the emails not being analyzed correctly
+*   [33mde168f7[m Merge pull request #33 from Daanniello/DatabaseTestUpdate
+[33m|[m[34m\[m  
+[33m|[m * [33m704a9f4[m[33m ([m[1;31morigin/DatabaseTestUpdate[m[33m, [m[1;32mDatabaseTestUpdate[m[33m)[m Initial try for emulation
+* [34m|[m [33mb2dbe9b[m[33m ([m[1;31morigin/feature/SettingsPageFilters[m[33m)[m Merge branch 'develop' into feature/SettingsPageFilters
+[34m|[m[34m/[m  
+*   [33m5eb83ac[m merge conflicts resolved after merge with email analyzer
+[35m|[m[36m\[m  
+[35m|[m * [33m706c650[m[33m ([m[1;31morigin/feature/email-analyzer[m[33m)[m Email sync with firestore done, email analyzer finished
+* [36m|[m [33m31e2826[m[33m ([m[1;31morigin/LatestArticleOverflow[m[33m)[m Load More
+* [36m|[m [33m721d3d9[m[33m ([m[1;31morigin/CustomGraphRange[m[33m)[m Added custom format in the custom graph
+* [36m|[m   [33m83feb2d[m merge
+[1;31m|[m[1;32m\[m [36m\[m  
+[1;31m|[m * [36m\[m   [33m8d73750[m Merge branch 'develop' into FrontendAPIConnection
+[1;31m|[m [1;33m|[m[36m\[m [36m\[m  
+[1;31m|[m [1;33m|[m [36m|[m[36m/[m  
+[1;31m|[m * [36m|[m [33m33dfe33[m[33m ([m[1;31morigin/FrontendAPIConnection[m[33m)[m Update timestamps, analyse lock & some front-end cleanup
+* [1;34m|[m [36m|[m [33m52869d5[m[33m ([m[1;31morigin/Login[m[33m)[m extra email 'credentials' now in .env
+[36m|[m [1;34m|[m[36m/[m  
+[36m|[m[36m/[m[1;34m|[m   
+* [1;34m|[m [33m7dfd594[m[33m ([m[1;31morigin/origin/Login[m[33m)[m Merge branch 'develop' of https://github.com/Daanniello/Trend-Analyzer into Login
+* [1;34m|[m   [33m386a363[m Merge conflicts resolved  - translation added - category lower level
+[1;34m|[m[1;36m\[m [1;34m\[m  
+[1;34m|[m [1;36m|[m[1;34m/[m  
+[1;34m|[m[1;34m/[m[1;36m|[m   
+[1;34m|[m * [33md62ff5f[m[33m ([m[1;31morigin/TextRazorService[m[33m)[m Translation service added
+* [1;36m|[m   [33mb189875[m Merge branch 'develop' into TopicPageTable
+[31m|[m[32m\[m [1;36m\[m  
+[31m|[m * [1;36m\[m   [33m7c1d299[m Merge branch 'develop' of https://github.com/Daanniello/Trend-Analyzer into develop
+[31m|[m [33m|[m[34m\[m [1;36m\[m  
+[31m|[m [33m|[m * [1;36m|[m [33md53169b[m[33m ([m[1;31morigin/feature/ArticleFetchEngine[m[33m)[m Merge branch 'develop' into feature/ArticleFetchEngine
+[31m|[m * [34m|[m [1;36m|[m [33mccf6ac2[m[33m ([m[1;31morigin/FrontendUpdateImplementation[m[33m)[m Removed old loading image
+[31m|[m [34m|[m[34m/[m [1;36m/[m  
+[31m|[m * [1;36m|[m [33mf1339e7[m[33m ([m[1;31morigin/EndpointImplementation[m[33m)[m Returning more topics/categories to general page
+[31m|[m [1;36m|[m[1;36m/[m  
+[31m|[m *   [33mb7f74ed[m Merge with develop
+[31m|[m [35m|[m[36m\[m  
+[31m|[m [35m|[m * [33m546e814[m[33m ([m[1;31morigin/feature/StoreInDatabase[m[33m)[m Updated ping
+[31m|[m * [36m|[m [33m0daecc4[m[33m ([m[1;31morigin/RestEndpoint[m[33m)[m Example exclude login page
+* [36m|[m [36m|[m [33m03edc2d[m[33m ([m[1;31morigin/TopicPageTable[m[33m)[m Store selected topics in TopicPage
+[36m|[m [36m|[m [36m|[m * [33mef34f66[m[33m ([m[1;31morigin/master[m[33m)[m Set theme jekyll-theme-cayman
+[36m|[m [36m|[m [36m|[m[36m/[m  
+[36m|[m [36m|[m[36m/[m[36m|[m   
+[36m|[m * [36m|[m [33m6431e63[m[33m ([m[1;32mmaster[m[33m)[m Merge pull request #18 from Daanniello/feature/ReadyForMaster
+[36m|[m * [36m|[m [33m88eff03[m[33m ([m[1;31morigin/feature/ReadyForMaster[m[33m)[m Removed the login and pages
+[36m|[m [36m|[m[36m/[m  
+[36m|[m *   [33m6584dde[m Merge branch 'RetrievingHTML' into develop
+[36m|[m [1;32m|[m[1;33m\[m  
+[36m|[m [1;32m|[m * [33m8433b9b[m[33m ([m[1;31morigin/RetrievingHTML[m[33m)[m Merge conflict resolved
+[36m|[m * [1;33m|[m [33m3ebad34[m[33m ([m[1;31morigin/feature/FixGeneralPageSize[m[33m)[m Fixed the size on the generalpage so it does not overflow
+[36m|[m[36m/[m [1;33m/[m  
+* [1;33m|[m [33mf1e8aa2[m[33m ([m[1;31morigin/TopicPage[m[33m)[m Merge branch 'develop' into TopicPage
+* [1;33m|[m [33mc3b0cd0[m[33m ([m[1;31morigin/feature/LoginModal[m[33m)[m Created the login screen (not secure)
+* [1;33m|[m [33mbb9a2cc[m[33m ([m[1;31morigin/feature/FixedDevLag[m[33m)[m FixedFrontendDevLag
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33m3d044d0[m[33m ([m[1;31morigin/HomePage[m[33m)[m Added smallcards
+[1;33m|[m[1;33m/[m  
+* [33mb0cebd7[m[33m ([m[1;31morigin/Navigation[m[33m)[m Navigation added
+* [33mcd77bb0[m[33m ([m[1;31morigin/feature/InitialFrontendSetup[m[33m)[m Added creds.json to the .gitignore
+* [33m49f141d[m[33m ([m[1;31morigin/feature/InitialExpressSetup[m[33m)[m Added middleware
+* [33m8ad7db3[m[33m ([m[1;31morigin/feature/InitialFirebaseSetup[m[33m)[m Initialised the firebase project and added a .gitignore
+* [33m07e93bf[m Initial commit

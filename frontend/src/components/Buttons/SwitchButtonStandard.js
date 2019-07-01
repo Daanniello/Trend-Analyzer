@@ -11,10 +11,10 @@ class SwitchButtonStandard extends Component {
 
   constructor(props) {
     super(props);
-    const state = this.state;
-    state.checked = this.props.emailOnly;
-    this.setState(state);
-    console.log(this.state.checked);
+
+    this.state = {
+      checked: this.props.emailOnly
+    };
   }
 
   // handleChange = () => {
