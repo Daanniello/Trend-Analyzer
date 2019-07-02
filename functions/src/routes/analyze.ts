@@ -16,6 +16,7 @@ const router = express.Router();
 
 /* Implement endpoints */
 router.post("", async (req, res) => {
+  // Check if latest update was more than 30 minutes ago
   const lastupdate = await DB.get("lastupdate");
   if (moment.unix(lastupdate.timestamp).isBefore(moment().add(-30, "m"))) {
     const timestamp: number = moment().unix();
@@ -26,10 +27,12 @@ router.post("", async (req, res) => {
       console.time("ANALYZING AEDES");
       await AFE.FetchNewArticles();
       console.timeEnd("ANALYZING AEDES");
+
       console.time("ANALYZING CORPORATIENL");
       await CFE.FetchNewArticles();
       console.timeEnd("ANALYZING CORPORATIENL");
       console.timeEnd("ANALYZING ARTICLES");
+
       console.time("ANALYZING EMAILS");
       await EAS.analyzeEmails();
       console.timeEnd("ANALYZING EMAILS");

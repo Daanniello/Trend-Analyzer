@@ -46,6 +46,10 @@ abstract class ArticleFetchEngine {
       for (const articleURL of articleURLs) {
         const rawArticle = await this.getRawArticle(articleURL);
 
+        if (isNaN(rawArticle.timestamp)) {
+          continue;
+        }
+
         // Check if we already have this article
         const result = await this.articleService.getQuery({
           url: rawArticle.url,
@@ -54,10 +58,7 @@ abstract class ArticleFetchEngine {
         if (result.length > 0) stopLoop = true;
 
         // Check if the article is from before 2017
-        if (
-          moment.unix(rawArticle.timestamp).isBefore(moment2017) ||
-          isNaN(rawArticle.timestamp)
-        ) {
+        if (moment.unix(rawArticle.timestamp).isBefore(moment2017)) {
           stopLoop = true;
         }
         // Stop if one of the ifs before this is true
@@ -76,8 +77,6 @@ abstract class ArticleFetchEngine {
       // Go to the next page and retrieve the HTML
       this.currentPageNumber++;
       await this.setCheerioHTML(this.baseURL, this.currentPageNumber);
-      //currentPageHTML = await this.getPageHTML(currentPageURL);
-      //this.setCheerioHTML(currentPageHTML);
     }
   }
 
