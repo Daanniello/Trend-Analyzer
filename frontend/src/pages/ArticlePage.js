@@ -24,7 +24,6 @@ class ArticlePage extends React.Component {
     state.searchbarContent = e.target.value;
     state.showData = this.getFilteredDataFromSearch();
     this.setState(state);
-    console.log(state);
   };
 
   getFilteredDataFromSearch = () => {

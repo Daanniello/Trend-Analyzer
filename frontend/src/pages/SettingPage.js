@@ -57,9 +57,6 @@ class SettingPage extends React.Component {
   };
 
   render() {
-    console.log();
-    console.log(this.props.keywords);
-    console.log(this.props.blacklistItems);
     return (
       <div>
         <div className="setting-header">

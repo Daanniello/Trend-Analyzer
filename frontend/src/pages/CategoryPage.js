@@ -22,6 +22,12 @@ class CategoryPage extends React.Component {
       this.setState(state);
     };
 
+    this.clearTopic = () => {
+      const state = this.state;
+      state.topics = [];
+      this.setState(state);
+    };
+
     this.removeTopic = topic => {
       const state = this.state;
       state.topics = state.topics.filter(t => {
@@ -48,9 +54,12 @@ class CategoryPage extends React.Component {
           data={this.props.categoryData}
           addTopic={this.addTopic}
           removeTopic={this.removeTopic}
+          clearTopic={this.clearTopic}
           pageColor={this.props.pageColor}
           customTrends={this.props.customTrendsCategories}
-          insertCustomTrendsFrontEnd={(trend) => this.props.insertCustomTrendsFrontEnd(trend)}
+          insertCustomTrendsFrontEnd={trend =>
+            this.props.insertCustomTrendsFrontEnd(trend)
+          }
         />
         <GraphCard
           topics={this.state.topics}

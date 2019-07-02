@@ -27,7 +27,6 @@ class SwitchButtonStandard extends Component {
   //     state.checked = true;
   //     this.props.switchHandler(this.props.name, true);
   //   }
-  //   console.log(this.state.checked);
   //   this.setState(state);
   // };
 

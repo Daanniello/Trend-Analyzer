@@ -8,7 +8,6 @@ const LatestArticleCard = props => {
   const [loadedText, setLoadedText] = useState("Load more...");
 
   const loadMoreOnClick = () => {
-    console.log("CLICKED");
     setLoaded(!loaded);
     if (!loaded) {
       setLoadedText("Load More...");

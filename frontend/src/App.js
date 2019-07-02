@@ -87,9 +87,7 @@ class App extends Component {
   };
 
   onCustomTrendsChanged = items => {
-    console.log(items);
     let changedItems = "";
-    console.log(this.state.customTrends);
     changedItems = this.state.customTrends.filter(item => {
       if (items.includes(item.name)) {
         return false;
@@ -99,7 +97,6 @@ class App extends Component {
     });
 
     let changedItem = changedItems[changedItems.length - 1];
-    console.log(changedItem);
 
     const state = this.state;
     state.customTrends.splice(
@@ -109,12 +106,10 @@ class App extends Component {
       1
     );
     this.setState(state);
-    console.log(this.state.customTrends);
 
     this.getCustomTrendsCategory();
     this.getCustomTrendsTopic();
     this.applyFiltersAndUpdatePages();
-    console.log(this.state.customTrends);
     request.delete("/customtrends", changedItem);
   };
 
@@ -170,10 +165,9 @@ class App extends Component {
   };
 
   insertCustomTrendsFrontEnd = trend => {
-    console.log();
     const customTrendsTemp = this.state.customTrends;
     customTrendsTemp.push(trend);
-    console.log(customTrendsTemp);
+
     const state = this.state;
     state.customTrends = customTrendsTemp;
     this.setState(state);
@@ -349,7 +343,6 @@ class App extends Component {
 
     state.customTrends = customTrends.data;
     this.setState(state);
-    console.log(this.state.customTrends);
     this.getCustomTrendsTopic();
     this.getCustomTrendsCategory();
   };
@@ -490,9 +483,6 @@ class App extends Component {
         onCustomTrendsChanged={items => this.onCustomTrendsChanged(items)}
       />
     ];
-    console.log(this.state.customTrends);
-    console.log(this.state.customTrendsCategories);
-    console.log(this.state.customTrendsTopics);
     this.setState(state);
   };
 

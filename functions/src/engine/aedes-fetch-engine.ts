@@ -12,7 +12,6 @@ class AedesFetchEngine extends ArticleFetchEngine {
 
   public async FetchInitialArticles(): Promise<void> {
     if (this.articleService == null) {
-      console.log("NO DATABASE");
       return;
     }
 

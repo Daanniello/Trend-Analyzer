@@ -26,7 +26,10 @@ class ArticleTableRow extends Component {
 
     for (let i = 0; i < this.props.topicData.length; i++) {
       topicRows.push(
-        <div className="article-table-row-ArticleTableRowInfo-data">
+        <div
+          key={`topic-${i}`}
+          className="article-table-row-ArticleTableRowInfo-data"
+        >
           {this.props.topicData[i].name +
             "(" +
             this.props.topicData[i].score +
@@ -45,8 +48,15 @@ class ArticleTableRow extends Component {
 
     for (let i = 0; i < this.props.mailCount.length; i++) {
       mailUrl.push(
-        <div className="article-table-row-ArticleTableRowInfo-data">
-          <a href={this.props.mailCount[i]} target="_blank">
+        <div
+          key={`mailurl-${i}`}
+          className="article-table-row-ArticleTableRowInfo-data"
+        >
+          <a
+            href={this.props.mailCount[i]}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             {this.props.mailCount[i]}
           </a>
         </div>
@@ -60,7 +70,10 @@ class ArticleTableRow extends Component {
 
     for (let i = 0; i < this.props.categoryData.length; i++) {
       categoryRows.push(
-        <div className="article-table-row-ArticleTableRowInfo-data">
+        <div
+          key={`category-${i}`}
+          className="article-table-row-ArticleTableRowInfo-data"
+        >
           {this.props.categoryData[i].name +
             "(" +
             this.props.categoryData[i].score +
@@ -104,7 +117,6 @@ class ArticleTableRow extends Component {
             }}
             onClick={() => {
               this.setState({ expand: false });
-              console.log(this.state.expand);
             }}
           />
         </div>

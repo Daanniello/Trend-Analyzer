@@ -14,6 +14,8 @@ const articles = ["article One", "Article Two"];
 function TableCardDetails(props) {
   const { onClose, selectedValue, ...other } = props;
 
+  console.log(props.extraDetails);
+
   function handleClose() {
     onClose(selectedValue);
   }
@@ -33,12 +35,34 @@ function TableCardDetails(props) {
     );
   });
 
+  const extraDetailTitle = (
+    <DialogTitle id="simple-dialog-title">Custom trend consists of</DialogTitle>
+  );
+  const extraDetailItems = [];
+
+  console.log(props.extraDetails);
+
+  if (props.extraDetails.trends) {
+    for (let i = 0; i < props.extraDetails.trends.length; i++) {
+      console.log(props.extraDetails.trends[i]);
+      extraDetailItems.push(
+        <ListItemText>{props.extraDetails.trends[i]}</ListItemText>
+      );
+    }
+  }
+
   return (
     <Dialog
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
       {...other}
     >
+      {props.extraDetails && (
+        <div>
+          {extraDetailTitle}
+          {extraDetailItems}
+        </div>
+      )}
       <DialogTitle id="simple-dialog-title">Articles</DialogTitle>
       <List>{detailsObjects}</List>
     </Dialog>
@@ -71,6 +95,7 @@ function TableDetails(props) {
         open={open}
         onClose={handleClose}
         details={props.details}
+        extraDetails={props.extraDetails}
       />
     </Typography>
   );

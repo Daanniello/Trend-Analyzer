@@ -10,11 +10,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 class ArticleTable extends Component {
   state = {};
 
-  constructor(props) {
-    super(props);
-  }
-
-  Row = ({ index, key, style }) => {
+  Row = ({ index, style }) => {
     const article = this.props.articleData[index];
     if (!article) return;
     const {
@@ -31,7 +27,7 @@ class ArticleTable extends Component {
     const color =
       provider === "Aedes" ? "rgb(30, 171, 215)" : "rgb(255, 128, 0)";
     return (
-      <div id={`article-${index}`} key={key} style={style}>
+      <div id={`article-${index}`} key={`article-${index}`} style={style}>
         <ArticleTableRow
           date={time}
           title={title}

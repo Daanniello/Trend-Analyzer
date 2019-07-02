@@ -22,6 +22,12 @@ class TopicPage extends React.Component {
       this.setState(state);
     };
 
+    this.clearTopic = () => {
+      const state = this.state;
+      state.topics = [];
+      this.setState(state);
+    };
+
     this.removeTopic = topic => {
       const state = this.state;
       state.topics = state.topics.filter(t => {
@@ -36,10 +42,9 @@ class TopicPage extends React.Component {
 
   insertCustomTrendsFrontEnd = trend => {
     this.props.insertCustomTrendsFrontEnd(trend);
-    console.log(this.state.topics);
-    const state = this.state;
-    state.topics = [];
-    this.setState(state);
+    // const state = this.state;
+    // state.topics = trend;
+    // this.setState(state);
   };
 
   render() {
@@ -56,6 +61,7 @@ class TopicPage extends React.Component {
           data={this.props.topicData}
           addTopic={this.addTopic}
           removeTopic={this.removeTopic}
+          clearTopic={this.clearTopic}
           pageColor={this.props.pageColor}
           customTrends={this.props.customTrendsTopics}
           insertCustomTrendsFrontEnd={trend =>

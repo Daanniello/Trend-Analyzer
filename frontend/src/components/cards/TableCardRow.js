@@ -7,23 +7,38 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 const TableCardRow = props => {
   const colorStyle = {};
+
+  console.log(props.extraDetails);
+
   colorStyle.color = props.color;
   return (
-    <div style={props.style} className="table-row-content">
+    <div style={props.style} className="table-row-content" id={props.id}>
       <Checkbox
         onClick={() => props.handleCheck(props.id, props.checked)}
         checked={props.checked}
         style={colorStyle}
         className="checkbox"
       />
-      <Typography className="table-row-title">{props.title}</Typography>
+      <Typography className="table-row-title" onmouseover>
+        {props.title}
+      </Typography>
       <div className="table-row-seperate">
         <Typography className="table-row-all">{props.all}</Typography>
         <Typography className="table-row-yearly">{props.yearly}</Typography>
         <Typography className="table-row-monthly">{props.monthly}</Typography>
         <Typography className="table-row-weekly">{props.weekly}</Typography>
         <div className="table-row-details">
-          <TableCardDetails color={colorStyle.color} details={props.details} />
+          <TableCardDetails
+            color={colorStyle.color}
+            details={props.details}
+            extraDetails={
+              props.title.includes("*")
+                ? props.extraDetails.find(detail => {
+                    return detail.name === props.title;
+                  })
+                : ""
+            }
+          />
         </div>
       </div>
     </div>

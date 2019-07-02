@@ -17,7 +17,6 @@ function TableCardTrendPopupMain(props) {
   function handleInputChange(e) {
     setSearchbarContent(e.target.value);
 
-    console.log(e.target.value);
     //state.showData = this.getFilteredDataFromSearch();
   }
 
@@ -27,28 +26,39 @@ function TableCardTrendPopupMain(props) {
 
   function onButtonClick() {
     let trend = {
-      name: searchbarContent,
+      name: `${searchbarContent} *`,
       trends: [],
       type: props.type
     };
     for (let i = 0; i < props.items.length; i++) {
-      trend.trends[i] = props.allData[props.items[i]].name;
+      const name = props.alldata[props.items[i]].name;
+      const customTrend = props.customtrends.find(ct => ct.name === name);
+      if (customTrend) {
+        for (const t of customTrend.trends) {
+          if (trend.trends.indexOf(t) < 0) {
+            trend.trends.push(t);
+          }
+        }
+        continue;
+      }
+
+      trend.trends.push(name);
     }
     const request = new RequestService();
-    console.log(trend);
     request.post("/customtrends", trend);
 
     handleClose();
-    console.log(props);
-    props.insertTrendDirectly(trend);
-    console.log(trend);
+    props.inserttrendsdirectly(trend);
   }
 
   function SelectedItems() {
     let selectedItems = [];
-    console.log(props.items)
     for (let i = 0; i < props.items.length; i++) {
-      selectedItems.push(<Typography>{props.allData[props.items[i]].name}</Typography>);
+      selectedItems.push(
+        <Typography key={`selected-${i}`}>
+          {props.alldata[props.items[i]].name}
+        </Typography>
+      );
     }
 
     return selectedItems;
@@ -126,8 +136,9 @@ function TableCardTrendPopup(props) {
         onClose={handleClose}
         details={props.details}
         items={props.items}
-        allData={props.allData}
-        insertTrendDirectly={trends => props.insertTrendDirectly(trends)}
+        alldata={props.allData}
+        customtrends={props.customTrends}
+        inserttrendsdirectly={trends => props.insertTrendDirectly(trends)}
       />
     </Typography>
   );

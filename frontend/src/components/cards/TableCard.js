@@ -40,7 +40,8 @@ class TableCard extends React.Component {
     random: Math.random() * 1000,
     items: [],
     combineDisabled: true,
-    canUpdate: false
+    canUpdate: false,
+    lastCombined: ""
   };
 
   constructor(props) {
@@ -59,8 +60,6 @@ class TableCard extends React.Component {
     });
 
     this.state.showData = data;
-    this.sortData("month");
-    console.log(this.state.showData);
   }
 
   refreshData = () => {
@@ -71,22 +70,38 @@ class TableCard extends React.Component {
     });
   };
 
+  componentDidMount() {
+    this.sortData("month");
+  }
+
   componentDidUpdate() {
     if (this.state.canUpdate) {
       const state = this.state;
       state.canUpdate = false;
-      this.setState(state);
       this.refreshData();
       this.insertCustomTrends();
       this.sortData("month");
+      const index = this.state.allData.findIndex(
+        item => item.name === this.state.lastCombined
+      );
+      const color = COLORS.checked.find(
+        color => !state.inUseColors.includes(color)
+      );
+      state.allData[index].color = color;
+      state.inUseColors.push(color);
+      state.allData[index].checked = true;
+      state.items.push(index);
+      this.props.clearTopic();
+      this.props.addTopic(state.allData[index]);
+      this.setState(state);
     }
   }
 
   insertCustomTrendsFrontEnd = trend => {
     const customTrend = {
       name: trend.name,
-      checked: false,
-      color: "red",
+      checked: true,
+      color: COLORS.default,
       articles: [],
       totals: {
         allTime: 0,
@@ -114,15 +129,14 @@ class TableCard extends React.Component {
       return 1;
     });
 
-    console.log(this.props);
     const state = this.state;
     state.inUseColors = [];
     state.items = [];
     state.combineDisabled = true;
     state.canUpdate = true;
+    state.lastCombined = trend.name;
     this.setState(state);
     this.props.insertCustomTrendsFrontEnd(trend);
-    console.log(this.props);
   };
 
   insertCustomTrends = async () => {
@@ -134,14 +148,15 @@ class TableCard extends React.Component {
       const customTrend = {
         name: trend.name,
         checked: false,
-        color: "red",
+        color: COLORS.default,
         articles: [],
         totals: {
           allTime: 0,
           last365: 0,
           last30: 0,
           last7: 0
-        }
+        },
+        trends: trends
       };
 
       this.state.allData.map(topic => {
@@ -257,6 +272,7 @@ class TableCard extends React.Component {
         monthly={totals.last30}
         weekly={totals.last7}
         details={articles}
+        extraDetails={item.trends ? item.trends : ""}
       />
     );
   };
@@ -273,6 +289,7 @@ class TableCard extends React.Component {
         <TableCardTrendPopup
           pageColor={this.props.color}
           items={this.state.items}
+          customTrends={this.props.customTrends}
           allData={this.state.allData}
           disabled={this.state.combineDisabled}
           insertTrendDirectly={trends =>
@@ -286,6 +303,7 @@ class TableCard extends React.Component {
           placeholder="Search"
           style={{ float: "left", width: "500px" }}
         />
+        <Typography>* = custom trend</Typography>
 
         <Typography variant="h2" className="table-card">
           <div
