@@ -14,8 +14,6 @@ const articles = ["article One", "Article Two"];
 function TableCardDetails(props) {
   const { onClose, selectedValue, ...other } = props;
 
-  console.log(props.extraDetails);
-
   function handleClose() {
     onClose(selectedValue);
   }
@@ -40,13 +38,10 @@ function TableCardDetails(props) {
   );
   const extraDetailItems = [];
 
-  console.log(props.extraDetails);
-
   if (props.extraDetails.trends) {
     for (let i = 0; i < props.extraDetails.trends.length; i++) {
-      console.log(props.extraDetails.trends[i]);
       extraDetailItems.push(
-        <ListItemText>{props.extraDetails.trends[i]}</ListItemText>
+        <ListItemText key={i}>{props.extraDetails.trends[i]}</ListItemText>
       );
     }
   }

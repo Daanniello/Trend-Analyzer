@@ -115,10 +115,10 @@ class App extends Component {
 
   onTopicBlacklistChanged = items => {
     request.post("/blacklist", { items: items });
-
     const state = this.state;
     state.blacklistItems = items;
     this.setState(state);
+    this.applyFiltersAndUpdatePages();
   };
 
   onKeywordsChanged = items => {

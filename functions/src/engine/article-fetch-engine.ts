@@ -63,8 +63,6 @@ abstract class ArticleFetchEngine {
         // Stop if one of the ifs before this is true
         if (stopLoop) break;
 
-        console.log(rawArticle.url);
-
         const article = await this.analyzeArticle(rawArticle);
 
         this.articleService.updateArticle(article.url, article);

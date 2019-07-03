@@ -8,8 +8,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 const TableCardRow = props => {
   const colorStyle = {};
 
-  console.log(props.extraDetails);
-
   colorStyle.color = props.color;
   return (
     <div style={props.style} className="table-row-content" id={props.id}>
@@ -19,9 +17,7 @@ const TableCardRow = props => {
         style={colorStyle}
         className="checkbox"
       />
-      <Typography className="table-row-title" onmouseover>
-        {props.title}
-      </Typography>
+      <Typography className="table-row-title">{props.title}</Typography>
       <div className="table-row-seperate">
         <Typography className="table-row-all">{props.all}</Typography>
         <Typography className="table-row-yearly">{props.yearly}</Typography>
