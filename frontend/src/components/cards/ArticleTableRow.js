@@ -93,7 +93,12 @@ class ArticleTableRow extends Component {
         />
         <div className="article-table-row-date"> {this.props.date}</div>
         <div className="article-table-row-title">
-          <a href={this.props.url} target="_blank" rel="noopener noreferrer">
+          <a
+            href={this.props.url}
+            target="_blank"
+            alt={this.props.title}
+            rel="noopener noreferrer"
+          >
             {" "}
             {this.props.title}
           </a>{" "}
