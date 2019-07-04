@@ -96,7 +96,7 @@ class ArticleTableRow extends Component {
           <a
             href={this.props.url}
             target="_blank"
-            alt={this.props.title}
+            title={this.props.title}
             rel="noopener noreferrer"
           >
             {" "}
