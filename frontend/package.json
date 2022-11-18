@@ -14,7 +14,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-keyboard-time-input": "^2.1.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.2",
     "roboto-fontface": "^0.10.0"
